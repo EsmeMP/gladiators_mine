@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Consultar Usuarios Gladiator's</title>
+    <link rel="stylesheet" href="../../Index_General/style.css">
+    <link rel="stylesheet" type="text/css"   href="../../styles/font/flaticon.css">
+    <link rel="stylesheet" href="../usuarioProducto CSS/consulta_general.css">
+</head>
+<body>
+    <header>
+        <section class="incons-container">
+            <!-- Aqui van  los iconos de las redes sociales, eslogan, correo y horarios -->
+            <div class="incons">
+                <a href="/"><span class="flaticon-001-facebook"></span></a>
+                <a href="/"><span class="flaticon-003-whatsapp"></span></a>
+                <a href="/"><span class="flaticon-011-instagram"></span></a>
+            </div>
+            <div class="inf-p">
+                <p>Más que una tienda, un universo de posibilidades...</p>
+            </div>
+            <div class="correo-a">
+                <a href="Gladiators99zxc@gmail.com">Gladiators99zxc@gmail.com</a>
+            </div>
+            <div class="inf-p">
+                <p>Lun-Vie 10:00a.m--8:00p.m
+                Sab-Dom 9:00a.m--9:00p.m</p>
+            </div>
+        </section>
+        <nav>
+            <!-- Aqui va el logo y nombre de la tienda y el nombre de las secciones -->
+            <section class="logo-gladiators">
+                <a href="index.html"><img src="../../assets/img/Logotipo_GladiatorsTransparente.png" alt="imagen-logo"></a>
+                <h5>Gladiator's</h5>
+            </section>
+            <section class="secciones">
+                <a href="./pages/index.html">Inicio</a>
+                <a href="./pages/index.html">Ventas</a>
+                <a href="./pages/index.html">Productos</a>
+                <a href="./pages/index.html">Usuarios</a>
+                <a href="./pages/index.html">Soporte</a>
+                <a href="./pages/index.html">Cerrar Sesión</a>
+            </section>
+        </nav>
+    </header>
+    <h1>Consultar Usuario</h1>
+    <br><br>
+    <section class="barra_busqueda">
+        <!-- Aqui se encuentra la barra de busqueda -->
+        <form class="textbox" action="/search" method="GET">
+            <input type="text" name="buscar" placeholder="Buscar...">
+            <button type="submit">Buscar</button>
+            <svg class="icon" width="24" height="24" viewBox="0 0 24 24">
+            <!-- SVG content -->
+            </svg>
+            <svg class="icon" width="24" height="24" viewBox="0 0 24 24">
+            <!-- SVG content -->
+            </svg>
+        </form>
+    </section>
+    <br><br>
+        <div>
+            <section class="table_consulta">
+                <table>
+                    <thead>
+                        <tr class="fila">
+                        <th>Id</th>
+                        <th>Nombre</th>
+                        <th>Apellido</th>
+                        <th>Nombre de Usuario</th>
+                        <th>Tipo de Usuario</th>
+                        <th> </th>
+                        <th> </th>
+                        <th> </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="botones">
+                            <td>3461554645</td>
+                            <td>Griselda</td>
+                            <td>Piña Cortez</td>
+                            <td>Gris</td>
+                            <td>Administrador</td>
+                            <td><button>Editar</button></td>
+                            <td><button>Eliminar</button></td>
+                            <td><button>Ver</button></td>
+                        </tr>
+                        <tr class="botones">
+                            <td>3461554645</td>
+                            <td>Larisa</td>
+                            <td>Piña Cortez</td>
+                            <td>Gris</td>
+                            <td>Cajero</td>
+                            <td><button>Editar</button></td>
+                            <td><button>Eliminar</button></td>
+                            <td><button>Ver</button></td>
+                        </tr>
+                    </tbody>
+                </table>
+
+            </section>
+        </div>
+</body>
+</html>

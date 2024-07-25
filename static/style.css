@@ -1,0 +1,249 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&family=Roboto+Mono:ital,wght@0,100..700;1,100..700&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+
+:root{
+    --color-primary:#FFEA99;
+    --color-dark-yellow:#FFBF00;
+    --color-gray-header:#323842;
+    --color-black:#000000;
+    --color-white:#ffffff;
+    --font-medium:1.4rem;
+    --font-large:1.6rem;
+}
+
+/* Restablecer estilos predeterminados */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+
+/* header {
+    width: 100%;
+    height: 140px; 
+    display: grid;
+    grid-template-rows: 1fr 1fr;
+}
+
+.header-icons-container {
+    width: 100%;
+    height: 80px;
+    display: grid;
+    background-color: black;
+    border-top: 25px solid rgb(93, 93, 93);
+}
+
+header .icons span {
+    color: var(--color-white);
+}
+
+.header-icons-container .icons {
+    width: 300px;
+    height: auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    justify-self: end;
+    margin-right: 50px;
+}
+
+header .icons span {
+    color:white;
+}
+
+nav .logo-Gladiators {
+    margin-left: 50px;
+}
+
+nav .inicio-Sesión{
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    margin-right: 50px;
+}
+
+nav .inicio-Sesión a{
+    color: #ffff00;
+    border-bottom: 2px solid  #ffff00;
+    font-weight: bold;
+    font-size: 20px;
+}
+
+nav .Ventas{
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    margin-right: 50px;
+}
+
+nav .Ventas a{
+    color:  #ffff00 ;
+    border-bottom: 2px solid  #ffff00  ;
+    font-weight: bold;
+    font-size: 20px;
+}
+
+nav .Productos{
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    margin-right: 50px;
+}
+
+nav .Productos a{
+    color:  #ffff00;
+    border-bottom: 2px solid  #ffff00  ;
+    font-weight: bold;
+    font-size: 20px;
+}
+
+nav .Usuarios{
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    margin-right: 50px;
+}
+
+nav .Usuarios a{
+    color:  #ffff00 ;
+    border-bottom: 2px solid  #ffff00  ;
+    font-weight: bold;
+    font-size: 20px;
+}
+
+nav .Soporte{
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    margin-right: 50px;
+}
+
+nav .Soporte a{
+    color:  #ffff00 ;
+    border-bottom: 2px solid  #ffff00  ;
+    font-weight: bold;
+    font-size: 20px;
+}
+
+nav .Cerrar-sesión{
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    margin-right: 50px;
+}
+
+nav .Cerrar-sesión a{
+    color: #ffff00 ;
+    border-bottom: 2px solid #ffff00 ;
+    font-weight: bold;
+    font-size: 20px;
+} */
+
+/* -----Primera Seccion------ */
+.incons-container {
+    background-color: var(--color-gray-header); 
+    color: var(--color-primary);
+    font-size: 75%;
+    padding: 0 30px;
+}
+
+.incons,
+.incons-container div,
+.incons-container p {
+  margin: 0;
+  padding: 0;
+}
+
+.incons span {
+  color: var(--color-primary);
+}
+
+.incons-container {
+  display: flex;
+  justify-content: space-around;/* Centra horizontalmente */
+  align-items: end;
+}
+
+.incons {
+  background-color: var(--color-black);
+}
+
+.correo-a a{
+    color: var(--color-primary);
+    text-decoration: none;
+    font-style: italic; 
+}
+
+.correo-a a:active {
+    color:var(--color-dark-yellow); 
+}
+
+.incons a {
+    padding-right: 0px;
+    margin-right: 10px;
+    width: 50px;
+}
+
+.incons-container p {
+    padding: 0 0px 0 10px;
+}
+
+.incons-container div,
+.incons-container p {
+  flex: 0 1 200px; /* Toma 200px como base y permite reducirse, pero no crecerá tanto */
+}
+
+.incons {
+    position: relative;
+    right: 30px;
+}
+
+/* ------Segunda Seccion ------- */
+
+nav {
+    display: flex;
+    align-items: center; /* Alinea verticalmente los elementos al centro */
+    justify-content: space-between; /* Espacio entre logo y secciones */
+    padding: 10px 30px;
+    background-color: var(--color-black);
+}
+
+.logo-gladiators {
+    display: flex;
+    align-items: center; /* Alinea verticalmente los elementos al centro */
+}
+
+.logo-gladiators img {
+    width: 40px;
+    height: auto;
+    margin-right: 15px;
+}
+
+.secciones {
+    display: flex;
+    align-items: center; /* Alinea verticalmente los enlaces al centro */
+}
+
+.logo-gladiators{
+    color: var(--color-primary);
+    font-size: 25px;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+.secciones a  {
+    margin-left: 20px;
+    text-decoration: none;
+    color: var(--color-primary);
+}
+
+.iniciarsesion{
+    background-color: #131313;
+}
+
+.iniciarsesion img{
+    display: grid;
+    width: 60%;
+    height: 700px;
+}
+
+

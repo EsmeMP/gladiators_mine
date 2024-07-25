@@ -1,0 +1,111 @@
+
+table {
+    border: 2px solid #EFB034FF;
+    border-collapse: collapse;
+    width: 85%;
+    background-color: #f2f2f2;
+    margin: -100px 100px 0 100px;
+}
+
+/* Centrar la barra de busqueda */
+.barra_busqueda form{
+    margin: 0 33%;
+    padding: 70px;
+    position: center;
+}
+
+/* Texto dentro de la barra de busqueda "Buscar" */
+.textbox input {
+    width: 80%;
+    height: 90%;
+    padding-left: 12px;
+    font-family: Inter;
+    font-size: 14px;
+    font-weight: 300;
+    font-style: italic;
+    border-radius: 4px;
+    border: 2px solid #EFB034FF;
+}
+
+/* Boton de busqueda XD */
+.textbox button {
+    font-family: Inter;
+    font-size: 70%;
+    font-weight: 700;
+    background-color: #EFB034FF;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 5px;
+    cursor: pointer;
+}
+
+/* Propiedad hover de la barra */
+.textbox input:hover {
+    background: #FFFFFFFF;
+    border-color: #FFEB99FF;
+}
+
+/* Propiedad hover del boton */
+.textbox button:hover {
+    background-color: rgb(230, 155, 4);
+}
+
+/* Propiedad focus del input (letra) */
+.textbox input:focus {
+    outline: none;
+    color: #EFB034FF;
+    border: 2px solid #EFB034FF;
+}
+
+.botones button {
+    background-color: #FFEB99;
+    border: none;
+    border-radius: 5px;
+    padding: 10px;
+    width: 70px;
+}
+
+.botones button:nth-child(2) {
+    background-color: rgb(233, 55, 55);
+    color: #fff;
+}
+
+/* Estilos en el encabezado de la tabla */
+thead{
+    background-color: #FFEB99FF;
+    border: 2px solid #EFB034FF;
+}
+
+/* Estilos en el cuerpo de la tabla */
+tbody tr {
+    border-bottom: 1px solid #EFB034FF;
+}
+
+/* Estilos en ambos elementos de la tabla encabezado y cuerpo */
+td, th {
+    padding: 5px;
+    text-align: left;
+}
+
+h1{
+    padding-top: 10px;
+    align-items: center;
+    margin-top: 40px;
+    padding-left: 120px;
+    margin-bottom: 40px;
+}
+.p{
+    position:fixed;
+    top: 60px;
+    left: 400px;
+    width: 487px;
+    height: 54px;
+    background: #FFF399FF;
+    border-radius: 8px 8px 8px 8px;
+    border-width: 1px;
+    border-color: #BCC1CAFF;
+    border-style:solid;
+}
+
+

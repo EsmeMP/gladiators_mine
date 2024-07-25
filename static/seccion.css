@@ -1,0 +1,133 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+main {
+    text-align: center;
+    margin-top: 20px;
+    font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    padding: 30px;
+
+}
+
+.button-container {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.button-ventas {
+    margin: 3%;
+    border-radius: 5%;
+    background-color: #fff;
+    border: 2px solid  #d3d2d2;
+    padding: 20px;
+    width: 1000%;
+    height: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2em;
+    position: relative;
+    left: 19%;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    box-shadow: 10px 10px 30px 10px rgba(0, 0, 0, 0.2); /*Para poner sombra al recuadro */
+}
+
+.button-usuario {
+    margin: 3%;
+    border-radius: 5%;
+    background-color: #fff;
+    border: 2px solid  #d3d2d2;
+    padding: 20px;
+    width: 1000%;
+    height: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2em;
+    position: relative;
+    left: 40%;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    box-shadow: 10px 10px 30px 10px rgba(0, 0, 0, 0.2);/*Para poner sombra al recuadro */
+}
+
+.button-producto {
+    border-radius: 5%;
+    background-color: #fff;
+    border: 2px solid  #d3d2d2;
+    margin: 20%;
+    padding: 30px;
+    width: 1000%;
+    height: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2em;
+    position: relative;
+    right: 19%;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    box-shadow: 10px 10px 30px 10px rgba(0, 0, 0, 0.2);/*Para poner sombra al recuadro */
+}
+.button-producto a, .button-usuario a, .button-ventas a {
+    text-decoration: none;
+}
+
+.button-ventas::before { /*Para el recuadro amarillo del recuadro blanco*/
+    content: ''; /*content va junto con before o after, sirve para agregar elementos especiales, como formas, líneas o figuras, haciendo que estas se pongan al principio si se uso con before, o se pongan al final si se usa after*/
+    border-radius: 7%;
+    background-color: #ffd700;
+    width: 20px;
+    height: 170%;
+    position:relative;
+    right: 36%;
+    top: 0;
+    border-radius: 10%;
+}
+
+.button-usuario::before { /*Para el recuadro amarillo del recuadro blanco*/
+    content: ''; /*content va junto con before o after, sirve para agregar elementos especiales, como formas, líneas o figuras, haciendo que estas se pongan al principio si se uso con before, o se pongan al final si se usa after*/
+    border-radius: 7%;
+    background-color: #ffd700;
+    width: 20px;
+    height: 100%;
+    position: absolute;
+    left: 0;
+    top: 0;
+    border-radius: 10%;
+}
+
+.button-producto::before { /*Para el recuadro amarillo del recuadro blanco*/
+    content: ''; /*content va junto con before o after, sirve para agregar elementos especiales, como formas, líneas o figuras, haciendo que estas se pongan al principio si se uso con before, o se pongan al final si se usa after*/
+    border-radius: 7%;
+    background-color: #ffd700;
+    width: 20px;
+    height: 100%;
+    position: absolute;
+    left: 0;
+    top: 0;
+    border-radius: 10%;
+}
+
+.button-ventas:hover {
+    background-color: #ffd700;
+    color: #fff;
+}
+
+.button-usuario:hover {
+    background-color: #ffd700;
+    color: #fff;
+}
+
+.button-producto:hover {
+    background-color: #ffd700;
+    color: #fff;
+}
+
+

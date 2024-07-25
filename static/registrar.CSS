@@ -1,0 +1,37 @@
+
+.label{
+    display: inline-table;
+    padding-left: 180px;
+    max-width: 10%;
+    padding-top: 10px;
+}
+
+.blog-button{
+    background-color: var(--color-dark-yellow);
+    width: 70px;
+    height: 30px;
+    position: relative;
+    top: 300px;
+    left: 10px;
+}
+
+h1{
+    padding-top: 10px;
+    align-items: center;
+    margin-top: 40px;
+    padding-left: 120px;
+    margin-bottom: 40px;
+}
+
+.p{
+    position:fixed;
+    top: 60px;
+    left: 400px;
+    width: 487px;
+    height: 54px;
+    background: #FFF399FF;
+    border-radius: 8px 8px 8px 8px;
+    border-width: 1px;
+    border-color: #BCC1CAFF;
+    border-style:solid;
+}

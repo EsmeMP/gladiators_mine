@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/static/ventas_css/regVenta.css">
+    <link rel="stylesheet" href="/static/assets/font/flaticon.css">
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+
+    <header>
+        <section class="incons-container">
+            <!-- Aqui van los iconos de las redes sociales, eslogan, correo y horarios -->
+            <div class="incons">
+                <a href="/"><span class="flaticon-001-facebook"></span></a>
+                <a href="/"><span class="flaticon-003-whatsapp"></span></a>
+                <a href="/"><span class="flaticon-011-instagram"></span></a>
+            </div>
+            <div class="inf-p">
+                <p>Más que una tienda, un universo de posibilidades...</p>
+            </div>
+            <div class="correo-a">
+                <a href="Gladiators99zxc@gmail.com">Gladiators99zxc@gmail.com</a>
+            </div>
+            <div class="inf-p">
+                <p>Lun-Vie 10:00a.m--8:00p.m
+                Sab-Dom 9:00a.m--9:00p.m</p>
+            </div>
+        </section>
+        <nav>
+            <!-- Aqui va el logo y nombre de la tienda y el nombre de las secciones -->
+            <section class="logo-gladiators">
+                <a href="index.html"><img src="../static/assets/img/Logotipo_GladiatorsTransparente.png" alt="imagen-logo"></a>
+                <h5>Gladiator's</h5>
+            </section>
+            <section class="secciones">
+                <a href="./index.html">Inicio</a>
+                <a href="./pages/index.html">Ventas</a>
+                <a href="./pages/index.html">Productos</a>
+                <a href="./pages/index.html">Usuarios</a>
+                <a href="./pages/index.html">Soporte</a>
+                <a href="./pages/index.html">Cerrar Sesión</a>
+            </section>
+        </nav>
+    </header>
+    <h1>Ventas</h1>
+    <main class="container">
+        <div class="principal-container">
+            <section class="sec-title">
+                <!-- Info de la seccion y el numero de la venta -->
+                <h5>No.Venta</h5>
+                <h5>0000025</h5>
+            </section>
+            <section class="barra_busqueda">
+                <!-- Aqui se encuentra la barra de busqueda -->
+                <form class="textbox" action="/search" method="GET">
+                    <input type="text" name="buscar" placeholder="Buscar...">
+                    <button type="submit">Buscar</button>
+                    <svg class="icon" width="24" height="24" viewBox="0 0 24 24">
+                    <!-- SVG content -->
+                    </svg>
+                    <svg class="icon" width="24" height="24" viewBox="0 0 24 24">
+                    <!-- SVG content -->
+                    </svg>
+                </form>
+            </section>
+            <!-- Esta de aqui es la tabla -->
+            <section class="table_ventas">
+                {% block content %}
+                <table>
+                    <thead>
+                        <tr class="fila">
+                        <th>Código</th>
+                        <th>Producto</th>
+                        <th>Cantidad</th>
+                        <th>Precio</th>
+                        <th>Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tr>
+                    {% for fila in datos %}
+                    <tr>
+                        <td>{{ fila[0] }}</td>
+                        <td>{{ fila[1] }}</td>
+                        <td>{{ fila[2] }}</td>
+                        <td>{{ fila[3] }}</td>
+                        <td>{{ fila[4] }}</td>
+                        <td>{{ fila[5] }}</td>
+                        <td>{{ fila[6] }}</td>
+                        <td>{{ fila[7] }}</td>
+                    </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            {% endblock %}
+            </section>
+        </div>
+        <!-- Aqui se va a visualizar un tipo ticket del total -->
+        <section class="pre-visualizacion">
+            <div>
+                <!-- Logotipo y numero de venta, -->
+                <img src="../static/assets/img/Logotipo_GladiatorRedondo.png" alt="Logotipo Gladiator's" class="logo-redondo">
+            </div>
+            <div class="parrafo">
+                <p>No. Venta:</p>
+                <p>0000025</p>
+            </div>
+            <div class="container-linea">
+                <!-- aqui va el atendido por: -->
+                <p>Atendido por:</p>
+                <p>Persona Random</p>
+            </div>
+            <div class="efectivo">
+                <!-- Aqui va el efectivo recibido -->
+                <label for="money-received">Efectivo recibido</label>
+                <input type="number" id="money-received" name="money-received" min="0" step="0.01" placeholder="00.00">
+            </div>
+            <div class="container-vuelto">
+                <!-- Aqui va el vuelto , monto, subtotal, total -->
+                <p>Vuelto: $0.00</p>
+                <p>Monto Efectivo: $32.30</p>
+            </div>
+            <div class="container-total">
+                <p>Subtotal: $500.00</p>
+                <p>Total: $500.00</p>
+            </div>
+            <div class="botones">
+                <!-- Aqui estan los botones -->
+            <!-- <button type="submit">Realizar Venta</button>
+            <a href=""><button type="submit">Cancelar Venta</button></a> -->
+                <form action="ruta_al_servidor" method="POST" class="realizar-venta">
+                    <button type="submit">Realizar Venta</button>
+                </form>
+                <a href="ruta_a_la_pagina_de_cancelacion" class="btn">Cancelar Venta</a>
+            </div>
+        </div>
+        </section>
+    </main>
+</body>
+</html>

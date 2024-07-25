@@ -1,0 +1,90 @@
+/* Reseteo CSS básico */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* h1 Ventas */
+h1 {
+    position: relative;
+    top: 30px;
+    left: 40px;
+}
+
+/* Estilos en toda la tabla */
+table {
+    border: 2px solid #EFB034FF;
+    border-collapse: collapse;
+    width: 75%;
+    background-color: #f2f2f2;
+    margin: 60px 100px 0 100px;
+}
+
+/* Estilos en el encabezado de la tabla */
+thead{
+    background-color: #FFEB99FF;
+    border: 2px solid #EFB034FF;
+}
+
+/* Estilos en el cuerpo de la tabla */
+tbody tr {
+    border-bottom: 1px solid #EFB034FF;
+}
+
+/* Estilos en ambos elementos de la tabla encabezado y cuerpo */
+td, th {
+    padding: 5px;
+    text-align: left;
+}
+
+/* .total-container{
+    position: absolute;
+} */
+
+/* .total-container h3 {
+    position: relative;
+    bottom: 0px;
+    left: 400px;
+    width: 100px;
+    height: 35px;
+    background: #FFEB99;
+    border-radius: 4px;
+    box-shadow: 0px 0px 1px #171a1f, 0px 0px 2px #171a1f;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+} */
+
+/* boton de imprimir */
+.descargar-boton {
+    display: block;
+    width: 20%;
+    text-align: center;
+    padding: 10px 20px;
+    background-color: #FFEB99;
+    border: none;
+    border-radius: 4px;
+    box-shadow: 0px 0px 1px #171a1f, 0px 0px 2px #171a1f;
+    text-decoration: none;
+    color: #171a1f;
+}
+
+.descargar-boton:hover {
+    background-color: #171a1f;
+    color: #FFEB99;
+}
+
+/* fecha de los meses */
+.boton-total, .fecha-mes{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    width: 100%;
+    padding-right: 18%;
+}
+
+.fecha-mes{
+    position: relative;
+    top: 50px;
+}

@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Consultar Venta Gladiator's</title>
+    <link rel="stylesheet" href="../../Index_General/style.css">
+    <link rel="stylesheet" type="text/css"   href="../../styles/font/flaticon.css">
+    <link rel="stylesheet" href="../Ventas CSS/regVenta.css">
+    <style>
+        input[disabled] {
+        background-color: #e0e0e0;
+        color: #a0a0a0;
+    }
+    </style>
+</head>
+<body>
+    <header>
+        <section class="incons-container">
+            <!-- Aqui van los iconos de las redes sociales, eslogan, correo y horarios -->
+            <div class="incons">
+                <a href="/"><span class="flaticon-001-facebook"></span></a>
+                <a href="/"><span class="flaticon-003-whatsapp"></span></a>
+                <a href="/"><span class="flaticon-011-instagram"></span></a>
+            </div>
+            <div class="inf-p">
+                <p>Más que una tienda, un universo de posibilidades...</p>
+            </div>
+            <div class="correo-a">
+                <a href="Gladiators99zxc@gmail.com">Gladiators99zxc@gmail.com</a>
+            </div>
+            <div class="inf-p">
+                <p>Lun-Vie 10:00a.m--8:00p.m
+                Sab-Dom 9:00a.m--9:00p.m</p>
+            </div>
+        </section>
+        <nav>
+            <!-- Aqui va el logo y nombre de la tienda y el nombre de las secciones -->
+            <section class="logo-gladiators">
+                <a href="index.html"><img src="../../assets/img/Logotipo_GladiatorsTransparente.png" alt="imagen-logo"></a>
+                <h5>Gladiator's</h5>
+            </section>
+            <section class="secciones">
+                <a href="./pages/index.html">Inicio</a>
+                <a href="./pages/index.html">Ventas</a>
+                <a href="./pages/index.html">Productos</a>
+                <a href="./pages/index.html">Usuarios</a>
+                <a href="./pages/index.html">Soporte</a>
+                <a href="./pages/index.html">Cerrar Sesión</a>
+            </section>
+        </nav>
+    </header>
+    <h1>Consulta de la Venta</h1>
+    <main class="container">
+        <div class="principal-container">
+            <section class="sec-title">
+                <!-- Info de la seccion y el numero de la venta -->
+                <h5>No.Venta</h5>
+                <h5>0000025</h5>
+            </section>
+            <!-- Esta de aqui es la tabla -->
+            <section class="table_ventas">
+                <table>
+                    <thead>
+                        <tr class="fila">
+                        <th>Código</th>
+                        <th>Producto</th>
+                        <th>Cantidad</th>
+                        <th>Precio</th>
+                        <th>Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>64331857219</td>
+                            <td>Gorra Deportiva</td>
+                            <td>1</td>
+                            <td>80.0</td>
+                            <td>80.0</td>
+                        </tr>
+                        <tr>
+                            <td>34618768513</td>
+                            <td>Gafas de Sol</td>
+                            <td>2</td>
+                            <td>50.0</td>
+                            <td>100.0</td>
+                        </tr>
+                        <tr>
+                            <td>3461554645</td>
+                            <td>Mochila Deportiva</td>
+                            <td>1</td>
+                            <td>350.0</td>
+                            <td>350.0</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+        </div>
+        <!-- Aqui se va a visualizar un tipo ticket del total -->
+        <section class="pre-visualizacion">
+            <div>
+                <!-- Logotipo y numero de venta, -->
+                <img src="../../assets/img/Logotipo_GladiatorRedondo.png" alt="Logotipo Gladiator's" class="logo-redondo">
+            </div>
+            <div class="parrafo">
+                <p>No. Venta:</p>
+                <p>0000025</p>
+            </div>
+            <div class="container-linea">
+                <!-- aqui va el atendido por: -->
+                <p>Atendido por:</p>
+                <p>Persona Random</p>
+            </div>
+            <div class="efectivo">
+                <!-- Aqui va el efectivo recibido -->
+                <label for="money-received">Efectivo recibido</label>
+                <input type="number" id="money-received" name="money-received" min="0" step="0.01" placeholder="00.00" disabled>
+            </div>
+            <div class="container-vuelto">
+                <!-- Aqui va el vuelto , monto, subtotal, total -->
+                <p>Vuelto: $0.00</p>
+                <p>Monto Efectivo: $32.30</p>
+            </div>
+            <div class="container-total">
+                <p>Subtotal: $500.00</p>
+                <p>Total: $500.00</p>
+            </div>
+        </section>
+    </main>
+</body>
+</html>

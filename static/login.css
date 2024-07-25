@@ -1,0 +1,94 @@
+/* Reseteo CSS básico */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+/* Sección de login */
+body{
+    background-color: rgb(13, 13, 13);
+}
+
+main {
+    margin:80px  auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 450px;
+    background: url('../../assets/img/imagendelogin.jpg');
+    background-size: cover;
+}
+
+.login-container {
+    width: 30%;
+    height: 90%;
+    max-width: 900%;
+    margin: 80px auto;
+    padding: 50px;
+    opacity: 0.7; /*Para hacer transparente el recuadro */
+    background-color: #1b1b1b;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.login-container form {
+    display: flex;
+    flex-direction: column;
+}
+
+.login-container h2 {
+    text-align: center;
+    color: #f9c405;
+    font-weight: bold;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+.login-container label {
+    margin: 10px 0 5px;
+}
+
+.login-container input[type="email"], .login-container input[type="password"] {
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-weight: bold;
+}
+
+.login-container .remember-me {
+    display: flex;
+    align-items: center;
+    color: white;
+    font-size: 13px;
+    font-family: sans-serif;
+    font-weight: bold;
+}
+
+.login-container .remember-me input {
+    margin-right: 10px;
+}
+
+.login-container .forgot-password {
+    text-align: right;
+    margin-bottom: 10px;
+    color: white;
+    font-weight: bold;
+    font-size: 12px;
+    text-decoration: none;
+    font-family:sans-serif;
+}
+
+.login-container button {
+    padding: 10px;
+    background-color: #fab507;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.login-container button:hover {
+    border: 1px solid var(--color-white);
+    color: var(--color-white);
+    background-color: #e7b600;
+}
+

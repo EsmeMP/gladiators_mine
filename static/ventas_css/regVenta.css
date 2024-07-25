@@ -1,0 +1,359 @@
+/* Reseteo CSS básico */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* h1 Ventas */
+h1 {
+    position: relative;
+    top: 30px;
+    left: 40px;
+}
+
+/* Contenedor de los dos contenedores */
+.container {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 50px;
+    gap: 20px; /* Ajusta el espacio entre los elementos */
+}
+
+/* Contenedor principal (tabla) */
+.principal-container{
+    width: 85%;
+    height: auto;
+    border-radius: 8px;
+    box-shadow: 0px 0px 1px #171a1f, 0px 0px 2px #171a1f;
+    padding: 20px;
+    margin-right: 20px;
+    position: relative
+}
+
+/* Contenedor  de ventas, no.Venta, y el id */
+.sec-title{
+    padding: 15px 30px;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    position: relative;
+    width: auto;
+}
+
+/* NoVenta y Id de la venta */
+.sec-title h5 {
+    left: 600px;
+    width: 130px;
+    height: 40px;
+    font-family: Epilogue;
+    font-size: 20px;
+    line-height: 42px;
+    font-weight: 700;
+    color: #171A1FFF;
+}
+
+/* Id de la venta (numero) */
+.sec-title h5:nth-child(2) {
+    width: 90px;
+    height: 40px;
+    text-align: center;
+    font-family: Inter;
+    font-size: 14px;
+    font-weight: 600;
+    background: #FFEB99FF;
+    border-radius: 4px;
+}
+
+.sec-title h5:nth-child(1) {
+    position: relative;
+    left: 40px;
+}
+/* Centrar la barra de busqueda */
+.barra_busqueda form{
+    margin: 0 10%;
+}
+
+/* Texto dentro de la barra de busqueda "Buscar" */
+.textbox input {
+    width: 80%;
+    height: 90%;
+    padding-left: 12px;
+    font-family: Inter;
+    font-size: 14px;
+    font-weight: 300;
+    font-style: italic;
+    border-radius: 4px;
+    border: 2px solid #EFB034FF;
+}
+
+/* Boton de busqueda XD */
+.textbox button {
+    font-family: Inter;
+    font-size: 70%;
+    font-weight: 700;
+    background-color: #EFB034FF;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 5px;
+    cursor: pointer;
+}
+
+/* Propiedad hover de la barra */
+.textbox input:hover {
+    background: #FFFFFFFF;
+    border-color: #FFEB99FF;
+}
+
+/* Propiedad hover del boton */
+.textbox button:hover {
+    background-color: rgb(24, 19, 9);
+    color: #EFB034FF;
+}
+
+/* Propiedad focus del input (letra) */
+.textbox input:focus {
+    outline: none;
+    color: rgb(0, 0, 0);
+    border: 2px solid #FFEB99;
+}
+
+/* Estilos en toda la tabla */
+table {
+    border: 2px solid #EFB034FF;
+    border-collapse: collapse;
+    width: 90%;
+    background-color: #f2f2f2;
+    margin: 30px auto;
+}
+
+/* Estilos en el encabezado de la tabla */
+thead{
+    background-color: #FFEB99FF;
+    border: 2px solid #EFB034FF;
+}
+
+/* Estilos en el cuerpo de la tabla */
+tbody tr {
+    border-bottom: 1px solid #EFB034FF;
+}
+
+/* Estilos en ambos elementos de la tabla encabezado y cuerpo */
+td, th {
+    padding: 5px;
+    text-align: left;
+}
+
+/* Contenedor de  visualizacion del ticket */
+.pre-visualizacion {
+    width: 305px;
+    height: 390px;
+    background: #F8F9FAFF;
+    border-radius: 4px;
+    box-shadow: 0px 0px 1px #171a1f, 0px 0px 2px #171a1f;
+    position: relative;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+/* Logo redondo del ticket */
+.logo-redondo {
+    width: 40px;
+    height: auto;
+}
+
+/* Contenedor amarillo del numero de la venta */
+.parrafo {
+    position: absolute;
+    top: 25px;
+    right: 20px;
+    width: 140px;
+    height: 35px;
+    background: #FFEB99;
+    border-radius: 4px;
+    box-shadow: 0px 0px 1px #171a1f, 0px 0px 2px #171a1f;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.parrafo :nth-child(2){
+    font-weight: bold;
+    margin: 0px 5px;
+}
+
+/* Contenedor de Parrafo atendido por: y el nombre de la persona*/
+.container-linea {
+    display: flex;
+    align-items: center;
+}
+
+.container-linea p {
+    margin: 30px 0 10px 5px;
+}
+
+.container-linea p:nth-child(2){
+    font-style: italic;
+    font-weight: 600;
+}
+
+/* Propiedad para quitar las flechas del input */
+input[type=number]::-webkit-outer-spin-button,
+input[type=number]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+input[type=number] {
+    -moz-appearance: textfield;
+}
+
+/* Estilo a input */
+input[type=number] {
+    text-align: center;
+    margin: 10px 0 10px 5px
+}
+
+/* Palabra efectivo recibido */
+.efectivo label {
+    font-weight: bold;
+    margin: 10px 0 10px 5px;
+    font-family: Inter;
+    font-size: 14px;
+    line-height: 23px;
+    font-weight: 700;
+}
+
+/* Cuadro input para ingresar la cantidad de dinero */
+.efectivo input {
+    width: 257px;
+    height: 36px;
+    padding-left: 20px;
+    padding-right: 20px;
+    font-family: Inter;
+    font-size: 14px;
+    line-height: 23px;
+    font-weight: 400;
+    background: rgb(249, 252, 255);
+    border-radius: 4px;
+    border-width: 1px;
+    outline: none;
+    border: 2px solid #EFB034FF;
+}
+
+.efectivo input:hover {
+    background: #FFFFFFFF;
+    border-color: #FFEB99FF;
+}
+
+.efectivo input:focus {
+    outline: none;
+    color: #EFB034FF;
+    border: 2px solid #EFB034FF;
+}
+
+/* Contendor vuelto y mont */
+.container-vuelto p{
+    margin: 10px 10px 10px 5px;
+    font-style:italic
+}
+
+/* Elemento Monto Efectivo */
+.container-vuelto p:nth-child(2){
+    font-weight: bold;
+}
+
+/* Contenedor de subtotal y total */
+.container-total p {
+    margin: 10px 10px 10px 5px;
+
+}
+
+/* Elemento Total */
+.container-total p:nth-child(2) {
+    margin: 20px 10px 10px 5px;
+    font-weight: bold;
+    font-size: 2rem;
+    font-family: Inter;
+    text-align: center;
+}
+
+/* Botones de realizar y cancelar */
+.botones {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+    margin-top: auto;
+    position: relative;
+    top: 50px;
+    /* left: 10px; */
+}
+
+.realizar-venta button {
+    background-color: #FFEB99;
+    border: none;
+    border-radius: 5px;
+    padding: 6px;
+    width: 150px;
+    font-size: 15px;
+    cursor: pointer;
+}
+
+.botones a {
+    background-color: rgb(233, 55, 55);
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    padding: 6px;
+    width: 150px;
+    font-size: 15px;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.botones button:hover {
+    background-color: rgb(24, 19, 9);
+    color: #FFEB99;
+}
+
+.botones a:hover {
+    background-color: rgb(24, 19, 9);
+    color: #FFEB99;
+}
+/* Los dos contenedores principales responsivos */
+@media (max-width: 800px) {
+    .container {
+        flex-direction: column; /* Cambia a columna en pantallas más pequeñas */
+        align-items: center; /* Centra los elementos */
+    }
+    .principal-container, .pre-visualizacion {
+        width: 100%; /* Ajusta el ancho al 100% en pantallas pequeñas */
+    }
+    .pre-visualizacion {
+        margin-top: 20px; /* Añade un margen superior para separar los elementos */
+    }
+}
+
+@media (max-width: 768px) {
+    .pre-visualizacion {
+        width: 100%; /* Ajusta el ancho al 100% en pantallas pequeñas */
+        max-width: 305px; /* Límite máximo de ancho para mantener el diseño */
+        margin: 0 auto; /* Centra horizontalmente en pantallas pequeñas */
+    }
+}
+
+/* Amarillo Pastel: #FFFFCC
+Amarillo Normal: #FFD700
+Mostaza: #D4AF37
+Amarillo Claro: #FFFF99
+Amarillo Dorado: #FFDF00
+Amarillo Mostaza: #FFDB58
+Amarillo Ocre: #CC7722
+Amarillo Ámbar: #FFBF00
+Amarillo Dorado Oscuro: #B8860B
+Amarillo Maíz: #FBEC5D */
