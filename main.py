@@ -1,5 +1,10 @@
 import psycopg2
-from flask import Flask, redirect, render_template
+from flask import Flask, request, redirect, render_template, url_for
+# from flask_bootstrap import Bootstrap
+# from flask_wtf import FlaskForm
+# from wtforms.fields import PasswordField, StringField, SubmitField
+import db
+# from forms import LibrosForm
 
 
 app = Flask(__name__)
@@ -10,47 +15,25 @@ app = Flask(__name__)
 
 # app.run (host = '0.0.0.0', port=3000)
 
-@app.route('/venta')
+@app.route('/regVenta')
 def venta():
-    # Conectar con la base de datos
-    conexion = psycopg2.connect(
-        database="database_gladiators",
-        user="first_gladiator",
-        password="gladiator1st",
-        host="localhost",
-        port="5432"
-    )
+    conn =db.conectar()
     # crear un cursor (objeto para recorrer las tablas)
-    cursor = conexion.cursor()
+    cursor = conn.cursor()
     # ejecutar una consulta en postgres
     cursor.execute('''SELECT * FROM venta''')
     #recuperar la informacion
     datos = cursor.fetchall()
     #cerrar cursos y conexion a la base de datos
     cursor.close()
-    conexion.close()
-    return render_template('regVenta.html', datos=datos)  
+    db.desconectar(conn)
+    return render_template('regVenta.html', datos=datos)
 
-# @app.route('/consultarUsuario')
-# def consultarUsuario():
-#     conexion = psycopg2.connect(
-#         database="database_gladiators",
-#         user="first_gladiator",
-#         password="gladiator1st",
-#         host="localhost",
-#         port="5432"
-#     )
+@app.route('/consultar_usuario')
+def consultar_usuario():
+    return render_template('consultarUsuario.html')
 
-# if __name__ == "__main__":
-#     app.run(host='0.0.0.0', port=3000)
+@app.route('/registrar_usuario')
+def registrar_usuario():
+    return render_template('regUsuario.html')
 
-# @app.route('/consultarUsuario')
-# def consultarUsuario():
-#     return render_template('consultarUsuario.html', datos=datos)
-
-# @app.route('/productos')
-# def productos():
-#     return render_template('pages/productos.html')
-
-# if __name__ == '__main__':
-#     app.run(debug=True)
