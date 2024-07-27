@@ -4,9 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Consultar Usuarios Gladiator's</title>
-    <link rel="stylesheet" href="../../Index_General/style.css">
-    <link rel="stylesheet" type="text/css"   href="../../styles/font/flaticon.css">
-    <link rel="stylesheet" href="../usuarioProducto CSS/consulta_general.css">
+    <link rel="stylesheet" href="/static/consulta_general.css">
+    <link rel="stylesheet" href="/static/assets/font/flaticon.css">
+    <link rel="stylesheet" href="/static/style.css">
 </head>
 <body>
     <header>
@@ -31,7 +31,7 @@
         <nav>
             <!-- Aqui va el logo y nombre de la tienda y el nombre de las secciones -->
             <section class="logo-gladiators">
-                <a href="index.html"><img src="../../assets/img/Logotipo_GladiatorsTransparente.png" alt="imagen-logo"></a>
+                <a href="index.html"><img src="../static/assets/img/Logotipo_GladiatorsTransparente.png" alt="imagen-logo"></a>
                 <h5>Gladiator's</h5>
             </section>
             <section class="secciones">
@@ -44,7 +44,7 @@
             </section>
         </nav>
     </header>
-    <h1>Consultar Usuario</h1>
+    <h1 class="p">Consultar Usuario</h1>
     <br><br>
     <section class="barra_busqueda">
         <!-- Aqui se encuentra la barra de busqueda -->
@@ -60,46 +60,53 @@
         </form>
     </section>
     <br><br>
-        <div>
-            <section class="table_consulta">
-                <table>
-                    <thead>
-                        <tr class="fila">
+    <div>
+        <section class="table_consulta">
+            <table>
+                <thead>
+                    <tr class="fila">
                         <th>Id</th>
                         <th>Nombre</th>
                         <th>Apellido</th>
                         <th>Nombre de Usuario</th>
                         <th>Tipo de Usuario</th>
-                        <th> </th>
-                        <th> </th>
-                        <th> </th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% if datos %}
+                        {% for usuario in datos %}
+                            {% if usuario[0] is integer %}
+                                <tr>
+                                    <td>{{ usuario[0] }}</td>
+                                    <td>{{ usuario[1] }}</td>
+                                    <td>{{ usuario[2] }}</td>
+                                    <td>{{ usuario[3] }}</td>
+                                    <td>{{ usuario[4] }}</td>
+                                    <td>
+                                        <form action="{{ url_for('update1_usuario', id_usuario=usuario[0]) }}" method="POST" style="display:inline;">
+                                            <button type="submit" class="boton-2">Editar</button>
+                                        </form>
+                                        <form action="{{ url_for('delete_usuario', id_usuario=usuario[0]) }}" method="POST" style="display:inline;">
+                                            <button type="submit" class="boton-2">Eliminar</button>
+                                        </form>
+                                        <a href="../templates/consultarProductos.html" class="boton-2">Ver</a>
+                                    </td>
+                                </tr>
+                            {% else %}
+                                <tr>
+                                    <td colspan="6">ID inválido: {{ usuario[0] }}</td>
+                                </tr>
+                            {% endif %}
+                        {% endfor %}
+                    {% else %}
+                        <tr>
+                            <td colspan="6">No se encontraron usuarios.</td>
                         </tr>
-                    </thead>
-                    <tbody>
-                        <tr class="botones">
-                            <td>3461554645</td>
-                            <td>Griselda</td>
-                            <td>Piña Cortez</td>
-                            <td>Gris</td>
-                            <td>Administrador</td>
-                            <td><button>Editar</button></td>
-                            <td><button>Eliminar</button></td>
-                            <td><button>Ver</button></td>
-                        </tr>
-                        <tr class="botones">
-                            <td>3461554645</td>
-                            <td>Larisa</td>
-                            <td>Piña Cortez</td>
-                            <td>Gris</td>
-                            <td>Cajero</td>
-                            <td><button>Editar</button></td>
-                            <td><button>Eliminar</button></td>
-                            <td><button>Ver</button></td>
-                        </tr>
-                    </tbody>
-                </table>
-
-            </section>
-        </div>
+                    {% endif %}
+                </tbody>
+            </table>
+        </section>
+    </div>
 </body>
 </html>
