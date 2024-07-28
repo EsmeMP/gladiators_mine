@@ -35,7 +35,7 @@
                 <h5>Gladiator's</h5>
             </section>
             <section class="secciones">
-                <a href="{{ url_for('consultar_usuario') }}">Usuarios</a>
+                <a href="{{ url_for('consultar_usuarios') }}">Usuarios</a>
                 <a href="./pages/index.html">Inicio</a>
                 <a href="./pages/index.html">Ventas</a>
                 <a href="./pages/index.html">Productos</a>
@@ -45,23 +45,22 @@
             </section>
         </nav>
     </header>
-    <h1 class="h">Informacion del Usuario</h1>
     <div class="gbox"></div>
-    <p class="text">Perfil</p>
-    <p class="button-1">Editar</p>
-    <p class="button-2">Regresar</p>
-    <hr class="line">
-    <p class="informacion">ID:</p>
-    <p class="informacion2">Nombre:</p>
-    <p class="informacion3">Apellido Paterno:</p>
-    <p class="informacion4">Apellido Materno:</p>
-    <p class="informacion5">Domicilio:</p> <br>
-    <p class="informacion6">Número de teléfono:</p></p><br>
-    <p class="informacion7"> Nombre de Usuario:</p><br>
-    <p class="informacion8">CURP:</p><br>
-    <p class="informacion9">Tipo de Usuario:</p><br>
-    <p class="informacion10">Fecha de contratación:</p>
-    <p class="informacion11">Contraseña:</p>
-    <p class="informacion12">Correo electronico:</p>
+<p class="text">Perfil</p>
+<a href="{{ url_for('update1_usuario', id_usuario=usuario[0]) }}" class="button-1">Editar</a>
+<a href="{{ url_for('consultar_usuarios') }}" class="button-2">Regresar</a>
+<hr class="line">
+<p class="informacion">ID: {{ usuario[0] }}</p>
+<p class="informacion2">Nombre: {{ usuario[1] }}</p>
+<p class="informacion3">Apellido Paterno: {{ usuario[2] }}</p>
+<p class="informacion4">Apellido Materno: {{ usuario[3] }}</p>
+<p class="informacion5">Domicilio: {{ usuario[6] }}</p>
+<p class="informacion6">Número de teléfono: {{ usuario[7] }}</p>
+<p class="informacion7">Nombre de Usuario: {{ usuario[4] }}</p>
+<p class="informacion8">CURP: {{ usuario[8] }}</p>
+<p class="informacion9">Tipo de Usuario: {{ usuario[5] }}</p>
+<p class="informacion10">Fecha de contratación: {{ usuario[9] }}</p>
+<p class="informacion11">Contraseña: {{ usuario[10] }}</p>
+<p class="informacion12">Correo electrónico: {{ usuario[11] }}</p>
 </body>
 </html>

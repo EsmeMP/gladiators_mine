@@ -1,4 +1,3 @@
-
 table {
     border: 2px solid #EFB034FF;
     border-collapse: collapse;
@@ -107,5 +106,28 @@ h1{
     border-color: #BCC1CAFF;
     border-style:solid;
 }
+.boton-2 {
+    background-color: #FFF399FF; /* Color de fondo verde */
+    border: none; /* Sin borde */
+    color: rgb(28, 24, 24); /* Color del texto */
+    padding: 10px 20px; /* Espaciado interno */
+    text-align: center; /* Alineación del texto */
+    text-decoration: none; /* Sin subrayado */
+    display: inline-block; /* Mostrar en línea */
+    font-size: 16px; /* Tamaño de la fuente */
+    margin: 4px 2px; /* Espaciado alrededor del botón */
+    cursor: pointer; /* Cursor de mano al pasar sobre el botón */
+    border-radius: 5px; /* Bordes redondeados */
+    transition: background-color 0.3s ease; /* Transición suave para el cambio de color */
+}
+
+.boton-2:hover {
+    background-color: #FFF399FF; /* Color de fondo al pasar el ratón */
+}
+
+.boton-2:active {
+    background-color: #FFF399FF; /* Color de fondo al hacer clic */
+}
+
 
 

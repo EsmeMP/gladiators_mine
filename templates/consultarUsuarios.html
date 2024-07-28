@@ -67,7 +67,7 @@
                     <tr class="fila">
                         <th>Id</th>
                         <th>Nombre</th>
-                        <th>Apellido</th>
+                        <th>Apellidos</th>
                         <th>Nombre de Usuario</th>
                         <th>Tipo de Usuario</th>
                         <th>Acciones</th>
@@ -75,22 +75,22 @@
                 </thead>
                 <tbody>
                     {% if datos %}
-                        {% for usuario in datos %}
-                            {% if usuario[0] is integer %}
+                        {% for fila in datos %}
+                            {% if fila[0] is integer %}
                                 <tr>
-                                    <td>{{ usuario[0] }}</td>
-                                    <td>{{ usuario[1] }}</td>
-                                    <td>{{ usuario[2] }}</td>
-                                    <td>{{ usuario[3] }}</td>
-                                    <td>{{ usuario[4] }}</td>
+                                    <td>{{ fila[0] }}</td>
+                                    <td>{{ fila[1] }}</td>
+                                    <td>{{ fila[2] }}</td>
+                                    <td>{{ fila[3] }}</td>
+                                    <td>{{ fila[4] }}</td>
                                     <td>
-                                        <form action="{{ url_for('update1_usuario', id_usuario=usuario[0]) }}" method="POST" style="display:inline;">
+                                        <form action="{{ url_for('update1_usuario', id_usuario=fila[0]) }}" method="POST" style="display:inline;">
                                             <button type="submit" class="boton-2">Editar</button>
                                         </form>
-                                        <form action="{{ url_for('delete_usuario', id_usuario=usuario[0]) }}" method="POST" style="display:inline;">
+                                        <form action="{{ url_for('delete_usuario', id_usuario=fila[0]) }}" method="POST" style="display:inline;">
                                             <button type="submit" class="boton-2">Eliminar</button>
                                         </form>
-                                        <a href="../templates/consultarProductos.html" class="boton-2">Ver</a>
+                                        <a href="{{ url_for('consultar_usuario', id_usuario=fila[0]) }}" class="boton-2">Ver</a>
                                     </td>
                                 </tr>
                             {% else %}

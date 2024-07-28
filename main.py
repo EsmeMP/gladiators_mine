@@ -29,9 +29,35 @@ def venta():
     db.desconectar(conn)
     return render_template('regVenta.html', datos=datos)
 
-@app.route('/consultar_usuario')
-def consultar_usuario():
-    return render_template('consultarUsuario.html')
+# @app.route('/consultar_usuario')
+# def consultar_usuario():
+#     return render_template('consultarUsuario.html')
+
+@app.route('/consultar_usuario/<int:id_usuario>')
+def consultar_usuario(id_usuario):
+    conn = db.conectar()
+    cursor = conn.cursor()
+    
+    # Obtener información general del usuario desde la vista `nombre_usuario`
+    cursor.execute('''SELECT * FROM nombre_usuario
+                      WHERE "ID" = %s''', (id_usuario,))
+    usuario_general = cursor.fetchone()
+    
+    # Obtener información específica del usuario desde la vista `info_especifica_user`
+    cursor.execute('''SELECT * FROM info_especifica_user
+                      WHERE "ID" = %s''', (id_usuario,))
+    usuario_especifico = cursor.fetchone()
+    
+    cursor.close()
+    db.desconectar(conn)
+    
+    # Combinar la información general y específica en un solo diccionario
+    if usuario_general and usuario_especifico:
+        usuario = usuario_general + usuario_especifico
+    else:
+        usuario = None
+    
+    return render_template('consultarUsuario.html', usuario=usuario)
 
 @app.route('/consultar_usuarios')
 def consultar_usuarios():
@@ -39,13 +65,13 @@ def consultar_usuarios():
     # crear un cursor (objeto para recorrer las tablas)
     cursor = conn.cursor()
     # ejecutar una consulta en postgres
-    cursor.execute('''SELECT * FROM usuario''')
+    cursor.execute('''SELECT * FROM consulta_general''')
     #recuperar la informacion
     datos = cursor.fetchall()
     #cerrar cursos y conexion a la base de datos
     cursor.close()
     db.desconectar(conn)
-    return render_template('consultarUsuarios.html')
+    return render_template('consultarUsuarios.html', datos=datos)
 
 
 @app.route('/registrar_usuario')
@@ -165,4 +191,5 @@ def update2_usuario(id_usuario):
     cursor.close()
     db.desconectar(conn)
     return redirect(url_for('index'))
+
 
