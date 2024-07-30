@@ -5,6 +5,8 @@ from flask import Flask, request, redirect, render_template, jsonify, url_for
 # from wtforms.fields import PasswordField, StringField, SubmitField
 import db
 # from forms import LibrosForm
+import bcrypt
+
 
 
 app = Flask(__name__)
@@ -47,7 +49,7 @@ def consultar_usuario(id_usuario):
     cursor.execute('''SELECT * FROM info_especifica_user
                       WHERE "ID" = %s''', (id_usuario,))
     usuario_especifico = cursor.fetchone()
-    
+
     cursor.close()
     db.desconectar(conn)
     
@@ -149,19 +151,32 @@ def editar_usuario():
 
 # CODIGO PIÑA
 #eliminar usuario
-@app.route('/delete_usuario/<int:id_usuario>', methods= ['POST'])
+@app.route('/delete_usuario/<int:id_usuario>', methods=['POST'])
 def delete_usuario(id_usuario):
-    conn =db.conectar()
+    conn = db.conectar()
+    cursor = conn.cursor()
+    
+    try:
+        # Obtener el fk_info_empleado antes de eliminar el usuario
+        cursor.execute('''SELECT fk_info_empleado FROM usuario WHERE id_usuario = %s''', (id_usuario,))
+        fk_info_empleado = cursor.fetchone()[0]
+        
+        # Borrar el usuario de la tabla usuario
+        cursor.execute('''DELETE FROM usuario WHERE id_usuario = %s''', (id_usuario,))
+        
+        # Borrar el registro correspondiente en la tabla info_empleado
+        cursor.execute('''DELETE FROM info_empleado WHERE id_empleado = %s''', (fk_info_empleado,))
+        
+        conn.commit()
+    except Exception as e:
+        conn.rollback()
+        print(f"Error al eliminar usuario: {e}")
+    finally:
+        cursor.close()
+        db.desconectar(conn)
+    
+    return redirect(url_for('consultar_usuarios'))
 
-    #crear un cursor (objeto para recorrer las tablas)#
-    cursor=conn.cursor()
-    # Borrar el registro con el id_seleccionado
-    cursor.execute('''DELETE FROM usuario' WHERE id_usuario= %s''',
-                   (id_usuario,))
-    conn.commit()
-    cursor.close()
-    db.desconectar(conn)
-    return redirect(url_for('index'))
 
 #TE MANDA A EDITAR
 @app.route('/update1_usuario/<int:id_usuario>', methods= ['POST'])
