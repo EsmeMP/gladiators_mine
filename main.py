@@ -6,10 +6,16 @@ from flask import Flask, request, redirect, render_template, jsonify, url_for
 import db
 # from forms import LibrosForm
 import bcrypt
+import os
+from werkzeug.utils import secure_filename
+
 
 
 
 app = Flask(__name__)
+
+UPLOAD_FOLDER = 'static/assets/img'
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 @app.route('/')
 # def hello():
@@ -99,6 +105,15 @@ def registrar_usuario_post():
     # Convertir rol a booleano
     rol_booleano = True if rol == 'administrador' else False
 
+    file = request.files.get('imagen')
+    if file and file.filename != '':
+        filename = secure_filename(file.filename)
+        file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+        ruta_imagen = os.path.join('assets', 'img', filename).replace('\\', '/')
+    else:
+        ruta_imagen = 'assets/img/imagen_defecto.jpeg'
+
+
     conn = db.conectar()
     cur = conn.cursor()
     
@@ -108,10 +123,10 @@ def registrar_usuario_post():
         
         # Inserta en info_empleado y obtiene el ID generado
         cur.execute("""
-            INSERT INTO info_empleado (nombre, a_paterno, a_materno, domicilio, numero_telefono, curp, fecha_contratacion, correo_electronico)
-            VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
+            INSERT INTO info_empleado (nombre, a_paterno, a_materno, domicilio, numero_telefono, curp, fecha_contratacion, correo_electronico, imagen)
+            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)
             RETURNING id_empleado;
-        """, (nombre, a_paterno, a_materno, domicilio, numero_telefono, curp, fecha_contratacion, correo_electronico))
+        """, (nombre, a_paterno, a_materno, domicilio, numero_telefono, curp, fecha_contratacion, correo_electronico, ruta_imagen))
         
         resultado = cur.fetchone()
         if resultado:
@@ -194,17 +209,32 @@ def update1_usuario(id_usuario):
 
 
 #TE MANDA A ELIMINAR
-@app.route('/update2_usuario/<int:id_usuario>', methods= ['POST'])
-def update2_usuario(id_usuario):
-    nombre = request.form['nombre']
-    conn =db.conectar()
+# @app.route('/update2_usuario/<int:id_usuario>', methods= ['POST'])
+# def update2_usuario(id_usuario):
+#     nombre = request.form['nombre']
+#     conn =db.conectar()
 
-    #crear un cursor (objeto para recorrer las tablas)#
-    cursor=conn.cursor()
-    cursor.execute('''UPDATE usuario SET username=%s WHERE id_usuario=%s''', (nombre, id_usuario,))
-    conn.commit()
+#     #crear un cursor (objeto para recorrer las tablas)#
+#     cursor=conn.cursor()
+#     cursor.execute('''UPDATE usuario SET username=%s WHERE id_usuario=%s''', (nombre, id_usuario,))
+#     conn.commit()
+#     cursor.close()
+#     db.desconectar(conn)
+#     return redirect(url_for('index'))
+
+
+# buscar usuario
+@app.route('/buscar_usuario', methods=['POST'])
+def buscar_usuario():
+    buscar_texto = request.form['buscar']
+    #conectar con la BD
+    conn= db.conectar()
+    #crear un cursor (objeto para recorrer las tablas)
+    cursor= conn.cursor()
+    cursor.execute('''SELECT * FROM usuario WHERE username ILIKE %s OR id_usuario::TEXT ILIKE %s''', (f'%{buscar_texto}%', f'%{buscar_texto}%'))
+    datos = cursor.fetchall()
     cursor.close()
     db.desconectar(conn)
-    return redirect(url_for('index'))
+    return render_template('consultarUsuarios.html', datos=datos)
 
 

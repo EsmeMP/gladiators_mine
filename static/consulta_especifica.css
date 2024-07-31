@@ -458,3 +458,17 @@ h1{
     padding-left: 120px;
     margin-bottom: 40px;
 }
+
+.informacion, .informacion2, .informacion3, .informacion4, .informacion5, .informacion6,.informacion7, .informacion8, .informacion9, .informacion10, .informacion11, .informacion12 {
+    /* content: "";
+    position: absolute;
+    top: 200px;
+    left: 461px;
+    width: 300px;
+    height: 60px; */
+    background: linear-gradient(to right, #FFEA4CFF 10%, #FFFFFF 10%);
+    border-radius: 8px;
+    border-width: 1px;
+    border-color: #BCC1CAFF;
+    border-style: solid;
+}

@@ -46,7 +46,7 @@
     </header>
     <h1>Registrar Usuario</h1>
     <main>
-        <form action="{{ url_for('registrar_usuario_post') }}" method="POST">
+        <form action="{{ url_for('registrar_usuario_post') }}" method="POST" enctype="multipart/form-data">
         <section class="label">
             <label for="nombre">Nombre:</label>
             <input type="text" id="nombre" name="nombre" required>
@@ -83,6 +83,8 @@
             <br><br>
             <label for="contraseña">Contraseña:</label>
             <input type="password" id="contraseña" name="contraseña" required>
+            <label for="imagen">Imagen:</label>
+            <input type="file" id="imagen" name="imagen">
             <br><br>
         </section>
         <button type="submit">Registrar</button>

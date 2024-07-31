@@ -48,14 +48,15 @@
     <br><br>
     <section class="barra_busqueda">
         <!-- Aqui se encuentra la barra de busqueda -->
-        <form class="textbox" action="/search" method="GET">
-            <input type="text" name="buscar" placeholder="Buscar...">
-            <button type="submit">Buscar</button>
+        <form class="textbox" method="POST" action="{{ url_for('buscar_usuario') }}">
+            <input class="form-control mr-sm-2" type="text" name="buscar" placeholder="Buscar por nombre o ID" aria-label="Buscar">
+            <button class="btn my-2 my-sm-0" type="submit">Buscar</button>
+        </form>
             <svg class="icon" width="24" height="24" viewBox="0 0 24 24">
-            <!-- SVG content -->
+            <!-- !SVG content  -->
             </svg>
             <svg class="icon" width="24" height="24" viewBox="0 0 24 24">
-            <!-- SVG content -->
+            <!-- SVG content  -->
             </svg>
         </form>
     </section>
