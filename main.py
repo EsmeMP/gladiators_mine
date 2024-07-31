@@ -158,9 +158,97 @@ def registrar_usuario_post():
 
 
 
-@app.route('/editar_usuario')
-def editar_usuario():
-    return render_template('editarUsuario.html')
+# @app.route('/editar_usuario')
+# def editar_usuario():
+#     return render_template('editarUsuario.html')
+
+
+
+
+
+
+# EDICION
+@app.route('/update1_usuario/<int:id_usuario>', methods=['GET'])
+def update1_usuario(id_usuario):
+    conn = db.conectar()
+    cursor = conn.cursor()
+
+    # Utiliza la vista 'edicion_user' para obtener los datos necesarios
+    cursor.execute('''SELECT * FROM info_especifica_user 
+                   WHERE "ID" = %s''', (id_usuario,))
+    
+    datos = cursor.fetchone()
+    cursor.close()
+    db.desconectar(conn)
+    
+    return render_template('editarUsuario.html', datos=datos)
+
+@app.route('/update_usuario_post/<int:id_usuario>', methods=['POST'])
+def update_usuario_post(id_usuario):
+    nombre = request.form['nombre']
+    a_paterno = request.form['apellido_paterno']
+    a_materno = request.form['apellido_materno']
+    domicilio = request.form['domicilio']
+    numero_telefono = request.form['numero_telefonico']
+    curp = request.form['curp']
+    fecha_contratacion = request.form['date']
+    correo_electronico = request.form['correo_electronico']
+    username = request.form['nombre_usuario']
+    password = request.form['contraseña']
+    rol = request.form['tipos_de_usuario']
+    rol_booleano = True if rol == 'administrador' else False
+
+    conn = db.conectar()
+    cur = conn.cursor()
+
+    try:
+        # Manejar la subida del archivo
+        if 'imagen' in request.files:
+            file = request.files['imagen']
+            if file and file.filename != '':
+                filename = secure_filename(file.filename)
+                file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+                ruta_imagen = os.path.join('assets', 'img', filename).replace('\\', '/')
+                cur.execute('''
+                    UPDATE info_empleado
+                    SET nombre=%s, a_paterno=%s, a_materno=%s, domicilio=%s, numero_telefono=%s, curp=%s, fecha_contratacion=%s, correo_electronico=%s, imagen=%s
+                    FROM usuario
+                    WHERE info_empleado.id_empleado = usuario.fk_info_empleado
+                    AND usuario.id_usuario = %s
+                ''', (nombre, a_paterno, a_materno, domicilio, numero_telefono, curp, fecha_contratacion, correo_electronico, ruta_imagen, id_usuario))
+            else:
+                cur.execute('''
+                    UPDATE info_empleado
+                    SET nombre=%s, a_paterno=%s, a_materno=%s, domicilio=%s, numero_telefono=%s, curp=%s, fecha_contratacion=%s, correo_electronico=%s
+                    FROM usuario
+                    WHERE info_empleado.id_empleado = usuario.fk_info_empleado
+                    AND usuario.id_usuario = %s
+                ''', (nombre, a_paterno, a_materno, domicilio, numero_telefono, curp, fecha_contratacion, correo_electronico, id_usuario))
+        else:
+            cur.execute('''
+                UPDATE info_empleado
+                SET nombre=%s, a_paterno=%s, a_materno=%s, domicilio=%s, numero_telefono=%s, curp=%s, fecha_contratacion=%s, correo_electronico=%s
+                FROM usuario
+                WHERE info_empleado.id_empleado = usuario.fk_info_empleado
+                AND usuario.id_usuario = %s
+            ''', (nombre, a_paterno, a_materno, domicilio, numero_telefono, curp, fecha_contratacion, correo_electronico, id_usuario))
+        
+        cur.execute('''
+            UPDATE usuario
+            SET username=%s, password=%s, rol=%s
+            WHERE id_usuario=%s
+        ''', (username, password, rol_booleano, id_usuario))
+
+        conn.commit()
+        return redirect(url_for('consultar_usuarios'))
+
+    except Exception as e:
+        conn.rollback()
+        return jsonify({"error": str(e)}), 400
+
+    finally:
+        cur.close()
+        db.desconectar(conn)
 
 
 
@@ -170,7 +258,6 @@ def editar_usuario():
 def delete_usuario(id_usuario):
     conn = db.conectar()
     cursor = conn.cursor()
-    
     try:
         # Obtener el fk_info_empleado antes de eliminar el usuario
         cursor.execute('''SELECT fk_info_empleado FROM usuario WHERE id_usuario = %s''', (id_usuario,))
@@ -193,19 +280,19 @@ def delete_usuario(id_usuario):
     return redirect(url_for('consultar_usuarios'))
 
 
-#TE MANDA A EDITAR
-@app.route('/update1_usuario/<int:id_usuario>', methods= ['POST'])
-def update1_usuario(id_usuario):
-    conn =db.conectar()
 
-    #crear un cursor (objeto para recorrer las tablas)#
-    cursor=conn.cursor()
-    # recuperar el registro del id_pais seleccionado
-    cursor.execute('''SELECT * FROM usuario WHERE id_usuario=%s''',(id_usuario,))
-    datos = cursor.fetchall()
-    cursor.close()
-    db.desconectar(conn)
-    return render_template('editar_usuario.html',datos=datos)
+
+#TE MANDA A EDITAR
+# @app.route('/update1_usuario/<int:id_usuario>', methods= ['POST'])
+# def update1_usuario(id_usuario):
+#     conn =db.conectar()
+
+#     cursor=conn.cursor()
+#     cursor.execute('''SELECT * FROM usuario WHERE id_usuario=%s''',(id_usuario,))
+#     datos = cursor.fetchall()
+#     cursor.close()
+#     db.desconectar(conn)
+#     return render_template('editar_usuario.html',datos=datos)
 
 
 #TE MANDA A ELIMINAR
