@@ -16,6 +16,8 @@ from werkzeug.utils import secure_filename
 
 app = Flask(__name__)
 
+app.secret_key = os.environ.get('SECRET_KEY', 'default_secret_key')
+
 UPLOAD_FOLDER = 'static/assets/img'
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
@@ -190,12 +192,14 @@ def registrar_usuario():
             # Finaliza la transacción
             cur.execute("COMMIT;")
 
+            flash('Usuario registrado con éxito', 'success')
+
             return render_template('regUsuario.html')
 
         except Exception as e:
             # En caso de error, deshace la transacción
-            conn.rollback()
-            return jsonify({"error": str(e)}), 400
+            flash(f'Error: {str(e)}', 'danger')
+            return redirect('/registrar_usuario')
 
         finally:
             # Cierra el cursor y la conexión
