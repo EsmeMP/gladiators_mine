@@ -7,6 +7,9 @@
     <link rel="stylesheet" href="../../Index_General/style.css">
     <link rel="stylesheet" type="text/css"   href="../../styles/font/flaticon.css">
     <link rel="stylesheet" href="../Ventas CSS/regVenta.css">
+    <link rel="stylesheet" href="../static/style.css">
+    <link rel="stylesheet" href="../static/ventas_css/regVenta.css">
+    <link rel="stylesheet" href="../static/assets/font/flaticon.css">
     <style>
         input[disabled] {
         background-color: #e0e0e0;
@@ -37,7 +40,7 @@
         <nav>
             <!-- Aqui va el logo y nombre de la tienda y el nombre de las secciones -->
             <section class="logo-gladiators">
-                <a href="index.html"><img src="../../assets/img/Logotipo_GladiatorsTransparente.png" alt="imagen-logo"></a>
+                <a href="index.html"><img src="../static/assets/img/Logotipo_GladiatorsTransparente.png" alt="imagen-logo"></a>
                 <h5>Gladiator's</h5>
             </section>
             <section class="secciones">
@@ -60,6 +63,7 @@
             </section>
             <!-- Esta de aqui es la tabla -->
             <section class="table_ventas">
+                {% block content %}
                 <table>
                     <thead>
                         <tr class="fila">
@@ -71,36 +75,26 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>64331857219</td>
-                            <td>Gorra Deportiva</td>
-                            <td>1</td>
-                            <td>80.0</td>
-                            <td>80.0</td>
-                        </tr>
-                        <tr>
-                            <td>34618768513</td>
-                            <td>Gafas de Sol</td>
-                            <td>2</td>
-                            <td>50.0</td>
-                            <td>100.0</td>
-                        </tr>
-                        <tr>
-                            <td>3461554645</td>
-                            <td>Mochila Deportiva</td>
-                            <td>1</td>
-                            <td>350.0</td>
-                            <td>350.0</td>
-                        </tr>
+                    </tr>
+                    {% for fila in datos %}
+                    <tr>
+                        <td>{{ fila[1] }}</td>
+                        <td>{{ fila[2] }}</td>
+                        <td>{{ fila[3] }}</td>
+                        <td>{{ fila[4] }}</td>
+                        <td>{{ fila[5] }}</td>
+                    </tr>
+                    {% endfor %}
                     </tbody>
                 </table>
+            {% endblock %}
             </section>
         </div>
         <!-- Aqui se va a visualizar un tipo ticket del total -->
         <section class="pre-visualizacion">
             <div>
                 <!-- Logotipo y numero de venta, -->
-                <img src="../../assets/img/Logotipo_GladiatorRedondo.png" alt="Logotipo Gladiator's" class="logo-redondo">
+                <img src="../static/assets/img/Logotipo_GladiatorRedondo.png" alt="Logotipo Gladiator's" class="logo-redondo">
             </div>
             <div class="parrafo">
                 <p>No. Venta:</p>

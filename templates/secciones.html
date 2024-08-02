@@ -4,9 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Secciones Gladiator's</title>
-    <link rel="stylesheet" href="../../Index_General/style.css">
-    <link rel="stylesheet" type="text/css"   href="../../styles/font/flaticon.css">
-    <link rel="stylesheet" href="../Login_Seccion CSS/seccion.css">
+    <link rel="stylesheet" href="../static/seccion.css">
+    <link rel="stylesheet" href="../static/assets/font/flaticon.css">
+    <link rel="stylesheet" href="../static/style.css">
 </head>
 <body>
     <header>
@@ -31,14 +31,14 @@
         <nav>
             <!-- Aqui va el logo y nombre de la tienda y el nombre de las secciones -->
             <section class="logo-gladiators">
-                <a href="index.html"><img src="../../assets/img/Logotipo_GladiatorsTransparente.png" alt="imagen-logo"></a>
+                <a href="index.html"><img src="../static/assets/img/Logotipo_GladiatorsTransparente.png" alt="imagen-logo"></a>
                 <h5>Gladiator's</h5>
             </section>
             <section class="secciones">
-                <a href="../Login_Seccion_html/secciones.html">Inicio</a>
-                <a href="../../Ventas/Ventas.HTML/regVenta.html">Ventas</a>
-                <a href="../../ProductosUsuarios/ProductosHTML/regProduct.html">Productos</a>
-                <a href="../../ProductosUsuarios/Usuarios.HTML/regUsuario.html">Usuarios</a>
+                <a href="{{ url_for('seccion')}}">Inicio</a>
+                <a href="{{ url_for('registrar_venta')}}">Ventas</a>
+                <a href="../">Productos</a>
+                <a href="{{ url_for('consultar_usuarios')}}">Usuarios</a>
                 <a href="./pages/index.html">Soporte</a>
                 <a href="./pages/index.html">Cerrar Sesión</a>
             </section>
@@ -51,7 +51,7 @@
                 <a href="../../Ventas/Ventas.HTML/regVenta.html">Ventas</a>
             </div>
             <div class="button-usuario">
-                <a href="../../ProductosUsuarios/Usuarios.HTML/regUsuario.html">Usuario</a>
+                <a href="{{ url_for('registrar_usuario')}}">Usuario</a>
             </div>
             <div class="button-producto">
                 <a href="../../ProductosUsuarios/ProductosHTML/regProduct.html">Producto</a></div>
