@@ -10,6 +10,7 @@ import db
 import bcrypt
 import os
 from werkzeug.utils import secure_filename
+from db import obtener_conexion, liberar_conexion
 
 
 
@@ -20,6 +21,11 @@ app.secret_key = os.environ.get('SECRET_KEY', 'default_secret_key')
 
 UPLOAD_FOLDER = 'static/assets/img'
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+
+products = {
+    '21454': {'name': 'Producto 1', 'price': 100},
+    '21455': {'name': 'Producto 2', 'price': 200},
+}
 
     
 @app.route('/')
@@ -36,6 +42,10 @@ app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 def seccion():
     return render_template('secciones.html')
 
+
+
+
+
 @app.route('/registrar_venta')
 def registrar_venta():
     conn =db.conectar()
@@ -50,20 +60,30 @@ def registrar_venta():
     db.desconectar(conn)
     return render_template('regVenta.html', datos=datos)
 
+@app.route('/get_product_details', methods=['GET'])
+def get_product_details():
+    code = request.args.get('code')
+    product = products.get(code)
+    if product:
+        return jsonify(product)
+    else:
+        return jsonify({}), 404
 
-@app.route('/consultar_venta')
-def consultar_venta():
-    conn =db.conectar()
-    # crear un cursor (objeto para recorrer las tablas)
-    cursor = conn.cursor()
-    # ejecutar una consulta en postgres
-    cursor.execute('''SELECT * FROM tabla_ventas''')
-    #recuperar la informacion
-    datos = cursor.fetchall()
-    #cerrar cursos y conexion a la base de datos
-    cursor.close()
-    db.desconectar(conn)
-    return render_template('consultaVenta.html', datos=datos)
+@app.route('/confirmar_venta', methods=['POST'])
+def confirmar_venta():
+    ventas = request.json.get('ventas', [])
+    # Aquí puedes procesar y almacenar la venta en tu base de datos
+    # Ejemplo:
+    for venta in ventas:
+        # Procesar cada venta, agregar a la base de datos, etc.
+        pass
+    return jsonify({'message': 'Venta confirmada'}), 200
+
+
+
+@app.route('/')
+def index():
+    return render_template('index.html')
 
 
 

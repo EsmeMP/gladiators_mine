@@ -16,3 +16,12 @@ def conectar():
 
 def desconectar(conn):
     connection_pool.putconn(conn)
+
+def obtener_conexion():
+    return connection_pool.getconn()
+
+def liberar_conexion(conn):
+    connection_pool.putconn(conn)
+
+def cerrar_pool():
+    connection_pool.closeall()

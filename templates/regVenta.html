@@ -6,6 +6,55 @@
     <link rel="stylesheet" href="/static/ventas_css/regVenta.css">
     <link rel="stylesheet" href="/static/assets/font/flaticon.css">
     <link rel="stylesheet" href="/static/style.css">
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+    <style>
+        /* Agregar estilos personalizados si es necesario */
+        .textbox {
+            display: flex;
+            gap: 10px;
+        }
+        .table_ventas {
+            margin-top: 20px;
+        }
+        .input-row input {
+            width: 100%;
+            box-sizing: border-box;
+        }
+        * Modal styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgb(0,0,0);
+            background-color: rgba(0,0,0,0.4);
+        }
+        .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+        }
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+    </style>
 </head>
 <body>
 
@@ -54,46 +103,44 @@
             </section>
             <section class="barra_busqueda">
                 <!-- Aqui se encuentra la barra de busqueda -->
-                <form class="textbox" action="/search" method="GET">
+                <form class="textbox" onsubmit="return false;">
                     <input type="text" name="buscar" placeholder="Buscar...">
-                    <button type="submit">Buscar</button>
-                    <svg class="icon" width="24" height="24" viewBox="0 0 24 24">
+                    <!-- <button type="submit">Buscar</button>
+                    <!-- <svg class="icon" width="24" height="24" viewBox="0 0 24 24"> -->
                     <!-- SVG content -->
-                    </svg>
-                    <svg class="icon" width="24" height="24" viewBox="0 0 24 24">
+                    <!-- </svg> -->
+                    <!-- <svg class="icon" width="24" height="24" viewBox="0 0 24 24"> -->
                     <!-- SVG content -->
-                    </svg>
+                    <!-- </svg> -->
                 </form>
             </section>
             <!-- Esta de aqui es la tabla -->
             <section class="table_ventas">
-                {% block content %}
-                <table>
-                    <thead>
-                        <tr class="fila">
-                        <th>Código</th>
-                        <th>Producto</th>
-                        <th>Cantidad</th>
-                        <th>Precio</th>
-                        <th>Total</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    </tr>
-                    {% for fila in datos %}
-                    <tr>
-                        <td>{{ fila[1] }}</td>
-                        <td>{{ fila[2] }}</td>
-                        <td>{{ fila[3] }}</td>
-                        <td>{{ fila[4] }}</td>
-                        <td>{{ fila[5] }}</td>
-                    </tr>
-                    {% endfor %}
-                    </tbody>
-                </table>
-            {% endblock %}
-            </section>
-        </div>
+    <table>
+        <thead>
+            <tr class="fila">
+                <th>Código</th>
+                <th>Producto</th>
+                <th>Cantidad</th>
+                <th>Precio</th>
+                <th>Total</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody id="table_ventas">
+            <!-- Aquí se irán añadiendo las filas de productos -->
+        </tbody>
+    </table>
+</section>
+<div>
+    <div id="productModal" style="display:none;">
+        <h3>Seleccionar Producto</h3>
+        <input type="text" id="productSearch" placeholder="Ingrese código de producto">
+        <button onclick="searchProduct()">Buscar</button>
+        <button onclick="closeModal()">Cerrar</button>
+    </div>
+    <button type="button" id="abrirModal">Agregar Producto</button>
+</div>
         <!-- Aqui se va a visualizar un tipo ticket del total -->
         <section class="pre-visualizacion">
             <div>
@@ -135,5 +182,77 @@
         </div>
         </section>
     </main>
+    
+
+<script>
+    let ventas = [];
+
+    function openModal() {
+        document.getElementById('productModal').style.display = 'block';
+    }
+
+    function closeModal() {
+        document.getElementById('productModal').style.display = 'none';
+    }
+
+    function searchProduct() {
+        var code = document.getElementById('productSearch').value;
+        fetch('/get_product_details?code=' + code)
+            .then(response => response.json())
+            .then(data => {
+                if (data) {
+                    // Añadir el producto a la lista de ventas
+                    let cantidad = 1;
+                    let total = data.price * cantidad;
+                    let nuevaVenta = {
+                        code: code,
+                        name: data.name,
+                        price: data.price,
+                        quantity: cantidad,
+                        total: total
+                    };
+                    ventas.push(nuevaVenta);
+                    actualizarTablaVentas();
+                } else {
+                    alert('¡Producto no encontrado!');
+                }
+            });
+        closeModal();
+    }
+
+    function actualizarTablaVentas() {
+        let table = document.getElementById('table_ventas');
+        table.innerHTML = '';
+
+        ventas.forEach((venta, index) => {
+            let row = table.insertRow();
+            row.innerHTML = `
+                <td>${venta.code}</td>
+                <td>${venta.name}</td>
+                <td>
+                    <input type="number" value="${venta.quantity}" min="1" onchange="actualizarCantidad(${index}, this.value)">
+                </td>
+                <td>${venta.price}</td>
+                <td>${venta.total.toFixed(2)}</td>
+                <td>
+                    <button onclick="eliminarProducto(${index})">Eliminar</button>
+                </td>
+            `;
+        });
+    }
+
+    function actualizarCantidad(index, cantidad) {
+        ventas[index].quantity = parseInt(cantidad);
+        ventas[index].total = ventas[index].price * ventas[index].quantity;
+        actualizarTablaVentas();
+    }
+
+    function eliminarProducto(index) {
+        ventas.splice(index, 1);
+        actualizarTablaVentas();
+    }
+
+    document.getElementById('abrirModal').addEventListener('click', openModal);
+</script>
 </body>
 </html>
