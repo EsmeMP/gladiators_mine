@@ -99,7 +99,7 @@
             <section class="sec-title">
                 <!-- Info de la seccion y el numero de la venta -->
                 <h5>No.Venta</h5>
-                <h5>0000025</h5>
+                <h5>{{ "{:08d}".format(numero_venta) }}</h5>
             </section>
             <section class="barra_busqueda">
                 <!-- Aqui se encuentra la barra de busqueda -->
@@ -149,12 +149,11 @@
             </div>
             <div class="parrafo">
                 <p>No. Venta:</p>
-                <p>0000025</p>
+                <p>{{ "{:08d}".format(numero_venta) }}</p>
             </div>
             <div class="container-linea">
-                <!-- aqui va el atendido por: -->
                 <p>Atendido por:</p>
-                <p>Persona Random</p>
+                <p>{{ usuario }}</p> <!-- Aquí se mostrará el nombre del usuario -->
             </div>
             <div class="efectivo">
                 <!-- Aqui va el efectivo recibido -->
@@ -163,12 +162,12 @@
             </div>
             <div class="container-vuelto">
                 <!-- Aqui va el vuelto , monto, subtotal, total -->
-                <p>Vuelto: $0.00</p>
-                <p>Monto Efectivo: $32.30</p>
+                <p>Vuelto: $<span id="vuelto">0.00</span> </p>
+                <p>Monto Efectivo: $<span id="monto-efectivo">0.00</span></p>
             </div>
             <div class="container-total">
-                <p>Subtotal: $500.00</p>
-                <p>Total: $500.00</p>
+                <p>Subtotal: ${{ "%.2f" % subtotal }}</p>
+                <p>Total: ${{ "%.2f" % total }}</p>
             </div>
             <div class="botones">
                 <!-- Aqui estan los botones -->
@@ -187,72 +186,106 @@
 <script>
     let ventas = [];
 
-    function openModal() {
-        document.getElementById('productModal').style.display = 'block';
-    }
+// Abrir y cerrar el modal
+function openModal() {
+    document.getElementById('productModal').style.display = 'block';
+}
 
-    function closeModal() {
-        document.getElementById('productModal').style.display = 'none';
-    }
+function closeModal() {
+    document.getElementById('productModal').style.display = 'none';
+}
 
-    function searchProduct() {
-        var code = document.getElementById('productSearch').value;
-        fetch('/get_product_details?code=' + code)
-            .then(response => response.json())
-            .then(data => {
-                if (data) {
-                    // Añadir el producto a la lista de ventas
-                    let cantidad = 1;
-                    let total = data.price * cantidad;
-                    let nuevaVenta = {
-                        code: code,
-                        name: data.name,
-                        price: data.price,
-                        quantity: cantidad,
-                        total: total
-                    };
-                    ventas.push(nuevaVenta);
-                    actualizarTablaVentas();
-                } else {
-                    alert('¡Producto no encontrado!');
-                }
-            });
-        closeModal();
-    }
-
-    function actualizarTablaVentas() {
-        let table = document.getElementById('table_ventas');
-        table.innerHTML = '';
-
-        ventas.forEach((venta, index) => {
-            let row = table.insertRow();
-            row.innerHTML = `
-                <td>${venta.code}</td>
-                <td>${venta.name}</td>
-                <td>
-                    <input type="number" value="${venta.quantity}" min="1" onchange="actualizarCantidad(${index}, this.value)">
-                </td>
-                <td>${venta.price}</td>
-                <td>${venta.total.toFixed(2)}</td>
-                <td>
-                    <button onclick="eliminarProducto(${index})">Eliminar</button>
-                </td>
-            `;
+// Buscar y agregar producto
+function searchProduct() {
+    var code = document.getElementById('productSearch').value;
+    fetch('/get_product_details?code=' + code)
+        .then(response => response.json())
+        .then(data => {
+            if (data) {
+                // Añadir el producto a la lista de ventas
+                let cantidad = 1;
+                let total = data.price * cantidad;
+                let nuevaVenta = {
+                    code: code,
+                    name: data.name,
+                    price: data.price,
+                    quantity: cantidad,
+                    total: total
+                };
+                ventas.push(nuevaVenta);
+                actualizarTablaVentas();
+                updateOverallTotal();
+            } else {
+                alert('¡Producto no encontrado!');
+            }
         });
-    }
+    closeModal();
+}
 
-    function actualizarCantidad(index, cantidad) {
-        ventas[index].quantity = parseInt(cantidad);
-        ventas[index].total = ventas[index].price * ventas[index].quantity;
-        actualizarTablaVentas();
-    }
+// Actualizar la tabla de ventas
+function actualizarTablaVentas() {
+    let table = document.getElementById('table_ventas');
+    table.innerHTML = '';
 
-    function eliminarProducto(index) {
-        ventas.splice(index, 1);
-        actualizarTablaVentas();
-    }
+    ventas.forEach((venta, index) => {
+        let row = table.insertRow();
+        row.innerHTML = `
+            <td>${venta.code}</td>
+            <td>${venta.name}</td>
+            <td>
+                <input type="number" value="${venta.quantity}" min="1" onchange="actualizarCantidad(${index}, this.value)">
+            </td>
+            <td>${venta.price.toFixed(2)}</td>
+            <td class="line-total">${venta.total.toFixed(2)}</td>
+            <td>
+                <button onclick="eliminarProducto(${index})">Eliminar</button>
+            </td>
+        `;
+    });
+}
 
-    document.getElementById('abrirModal').addEventListener('click', openModal);
+// Actualizar la cantidad y total de un producto
+function actualizarCantidad(index, cantidad) {
+    ventas[index].quantity = parseInt(cantidad);
+    ventas[index].total = ventas[index].price * ventas[index].quantity;
+    actualizarTablaVentas();
+    updateOverallTotal();
+}
+
+// Eliminar un producto de la venta
+function eliminarProducto(index) {
+    ventas.splice(index, 1);
+    actualizarTablaVentas();
+    updateOverallTotal();
+}
+
+// Actualizar subtotal y total general
+function updateOverallTotal() {
+    var subtotal = ventas.reduce((sum, venta) => sum + venta.total, 0);
+
+    document.querySelector('.container-total p:nth-child(1)').textContent = "Subtotal: $" + subtotal.toFixed(2);
+    document.querySelector('.container-total p:nth-child(2)').textContent = "Total: $" + subtotal.toFixed(2);
+}
+
+// Calcular vuelto al ingresar efectivo
+function calcularVuelto() {
+    var montoEfectivo = parseFloat(document.getElementById('money-received').value) || 0;
+    var subtotal = ventas.reduce((sum, venta) => sum + venta.total, 0);
+    var vuelto = montoEfectivo - subtotal;
+
+    document.getElementById('monto-efectivo').textContent = montoEfectivo.toFixed(2);
+    document.getElementById('vuelto').textContent = vuelto.toFixed(2);
+}
+
+// Escuchar el evento input en el campo de efectivo recibido
+document.getElementById('money-received').addEventListener('input', calcularVuelto);
+
+// Asignar eventos al abrir el modal
+document.getElementById('abrirModal').addEventListener('click', openModal);
+
+// Script usuario 
+
+
 </script>
 </body>
 </html>

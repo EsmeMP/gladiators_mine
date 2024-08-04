@@ -22,10 +22,10 @@ app.secret_key = os.environ.get('SECRET_KEY', 'default_secret_key')
 UPLOAD_FOLDER = 'static/assets/img'
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
-products = {
-    '21454': {'name': 'Producto 1', 'price': 100},
-    '21455': {'name': 'Producto 2', 'price': 200},
-}
+# products = {
+#     '21454': {'name': 'Producto 1', 'price': 100},
+#     '21455': {'name': 'Producto 2', 'price': 200},
+# }
 
     
 @app.route('/')
@@ -48,36 +48,53 @@ def seccion():
 
 @app.route('/registrar_venta')
 def registrar_venta():
-    conn =db.conectar()
-    # crear un cursor (objeto para recorrer las tablas)
+    conn = db.conectar()
     cursor = conn.cursor()
-    # ejecutar una consulta en postgres
-    cursor.execute('''SELECT * FROM tabla_ventas''')
-    #recuperar la informacion
-    datos = cursor.fetchall()
-    #cerrar cursos y conexion a la base de datos
+
+    # Obtener el último id de venta
+    cursor.execute("SELECT COALESCE(MAX(id), 0) FROM tabla_ventas")
+    ultimo_id = cursor.fetchone()[0]
+    proximo_id = ultimo_id + 1  # Incrementa para el próximo número de venta
+
+    # Calcular subtotal y total de la venta actual
+    venta_actual = session.get('venta_actual', [])
+    subtotal = sum(item['price'] for item in venta_actual)
+    total = subtotal  # Aquí puedes agregar impuestos o descuentos si es necesario
+
+    cursor.execute('SELECT "nombre completo" FROM nombre_usuario WHERE "ID" = 2')
+    usuario = cursor.fetchone()[0] 
+
     cursor.close()
-    db.desconectar(conn)
-    return render_template('regVenta.html', datos=datos)
+    conn.close()
+
+    # Renderiza la página pasando el próximo número de venta y el total
+    return render_template('regVenta.html', usuario=usuario, numero_venta=proximo_id, subtotal=subtotal, total=total)
 
 @app.route('/get_product_details', methods=['GET'])
 def get_product_details():
     code = request.args.get('code')
-    product = products.get(code)
+    product = obtener_producto_de_db(code)
     if product:
         return jsonify(product)
     else:
         return jsonify({}), 404
 
-@app.route('/confirmar_venta', methods=['POST'])
-def confirmar_venta():
-    ventas = request.json.get('ventas', [])
-    # Aquí puedes procesar y almacenar la venta en tu base de datos
-    # Ejemplo:
-    for venta in ventas:
-        # Procesar cada venta, agregar a la base de datos, etc.
-        pass
-    return jsonify({'message': 'Venta confirmada'}), 200
+def obtener_producto_de_db(codigo):
+    conn = db.conectar()
+    cursor = conn.cursor()
+    
+    query = "SELECT nombre, precio FROM productos WHERE codigo = %s"
+    cursor.execute(query, (codigo,))
+    
+    resultado = cursor.fetchone()
+    cursor.close()
+    conn.close()
+
+    if resultado:
+        nombre, precio = resultado
+        return {'name': nombre, 'price': float(precio)}
+    else:
+        return None
 
 
 
