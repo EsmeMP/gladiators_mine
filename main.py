@@ -43,16 +43,55 @@ def seccion():
     return render_template('secciones.html')
 
 
-
-
-
-@app.route('/registrar_venta')
+@app.route('/registrar_venta', methods=['GET', 'POST'])
 def registrar_venta():
+    if request.method == 'POST':
+        # Manejar la solicitud POST para registrar la venta en la base de datos
+        conn = db.conectar()
+        cursor = conn.cursor()
+
+        # Obtener el último id de venta
+        cursor.execute("SELECT COALESCE(MAX(id_venta), 0) FROM venta")
+        ultimo_id = cursor.fetchone()[0]
+        proximo_id = ultimo_id + 1  # Incrementa para el próximo número de venta
+
+        # Obtener datos de la venta
+        venta_actual = session.get('venta_actual', [])
+        subtotal = sum(item['price'] for item in venta_actual)
+        total = subtotal  # Aquí puedes agregar impuestos o descuentos si es necesario
+
+        # Obtener el ID del usuario (suponiendo que el ID está almacenado en la sesión)
+        fk_usuario = session.get('usuario_id', 1)  # Reemplaza 1 con un valor por defecto si es necesario
+
+        # Insertar la venta en la tabla venta
+        cursor.execute(
+            "INSERT INTO venta (id_venta, fecha_venta, hora_venta, fk_usuario) VALUES (%s, CURRENT_DATE, CURRENT_TIME, %s)",
+            (proximo_id, fk_usuario)
+        )
+
+        # Insertar los detalles de la venta en la tabla detalle_venta
+        for item in venta_actual:
+            cursor.execute(
+                "INSERT INTO detalle_venta (cantidad, fk_producto, fk_venta) VALUES (%s, %s, %s)",
+                (item['quantity'], item['product_id'], proximo_id)
+            )
+
+        conn.commit()
+        cursor.close()
+        conn.close()
+
+        # Limpiar la sesión de la venta actual
+        session['venta_actual'] = []
+
+        # Redirigir a una página de confirmación o al índice
+        return redirect(url_for('venta_confirmada', numero_venta=proximo_id))
+    
+    # Manejar la solicitud GET para mostrar el formulario de venta
     conn = db.conectar()
     cursor = conn.cursor()
 
     # Obtener el último id de venta
-    cursor.execute("SELECT COALESCE(MAX(id), 0) FROM tabla_ventas")
+    cursor.execute("SELECT COALESCE(MAX(id_venta), 0) FROM venta")
     ultimo_id = cursor.fetchone()[0]
     proximo_id = ultimo_id + 1  # Incrementa para el próximo número de venta
 
@@ -69,6 +108,15 @@ def registrar_venta():
 
     # Renderiza la página pasando el próximo número de venta y el total
     return render_template('regVenta.html', usuario=usuario, numero_venta=proximo_id, subtotal=subtotal, total=total)
+
+@app.route('/venta_confirmada')
+def venta_confirmada():
+    numero_venta = request.args.get('numero_venta')
+    return render_template('venta_confirmada.html', numero_venta=numero_venta)
+
+
+
+
 
 @app.route('/get_product_details', methods=['GET'])
 def get_product_details():
@@ -95,6 +143,107 @@ def obtener_producto_de_db(codigo):
         return {'name': nombre, 'price': float(precio)}
     else:
         return None
+
+
+
+@app.route ('/reporte_diario')
+def reporte_diario():
+    fecha = request.args.get('fecha')
+      # Obtiene la fecha seleccionada del formulario
+    print(f"Fecha seleccionada: {fecha}")
+    conn = db.conectar()
+    cursor = conn.cursor()
+    
+    if fecha:
+        # Realiza la consulta filtrando por la fecha seleccionada
+        cursor.execute('''
+            SELECT *
+            FROM reporte_diario
+            WHERE fecha = %s
+        ''', (fecha,))
+    else:
+        # Si no se ha seleccionado una fecha, muestra todas las ventas
+        cursor.execute('SELECT * FROM reporte_diario')
+    
+    datos = cursor.fetchall()
+    
+    if datos:
+        # Calcular el total de las ventas
+        total = sum([fila[3] for fila in datos])
+    else:
+        total= 0
+    
+    cursor.close()
+    db.desconectar(conn)
+    
+    # Asegúrate de que siempre haya un retorno
+    return render_template('repDiario.html', datos=datos, total=total)
+
+
+@app.route ('/reporte_semanal', methods=['GET'])
+def reporte_semanal():
+    fecha1 = request.args.get('fecha1')
+    fecha2 = request.args.get('fecha2')
+      # Obtiene la fecha seleccionada del formulario
+    conn = db.conectar()
+    cursor = conn.cursor()
+    
+    if fecha1 and fecha2:
+        # Realiza la consulta filtrando por la fecha seleccionada
+        cursor.execute('''
+            SELECT * FROM reporte_diario
+            WHERE fecha BETWEEN %s AND %s
+        ''', (fecha1, fecha2,))
+    else:
+        # Si no se ha seleccionado una fecha, muestra todas las ventas
+        cursor.execute('SELECT * FROM reporte_diario')
+    
+    datos = cursor.fetchall()
+    
+    if datos:
+        # Calcular el total de las ventas
+        total = sum([fila[3] for fila in datos])
+    else: 
+        total = 0
+    
+    cursor.close()
+    db.desconectar(conn)
+    
+    # Asegúrate de que siempre haya un retorno
+    return render_template('repSemanal.html', datos=datos, total=total)
+
+@app.route ('/consulta_venta/<int:id>')
+def consulta_venta(id):
+    conn = db.conectar()
+    cursor = conn.cursor()
+
+    # Ejecutar la función en PostgreSQL
+    cursor.execute('SELECT * FROM ventas_por_id(%s)', (id,))
+    venta_especifica = cursor.fetchall()  # Obtener todas las filas de la venta específica
+
+    cursor.execute('''SELECT id, fecha, hora, total_compra, "Nombre de Empleado"
+                      FROM reporte_diario
+                      WHERE id = %s''', (id,))
+    venta_general = cursor.fetchone()  # Obtener una fila con la información general
+
+    cursor.close()
+    db.desconectar(conn)
+
+    venta = {
+        "especifica": venta_especifica if venta_especifica else None,
+        "general": venta_general if venta_general else None
+    }
+
+    return render_template('consultaVenta.html', venta=venta)
+
+
+
+
+
+
+
+
+
 
 
 

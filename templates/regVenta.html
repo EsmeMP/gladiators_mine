@@ -173,7 +173,7 @@
                 <!-- Aqui estan los botones -->
             <!-- <button type="submit">Realizar Venta</button>
             <a href=""><button type="submit">Cancelar Venta</button></a> -->
-                <form action="ruta_al_servidor" method="POST" class="realizar-venta">
+                <form action="{{ url_for('registrar_venta') }}" method="POST" class="realizar-venta">
                     <button type="submit">Realizar Venta</button>
                 </form>
                 <a href="ruta_a_la_pagina_de_cancelacion" class="btn">Cancelar Venta</a>

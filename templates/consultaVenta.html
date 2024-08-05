@@ -4,12 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Consultar Venta Gladiator's</title>
-    <link rel="stylesheet" href="../../Index_General/style.css">
-    <link rel="stylesheet" type="text/css"   href="../../styles/font/flaticon.css">
-    <link rel="stylesheet" href="../Ventas CSS/regVenta.css">
-    <link rel="stylesheet" href="../static/style.css">
-    <link rel="stylesheet" href="../static/ventas_css/regVenta.css">
     <link rel="stylesheet" href="../static/assets/font/flaticon.css">
+    <link rel="stylesheet" href="../static/style.css">
+    <link rel="stylesheet" href="../static/regVenta.css">
     <style>
         input[disabled] {
         background-color: #e0e0e0;
@@ -55,71 +52,76 @@
     </header>
     <h1>Consulta de la Venta</h1>
     <main class="container">
-        <div class="principal-container">
-            <section class="sec-title">
-                <!-- Info de la seccion y el numero de la venta -->
-                <h5>No.Venta</h5>
-                <h5>0000025</h5>
-            </section>
-            <!-- Esta de aqui es la tabla -->
-            <section class="table_ventas">
-                {% block content %}
-                <table>
-                    <thead>
-                        <tr class="fila">
+    <div class="principal-container">
+        <!-- Información General de la Venta -->
+        <section class="sec-title">
+            <h5>No. Venta</h5>
+            <h5>{{ venta.general[0] }}</h5> <!-- ID de la venta -->
+        </section>
+
+        <!-- Tabla de Productos de la Venta -->
+        <section class="table_ventas">
+            <table>
+                <thead>
+                    <tr class="fila">
                         <th>Código</th>
                         <th>Producto</th>
                         <th>Cantidad</th>
                         <th>Precio</th>
                         <th>Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% if venta and venta.especifica %}
+                        {% for fila in venta.especifica %}
+                            <tr>
+                                <td>{{ fila[1] }}</td> <!-- Código del producto -->
+                                <td>{{ fila[2] }}</td> <!-- Nombre del producto -->
+                                <td>{{ fila[3] }}</td> <!-- Cantidad -->
+                                <td>{{ fila[4] }}</td> <!-- Precio unitario -->
+                                <td>{{ fila[5] }}</td> <!-- Total por producto -->
+                            </tr>
+                        {% endfor %}
+                    {% else %}
+                        <tr>
+                            <td colspan="5">No se encontraron detalles para esta venta.</td>
                         </tr>
-                    </thead>
-                    <tbody>
-                    </tr>
-                    {% for fila in datos %}
-                    <tr>
-                        <td>{{ fila[1] }}</td>
-                        <td>{{ fila[2] }}</td>
-                        <td>{{ fila[3] }}</td>
-                        <td>{{ fila[4] }}</td>
-                        <td>{{ fila[5] }}</td>
-                    </tr>
-                    {% endfor %}
-                    </tbody>
-                </table>
-            {% endblock %}
-            </section>
-        </div>
-        <!-- Aqui se va a visualizar un tipo ticket del total -->
-        <section class="pre-visualizacion">
-            <div>
-                <!-- Logotipo y numero de venta, -->
-                <img src="../static/assets/img/Logotipo_GladiatorRedondo.png" alt="Logotipo Gladiator's" class="logo-redondo">
-            </div>
-            <div class="parrafo">
-                <p>No. Venta:</p>
-                <p>0000025</p>
-            </div>
-            <div class="container-linea">
-                <!-- aqui va el atendido por: -->
-                <p>Atendido por:</p>
-                <p>Persona Random</p>
-            </div>
-            <div class="efectivo">
-                <!-- Aqui va el efectivo recibido -->
-                <label for="money-received">Efectivo recibido</label>
-                <input type="number" id="money-received" name="money-received" min="0" step="0.01" placeholder="00.00" disabled>
-            </div>
-            <div class="container-vuelto">
-                <!-- Aqui va el vuelto , monto, subtotal, total -->
-                <p>Vuelto: $0.00</p>
-                <p>Monto Efectivo: $32.30</p>
-            </div>
-            <div class="container-total">
-                <p>Subtotal: $500.00</p>
-                <p>Total: $500.00</p>
-            </div>
+                    {% endif %}
+                </tbody>
+            </table>
         </section>
-    </main>
+    </div>
+
+    <!-- Previsualización de la Venta -->
+    <section class="pre-visualizacion">
+        <div>
+            <!-- Logotipo y Número de Venta -->
+            <img src="../static/assets/img/Logotipo_GladiatorRedondo.png" alt="Logotipo Gladiator's" class="logo-redondo">
+        </div>
+        <div class="parrafo">
+            <p>No. Venta:</p>
+            <p>{{ venta.general[0] }}</p> <!-- ID de la venta -->
+        </div>
+        <div class="container-linea">
+            <p>Atendido por:</p>
+            <p>{{ venta.general[4] }}</p> <!-- Nombre del empleado -->
+        </div>
+        <div class="efectivo">
+            <label for="money-received">Efectivo recibido</label>
+            <input type="number" id="money-received" name="money-received" min="0" step="0.01" placeholder="00.00" disabled>
+        </div>
+        <div class="container-vuelto">
+            <p>Fecha: {{ venta.general[1] }}</p>
+            <p>Hora: {{ venta.general[2].strftime('%H:%M:%S') }}</p>
+        </div>
+        <div class="container-total">
+            <p>Subtotal:  ${{ venta.general[3] }}</p>
+            <p>Total: ${{ venta.general[3] }}</p> 
+            <!-- Total de la venta -->
+             <!-- <p>Fecha: {{ venta.general[1].strftime('%d de %B de %Y') }}</p> 
+    <p>Hora: {{ venta.general[2].strftime('%H:%M:%S') }}</p> -->
+        </div>
+    </section>
+</main>
 </body>
 </html>
