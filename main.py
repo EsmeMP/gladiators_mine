@@ -42,71 +42,115 @@ app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 def seccion():
     return render_template('secciones.html')
 
+@app.route('/agregar_producto', methods=['POST'])
+def agregar_producto():
+    producto_id = request.form['product_id']
+    cantidad = request.form['quantity']
+    precio = request.form['price']
+
+    # Obtener la venta actual de la sesión o crear una nueva lista
+    venta_actual = session.get('venta_actual', [])
+
+    # Agregar el producto a la venta actual
+    venta_actual.append({
+        'product_id': producto_id,
+        'quantity': cantidad,
+        'price': precio
+    })
+
+    # Guardar la venta actual en la sesión
+    session['venta_actual'] = venta_actual
+
+    return redirect(url_for('mostrar_carrito'))
+
+@app.route('/login', methods=['POST'])
+def login():
+    usuario_id = request.form['usuario_id']
+    
+    # Guardar el ID del usuario en la sesión
+    session['usuario_id'] = usuario_id
+
+    return redirect(url_for('inicio'))
 
 @app.route('/registrar_venta', methods=['GET', 'POST'])
 def registrar_venta():
     if request.method == 'POST':
-        # Manejar la solicitud POST para registrar la venta en la base de datos
         conn = db.conectar()
         cursor = conn.cursor()
 
-        # Obtener el último id de venta
-        cursor.execute("SELECT COALESCE(MAX(id_venta), 0) FROM venta")
-        ultimo_id = cursor.fetchone()[0]
-        proximo_id = ultimo_id + 1  # Incrementa para el próximo número de venta
+        try:
+            # Verifica la sesión de la venta actual
+            venta_actual = session.get('venta_actual', [])
+            if not venta_actual:
+                raise ValueError("No hay productos en la venta actual.")
+            print(f"Venta actual: {venta_actual}")
 
-        # Obtener datos de la venta
-        venta_actual = session.get('venta_actual', [])
-        subtotal = sum(item['price'] for item in venta_actual)
-        total = subtotal  # Aquí puedes agregar impuestos o descuentos si es necesario
+            # Verifica el ID del usuario
+            fk_usuario = session.get('usuario_id', 2)
+            print(f"ID de usuario: {fk_usuario}")
 
-        # Obtener el ID del usuario (suponiendo que el ID está almacenado en la sesión)
-        fk_usuario = session.get('usuario_id', 2)  # Reemplaza 1 con un valor por defecto si es necesario
-
-        # Insertar la venta en la tabla venta
-        cursor.execute(
-            "INSERT INTO venta (id_venta, fecha_venta, hora_venta, fk_usuario) VALUES (%s, CURRENT_DATE, CURRENT_TIME, %s)",
-            (proximo_id, fk_usuario)
-        )
-
-        # Insertar los detalles de la venta en la tabla detalle_venta
-        for item in venta_actual:
+            # Inserta en la tabla venta
             cursor.execute(
-                "INSERT INTO detalle_venta (cantidad, fk_producto, fk_venta) VALUES (%s, %s, %s)",
-                (item['quantity'], item['product_id'], proximo_id)
+                "INSERT INTO venta (fecha_venta, hora_venta, fk_usuario) VALUES (CURRENT_DATE, CURRENT_TIME, %s) RETURNING id_venta", 
+                (fk_usuario,)
             )
+            id_venta = cursor.fetchone()[0]
+            print(f"ID de venta: {id_venta}")
 
-        conn.commit()
-        cursor.close()
-        conn.close()
+            # Inserta los detalles de la venta
+            for item in venta_actual:
+                print(f"Insertando item: {item}")
+                cursor.execute(
+                    "INSERT INTO detalle_venta (cantidad, fk_producto, fk_venta) VALUES (%s, %s, %s)",
+                    (item['quantity'], item['product_id'], id_venta)
+                )
+
+            conn.commit()
+            print("Venta registrada correctamente.")
+
+        except Exception as e:
+            conn.rollback()
+            print(f"Error al registrar la venta: {e}")
+
+        finally:
+            cursor.close()
+            conn.close()
 
         # Limpiar la sesión de la venta actual
         session['venta_actual'] = []
 
         # Redirigir a una página de confirmación o al índice
-        return redirect(url_for('venta_confirmada', numero_venta=proximo_id))
-    
+        return redirect(url_for('venta_confirmada'))
+
     # Manejar la solicitud GET para mostrar el formulario de venta
     conn = db.conectar()
     cursor = conn.cursor()
 
-    # Obtener el último id de venta
-    cursor.execute("SELECT COALESCE(MAX(id_venta), 0) FROM venta")
-    ultimo_id = cursor.fetchone()[0]
-    proximo_id = ultimo_id + 1  # Incrementa para el próximo número de venta
+    try:
+        # Obtener el último id de venta
+        cursor.execute("SELECT COALESCE(MAX(id_venta), 0) FROM venta")
+        ultimo_id = cursor.fetchone()[0]
+        proximo_id = ultimo_id + 1
 
-    # Calcular subtotal y total de la venta actual
-    venta_actual = session.get('venta_actual', [])
-    subtotal = sum(item['price'] for item in venta_actual)
-    total = subtotal  # Aquí puedes agregar impuestos o descuentos si es necesario
+        # Calcular subtotal y total de la venta actual
+        venta_actual = session.get('venta_actual', [])
+        subtotal = sum(item['price'] for item in venta_actual)
+        total = subtotal
 
-    cursor.execute('SELECT "nombre completo" FROM nombre_usuario WHERE "ID" = 2')
-    usuario = cursor.fetchone()[0] 
+        fk_usuario = session.get('usuario_id', 2)
+        cursor.execute('SELECT "nombre completo" FROM nombre_usuario WHERE "ID" = %s', (fk_usuario,))
+        usuario = cursor.fetchone()[0]
 
-    cursor.close()
-    conn.close()
+    except Exception as e:
+        print(f"Error al obtener datos para el formulario de venta: {e}")
+        usuario = ""
+        proximo_id = 0
+        subtotal = 0
+        total = 0
+    finally:
+        cursor.close()
+        conn.close()
 
-    # Renderiza la página pasando el próximo número de venta y el total
     return render_template('regVenta.html', usuario=usuario, numero_venta=proximo_id, subtotal=subtotal, total=total)
 
 @app.route('/venta_confirmada')
