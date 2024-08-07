@@ -61,7 +61,7 @@ def registrar_venta():
         total = subtotal  # Aquí puedes agregar impuestos o descuentos si es necesario
 
         # Obtener el ID del usuario (suponiendo que el ID está almacenado en la sesión)
-        fk_usuario = session.get('usuario_id', 1)  # Reemplaza 1 con un valor por defecto si es necesario
+        fk_usuario = session.get('usuario_id', 2)  # Reemplaza 1 con un valor por defecto si es necesario
 
         # Insertar la venta en la tabla venta
         cursor.execute(
@@ -112,7 +112,208 @@ def registrar_venta():
 @app.route('/venta_confirmada')
 def venta_confirmada():
     numero_venta = request.args.get('numero_venta')
-    return render_template('venta_confirmada.html', numero_venta=numero_venta)
+    fecha = request.args.get('fecha')
+    hora = request.args.get('hora')
+    usuario = request.args.get('usuario')
+    total = request.args.get('total')
+
+    # Si estás recuperando el total de la venta como cadena, conviértelo a un número flotante
+    try:
+        total = float(total)
+    except (TypeError, ValueError):
+        total = 0.0
+
+    return render_template('venta_confirmada.html', numero_venta=numero_venta, fecha=fecha, hora=hora, usuario=usuario, total=total)
+
+
+# import psycopg2
+# from flask import Flask, request, redirect, render_template, jsonify, url_for, session, flash
+# # from flask_bootstrap import Bootstrap
+# # from flask_wtf import FlaskForm
+# # from wtforms.fields import PasswordField, StringField, SubmitField
+# from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
+# import db
+# # from flask_bcrypt import Bcrypt
+# # from forms import LibrosForm
+# import bcrypt
+# import os
+# from werkzeug.utils import secure_filename
+# from db import obtener_conexion, liberar_conexion
+# import json
+
+
+
+
+# app = Flask(__name__)
+
+# app.secret_key = os.environ.get('SECRET_KEY', 'default_secret_key')
+
+# UPLOAD_FOLDER = 'static/assets/img'
+# app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+
+
+# # products = {
+# #     '21454': {'name': 'Producto 1', 'price': 100},
+# #     '21455': {'name': 'Producto 2', 'price': 200},
+# # }
+
+    
+# @app.route('/')
+# # def hello():
+# #     return "Hello World"
+
+# # app.run (host = '0.0.0.0', port=3000)
+
+
+
+
+
+# @app.route('/seccion')
+# def seccion():
+#     return render_template('secciones.html')
+
+
+
+
+
+
+
+# @app.route('/agregar_producto', methods=['POST'])
+# def agregar_producto():
+#     codigo_producto = request.form['codigo_producto']
+#     cantidad = int(request.form['cantidad'])
+
+#     # Verificar si la sesión de la venta actual existe, si no, crearla
+#     if 'venta_actual' not in session:
+#         session['venta_actual'] = []
+
+#     # Obtener detalles del producto de la base de datos
+#     producto = obtener_producto_de_db(codigo_producto)
+
+#     if producto:
+#         nombre_producto = producto['name']
+#         precio_unitario = producto['price']
+
+#         # Agregar el producto a la sesión de la venta actual
+#         session['venta_actual'].append({
+#             'code': codigo_producto,
+#             'name': nombre_producto,
+#             'quantity': cantidad,
+#             'price': precio_unitario
+#         })
+
+#         flash('Producto agregado a la venta', 'success')
+#     else:
+#         flash('Producto no encontrado', 'danger')
+
+#     return redirect(url_for('registrar_venta'))
+
+# @app.route('/registrar_venta', methods=['GET', 'POST'])
+# def registrar_venta():
+#     if request.method == 'POST':
+#         # Manejar la solicitud POST para registrar la venta en la base de datos
+#         conn = db.conectar()
+#         cursor = conn.cursor()
+
+#         # Obtener el último id de venta
+#         cursor.execute("SELECT COALESCE(MAX(id_venta), 0) FROM venta")
+#         ultimo_id = cursor.fetchone()[0]
+#         proximo_id = ultimo_id + 1  # Incrementa para el próximo número de venta
+
+#         # Obtener datos de la venta
+#         ventas = session.get('venta_actual', [])  # Obtener la lista de ventas desde la sesión
+#         subtotal = sum(item['price'] * item['quantity'] for item in ventas)
+#         total = subtotal  # Aquí puedes agregar impuestos o descuentos si es necesario
+
+#         # Obtener el ID del usuario (suponiendo que el ID está almacenado en la sesión)
+#         fk_usuario = session.get('usuario_id', 2)  # Reemplaza 2 con un valor por defecto si es necesario
+
+#         # Insertar la venta en la tabla venta
+#         cursor.execute(
+#             "INSERT INTO venta (id_venta, fecha_venta, hora_venta, fk_usuario) VALUES (%s, CURRENT_DATE, CURRENT_TIME, %s)",
+#             (proximo_id, fk_usuario)
+#         )
+
+#         # Insertar los detalles de la venta en la tabla detalle_venta
+#         for item in ventas:
+#             cursor.execute(
+#                 "INSERT INTO detalle_venta (cantidad, fk_producto, fk_venta) VALUES (%s, %s, %s)",
+#                 (item['quantity'], item['code'], proximo_id)
+#             )
+
+#         conn.commit()
+#         cursor.close()
+#         conn.close()
+
+#         # Limpiar la sesión de la venta actual
+#         session['venta_actual'] = []
+
+#         # Redirigir a una página de confirmación o al índice
+#         return redirect(url_for('venta_confirmada', numero_venta=proximo_id))
+
+#     # Manejar la solicitud GET para mostrar el formulario de venta
+#     conn = db.conectar()
+#     cursor = conn.cursor()
+
+#     # Obtener el último id de venta
+#     cursor.execute("SELECT COALESCE(MAX(id_venta), 0) FROM venta")
+#     ultimo_id = cursor.fetchone()[0]
+#     proximo_id = ultimo_id + 1  # Incrementa para el próximo número de venta
+
+#     # Calcular subtotal y total de la venta actual
+#     venta_actual = session.get('venta_actual', [])
+#     subtotal = sum(item['price'] * item['quantity'] for item in venta_actual)
+#     total = subtotal  # Aquí puedes agregar impuestos o descuentos si es necesario
+
+#     cursor.execute('SELECT "nombre completo" FROM nombre_usuario WHERE "ID" = 2')
+#     usuario = cursor.fetchone()[0]
+
+#     cursor.close()
+#     conn.close()
+
+#     # Renderiza la página pasando el próximo número de venta y el total
+#     return render_template('regVenta.html', usuario=usuario, numero_venta=proximo_id, subtotal=subtotal, total=total, venta_actual=venta_actual)
+
+# #@app.route('/venta_confirmada/<int:numero_venta>', methods=['POST'])
+# #def venta_confirmada(numero_venta):
+#     # Lógica para registrar la venta
+#     #pass
+
+# @app.route('/registro_venta')
+# def registro_venta():
+#     numero_venta = 123  # Esto debería ser dinámico, basado en tu lógica
+#     return render_template('registro_venta.html', numero_venta=numero_venta)
+
+# @app.route('/venta_confirmada/<int:numero_venta>', methods=['POST'])
+# def venta_confirmada(numero_venta):
+#     ventas = request.form['ventas']
+#     # Procesar ventas y registrar en la base de datos
+#     return redirect(url_for('some_other_view'))  # Redirigir a otra vista después de registrar la venta
+
+# @app.route('/some_other_view')
+# def some_other_view():
+#     return "Venta registrada exitosamente."
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
