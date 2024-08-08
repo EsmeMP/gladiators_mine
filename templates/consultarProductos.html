@@ -4,14 +4,22 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Consultar Productos Gladiator's</title>
-    <link rel="stylesheet" href="../../Index_General/style.css">
-    <link rel="stylesheet" type="text/css"   href="../../styles/font/flaticon.css">
-    <link rel="stylesheet" href="../usuarioProducto CSS/consulta_general.css">
+    <link rel="stylesheet" href="../static/style/style.css">
+    <link rel="stylesheet" type="text/css" href="../static/font/flaticon.css">
+    <link rel="stylesheet" href="../static/style/consulta_general.css">
+    <link rel="stylesheet" href="../static/assets/font/flaticon.css">
+    <link rel="stylesheet" href="../static/consulta_general.css">
+    <link rel="stylesheet" href="../static/style.css">
+    <style>
+        .product-image {
+            max-width: 100px;
+            max-height: 100px;
+        }
+    </style>
 </head>
 <body> 
     <header>
         <section class="incons-container">
-            <!-- Aqui van  los iconos de las redes sociales, eslogan, correo y horarios -->
             <div class="incons">
                 <a href="/"><span class="flaticon-001-facebook"></span></a>
                 <a href="/"><span class="flaticon-003-whatsapp"></span></a>
@@ -21,17 +29,15 @@
                 <p>Más que una tienda, un universo de posibilidades...</p>
             </div>
             <div class="correo-a">
-                <a href="Gladiators99zxc@gmail.com">Gladiators99zxc@gmail.com</a>
+                <a href="mailto:Gladiators99zxc@gmail.com">Gladiators99zxc@gmail.com</a>
             </div>
             <div class="inf-p">
-                <p>Lun-Vie 10:00a.m--8:00p.m
-                Sab-Dom 9:00a.m--9:00p.m</p>
+                <p>Lun-Vie 10:00a.m--8:00p.m | Sab-Dom 9:00a.m--9:00p.m</p>
             </div>
         </section> 
         <nav>
-            <!-- Aqui va el logo y nombre de la tienda y el nombre de las secciones -->
             <section class="logo-gladiators">
-                <a href="index.html"><img src="../../assets/img/Logotipo_GladiatorsTransparente.png" alt="imagen-logo"></a>
+                <a href="index.html"><img src="../static/assets/img/Logotipo_GladiatorsTransparente.png" alt="imagen-logo"></a>
                 <h5>Gladiator's</h5>
             </section>
             <section class="secciones">
@@ -44,69 +50,79 @@
             </section>
         </nav>
     </header>
-    <h1 class="p">Consultar productos</h1>
-    <section class="barra_busqueda">
-        <!-- Aqui se encuentra la barra de busqueda -->
-        <form class="textbox" action="/search" method="GET">
-            <input type="text" name="buscar" placeholder="Buscar...">
-            <button type="submit">Buscar</button>
-            <svg class="icon" width="24" height="24" viewBox="0 0 24 24">
-            <!-- SVG content -->
-            </svg>
-            <svg class="icon" width="24" height="24" viewBox="0 0 24 24">
-            <!-- SVG content -->
-            </svg>
-        </form>
-    </section>
-    <br><br>
-        <div>
+    <main>
+        <div class="container">
+            <h1 class="p">Consultar Productos</h1>
+            <br><br>
+            <section class="barra_busqueda">
+                <form class="textbox" method="POST" action="{{ url_for('buscar_producto') }}">
+                    <input class="form-control" type="text" name="buscar" placeholder="Buscar por nombre o ID" aria-label="Buscar">
+                    <button class="btn" type="submit">Buscar</button>
+                    <br><br>
+                </form>
+            </section>
             <section class="table_consulta">
                 <table>
                     <thead>
                         <tr class="fila">
-                        <th>Id productos</th>
-                        <th>Nombre</th>
-                        <th>Precio</th>
-                        <th>Numero de <br> existencias de <br> producto</th>
-                        <th>Marca</th>
-                        <th>Categoria <br> del <br> producto </th>
-                        <th>Descripcion </th>
-                        <th>Foto </th>
-                        <th>Editar</th>
-                        <th>Eliminar</th>
-                        <th>Detalles <br> de <br> producto</th>
+                            <th>Id</th>
+                            <th>Nombre</th>
+                            <th>Código de barras</th>
+                            <th>Precio</th>
+                            <th>Stock</th>
+                            <th>Descripción</th>
+                            <th>Marca</th>
+                            <th>Categoría</th>
+                            <th>Imagen</th>
+                            <th>Acciones</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr class="botones">
-                            <td>120</td>
-                            <td>Gorra</td>
-                            <td>$200</td>
-                            <td>Muchas</td>
-                            <td>Finlandia</td>
-                            <td>Accesorio</td>
-                            <td>Gorra curva</td>
-                            <td>N/A</td>
-                            <td><button>Editar</button></td>
-                            <td><button>Eliminar</button></td>
-                            <td><button>Ver</button></td>
-                        </tr>
-                        <tr class="botones">
-                            <td>100</td>
-                            <td>Calcetines</td>
-                            <td>$80</td>
-                            <td>1.5</td>
-                            <td>Prisas</td>
-                            <td>Calzado</td>
-                            <td>Sin hoyos</td>
-                            <td>N/A</td>
-                            <td><button>Editar</button></td>
-                            <td><button>Eliminar</button></td>
-                            <td><button>Ver</button></td>
-                        </tr>
-                        </tr>
+                        {% if datos %}
+                            {% for fila in datos %}
+                                {% if fila[0] is integer %}
+                                    <tr>
+                                        <td>{{ fila[0] }}</td>
+                                        <td>{{ fila[1] }}</td>
+                                        <td>{{ fila[2] }}</td>
+                                        <td>{{ fila[3] }}</td>
+                                        <td>{{ fila[4] }}</td>
+                                        <td>{{ fila[5] }}</td>
+                                        <td>{{ fila[6] }}</td>
+                                        <td>{{ fila[7] }}</td>
+                                        
+                                        <td>
+                                            {% if fila[8] %}
+                                                <img src="{{ url_for('static', filename=fila[8]) }}" alt="Imagen del producto" class="product-image">
+                                            {% else %}
+                                                No disponible
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            <form action="{{ url_for('update1_producto', id_producto=fila[0]) }}" method="GET" style="display:inline;">
+                                                <button type="submit" class="boton-2">Editar</button>
+                                            </form>
+                                            <form action="{{ url_for('delete_producto', id_producto=fila[0]) }}" method="POST" style="display:inline;">
+                                                <button type="submit" class="boton-2">Eliminar</button>
+                                            </form>
+                                            <a href="{{ url_for('consultar_producto', id_producto=fila[0]) }}" class="boton-2">Ver</a>
+                                        </td>
+                                    </tr>
+                                {% else %}
+                                    <tr>
+                                        <td colspan="10">ID inválido: {{ fila[0] }}</td>
+                                    </tr>
+                                {% endif %}
+                            {% endfor %}
+                        {% else %}
+                            <tr>
+                                <td colspan="10">No se encontraron productos.</td>
+                            </tr>
+                        {% endif %}
                     </tbody>
                 </table>
             </section>
+        </div>
+    </main>
 </body>
 </html>

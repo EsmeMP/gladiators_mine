@@ -35,3 +35,29 @@ h1{
     border-color: #BCC1CAFF;
     border-style:solid;
 }
+
+button[type="submit"] {
+    width: 100px;
+    height: 40px;
+    padding: 0 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: Abel;
+    font-size: 20px;
+    line-height: 36px;
+    font-weight: 700;
+    color: #342E00FF;
+    background: #FFF07FFF;
+    opacity: 1;
+    border: none;
+    border-radius: 8px;
+    margin-left: 70%;
+    margin-bottom: 30%;
+    
+}
+
+button[type="submit"]:hover {
+    background-color: black;
+    color: #FFF399FF;
+}

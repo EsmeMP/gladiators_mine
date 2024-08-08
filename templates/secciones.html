@@ -3,58 +3,66 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Secciones Gladiator's</title>
-    <link rel="stylesheet" href="../static/seccion.css">
-    <link rel="stylesheet" href="../static/assets/font/flaticon.css">
-    <link rel="stylesheet" href="../static/style.css">
+    <title>Secciones - Gladiator's</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='assets/font/flaticon.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='seccion.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style/style.css') }}">
 </head>
 <body>
     <header>
         <section class="incons-container">
-            <!-- Aqui van  los iconos de las redes sociales, eslogan, correo y horarios -->
             <div class="incons">
-                <a href="/"><span class="flaticon-001-facebook"></span></a>
-                <a href="/"><span class="flaticon-003-whatsapp"></span></a>
-                <a href="/"><span class="flaticon-011-instagram"></span></a>
+                <a href="/"><span class="flaticon-001-facebook" aria-label="Facebook"></span></a>
+                <a href="/"><span class="flaticon-003-whatsapp" aria-label="WhatsApp"></span></a>
+                <a href="/"><span class="flaticon-011-instagram" aria-label="Instagram"></span></a>
             </div>
             <div class="inf-p">
                 <p>Más que una tienda, un universo de posibilidades...</p>
             </div>
             <div class="correo-a">
-                <a href="Gladiators99zxc@gmail.com">Gladiators99zxc@gmail.com</a>
+                <a href="mailto:Gladiators99zxc@gmail.com">Gladiators99zxc@gmail.com</a>
             </div>
             <div class="inf-p">
-                <p>Lun-Vie 10:00a.m--8:00p.m
-                Sab-Dom 9:00a.m--9:00p.m</p>
+                <p>Lun-Vie 10:00a.m--8:00p.m<br>Sab-Dom 9:00a.m--9:00p.m</p>
             </div>
         </section>
         <nav>
-            <!-- Aqui va el logo y nombre de la tienda y el nombre de las secciones -->
             <section class="logo-gladiators">
-                <a href="index.html"><img src="../static/assets/img/Logotipo_GladiatorsTransparente.png" alt="imagen-logo"></a>
+                <a href="{{ url_for('index') }}"><img src="{{ url_for('static', filename='assets/img/Logotipo_GladiatorsTransparente.png') }}" alt="Logotipo Gladiator's"></a>
                 <h5>Gladiator's</h5>
             </section>
-            <section class="secciones">
-                <a href="{{ url_for('seccion')}}">Inicio</a>
-                <a href="{{ url_for('registrar_venta')}}">Ventas</a>
-                <a href="../">Productos</a>
-                <a href="{{ url_for('consultar_usuarios')}}">Usuarios</a>
-                <a href="./pages/index.html">Soporte</a>
-                <a href="./pages/index.html">Cerrar Sesión</a>
+            <section class="secciones" style="color: yellow;">
+                <a href="{{ url_for('secciones') }}">Inicio</a>
+                <a href="{{ url_for('ventas') }}">Ventas</a>
+                <a href="{{ url_for('productos') }}">Productos</a>
+                {% if rol %}
+                    <a href="{{ url_for('usuarios') }}">Usuarios</a>
+                {% endif %}
+                <a href="{{ url_for('soporte') }}">Soporte</a>
+                <a href="{{ url_for('logout') }}">Cerrar Sesión</a>
             </section>
         </nav>
     </header>
     <main>
-        <h1>Bienvenido a Gladiator's</h1>
+        <h1>Bienvenido, {{ username }}</h1>
+        <hr class="lin">
         <div class="button-container">
-            <div class="button-ventas">
-                <a href="../../Ventas/Ventas.HTML/regVenta.html">Ventas</a>
-            </div>
-            <div class="button-usuario">
-                <a href="{{ url_for('registrar_usuario')}}">Usuario</a>
-            </div>
+            {% if rol %}
+                <div class="button-ventas">
+                    <a href="{{ url_for('ventas') }}" style="color: black;">Ventas</a>
+                </div>
+                <div class="button-usuario">
+                    <a href="{{ url_for('usuarios') }}" style="color: black;">Usuarios</a>
+                </div>
+            {% else %}
+                <div class="button-ventas">
+                    <a href="{{ url_for('ventas') }}" style="color: black;">Ventas</a>
+                </div>
+            {% endif %}
             <div class="button-producto">
-                <a href="../../ProductosUsuarios/ProductosHTML/regProduct.html">Producto</a></div>
+                <a href="{{ url_for('productos') }}" style="color: black;">Productos</a>
+            </div>
         </div>
     </main>
 </body>

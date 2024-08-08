@@ -4,14 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Inicio Gladiator's</title>
-    <link rel="stylesheet" href="../../Index_General/style.css">
-    <link rel="stylesheet" type="text/css"   href="../../styles/font/flaticon.css">
-    <link rel="stylesheet" href="../Login_Seccion CSS/login.css">
-</head>
+    <link rel="stylesheet" href="../static/login.css">
+    <link rel="stylesheet" href="../static/assets/font/flaticon.css">
+    <link rel="stylesheet" href="../static/style.css">
 <body>
     <header>
         <section class="incons-container">
-            <!-- Aqui van  los iconos de las redes sociales, eslogan, correo y horarios -->
             <div class="incons">
                 <a href="/"><span class="flaticon-001-facebook"></span></a>
                 <a href="/"><span class="flaticon-003-whatsapp"></span></a>
@@ -21,7 +19,7 @@
                 <p>Más que una tienda, un universo de posibilidades...</p>
             </div>
             <div class="correo-a">
-                <a href="Gladiators99zxc@gmail.com">Gladiators99zxc@gmail.com</a>
+                <a href="mailto:Gladiators99zxc@gmail.com">Gladiators99zxc@gmail.com</a>
             </div>
             <div class="inf-p">
                 <p>Lun-Vie 10:00a.m--8:00p.m
@@ -29,33 +27,25 @@
             </div>
         </section>
         <nav>
-            <!-- Aqui va el logo y nombre de la tienda y el nombre de las secciones -->
             <section class="logo-gladiators">
-                <a href="index.html"><img src="../../assets/img/Logotipo_GladiatorsTransparente.png" alt="imagen-logo"></a>
+                <a href="index.html"><img src="../static/assets/img/Logotipo_GladiatorsTransparente.png" alt="imagen-logo"></a>
                 <h5>Gladiator's</h5>
-            </section>
-            <section class="secciones">
-                <a href="../../Index_General/">Inicio</a>
-                <a href="./pages/index.html">Ventas</a>
-                <a href="./pages/index.html">Productos</a>
-                <a href="./pages/index.html">Usuarios</a>
-                <a href="./pages/index.html">Soporte</a>
-                <a href="./pages/index.html">Cerrar Sesión</a>
             </section>
         </nav>
     </header>
     <main class="main">
         <div class="login-container">
-            <form action="/login" method="POST">
+            <form action="{{ url_for('login') }}" method="POST">
                 <h2>Iniciar Sesión</h2><br>
-                <input type="email" name="email" placeholder="Usuario"> 
-                <input type="password" name="password" placeholder="Contraseña">
-                <!-- El place holder sirve para poner el texto dentro de los recuadros -->
+                <label for="username">Usuario</label>
+                <input type="text" name="username" id="username" placeholder="Usuario" required>
+                <label for="password">Contraseña</label>
+                <input type="password" name="password" id="password" placeholder="Contraseña" required>
                 <div class="remember-me">
-                    <input type="checkbox" id="remember" name="remember">
-                    <label for="remember">Recuérdame</label>
-                </div>
-                <a href="#" class="forgot-password">¿Olvidaste tu contraseña?</a>
+                    <!-- <input type="checkbox" id="remember" name="remember"> -->
+                    <!-- <label for="remember">Recuérdame</label> -->
+                </div> <br><br>
+                <!-- <a href="#" class="forgot-password">¿Olvidaste tu contraseña?</a><br> -->
                 <button type="submit">Iniciar sesión</button>
             </form>
         </div>

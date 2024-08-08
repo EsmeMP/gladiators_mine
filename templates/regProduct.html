@@ -4,14 +4,21 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registrar Producto Gladiator's</title>
-    <link rel="stylesheet" href="../../Index_General/style.css">
-    <link rel="stylesheet" type="text/css"   href="../../styles/font/flaticon.css">
-    <link rel="stylesheet" href="../usuarioProducto CSS/registrar.CSS">
+    <link rel="stylesheet" href="../static/assets/font/flaticon.css">
+    <link rel="stylesheet" href="../static/registrar.CSS">
+    <link rel="stylesheet" href="../static/style.css">
+    <link rel="stylesheet" href="../static/registrar.CSS">
+    <style>
+        .preview-img {
+            max-width: 100%;
+            max-height: 300px;
+            margin-top: 10px;
+        }
+    </style>
 </head>
 <body>
     <header>
         <section class="incons-container">
-            <!-- Aqui van  los iconos de las redes sociales, eslogan, correo y horarios -->
             <div class="incons">
                 <a href="/"><span class="flaticon-001-facebook"></span></a>
                 <a href="/"><span class="flaticon-003-whatsapp"></span></a>
@@ -21,17 +28,15 @@
                 <p>Más que una tienda, un universo de posibilidades...</p>
             </div>
             <div class="correo-a">
-                <a href="Gladiators99zxc@gmail.com">Gladiators99zxc@gmail.com</a>
+                <a href="mailto:Gladiators99zxc@gmail.com">Gladiators99zxc@gmail.com</a>
             </div>
             <div class="inf-p">
-                <p>Lun-Vie 10:00a.m--8:00p.m
-                Sab-Dom 9:00a.m--9:00p.m</p>
+                <p>Lun-Vie 10:00a.m--8:00p.m | Sab-Dom 9:00a.m--9:00p.m</p>
             </div>
         </section>
         <nav>
-            <!-- Aqui va el logo y nombre de la tienda y el nombre de las secciones -->
             <section class="logo-gladiators">
-                <a href="index.html"><img src="../../assets/img/Logotipo_GladiatorsTransparente.png" alt="imagen-logo"></a>
+                <a href="index.html"><img src="../static/assets/img/Logotipo_GladiatorsTransparente.png" alt="imagen-logo"></a>
                 <h5>Gladiator's</h5>
             </section>
             <section class="secciones">
@@ -44,40 +49,59 @@
             </section>
         </nav>
     </header>
-    <h1>Registrar producto</h1>
     <main>
-        <section class="label">
-        <label for="nombre">ID:</label>
-        <input type="text" id="id" name="id" autocomplete="id" required>
-        <br><br>
-        <label for="nombre">Nombre:</label>
-        <input type="text" id="nombre" name="nombre" autocomplete="name" required>
-        <br><br>
-        <label for="nombre">Precio:</label>
-        <input type="double" id="precio" name="precio" autocomplete="precio" required>
-        <br><br>
-        </section>
-        <section class="label">
-        <label for="nombre">Numero de existencias:</label>
-        <input type="int" id="existencias" name="existencias" autocomplete="existencias" required>
-        <br><br>
-        <label for="nombre">Marca del producto:</label>
-        <input type="text" id="marca" name="marca" autocomplete="marca" required>
-        <br><br>
-        <label for="nombre">Categoría del producto:</label>
-        <input type="text" id="categoria" name="categoria" autocomplete="categoria" required>
-        <br><br>
-        </section>
-        <section class="label">
-        <label for="nombre">Codidgo de barras:</label>
-        <input type="text" id="codigo" name="codigo" autocomplete="codigo" required>
-        <br><br>
-        <label for="nombre">Descripcion:</label>
-        <input type="text" id="descripcion" name="descripcion" autocomplete="descripcion" required>
-        <br><br>
-        </section>
-        <button class="blog-button" type="submit"><b>Registrar</b></button>
+        <div class="container">
+            <h1>Registrar Producto</h1>
+            <form action="{{ url_for('registrar_producto_post') }}" method="POST" enctype="multipart/form-data">
+                <section class="foto">
+                    <foto for="imagen">Imagen:</foto>
+                    <input type="file" id="imagen" name="imagen" required>
+                </section>
+                <section class="label">
+                    <label for="nombre">Nombre:</label>
+                    <input type="text" id="nombre" name="nombre" required>
+                    <label for="apellido_paterno">Apellido Paterno:</label>
+                    <input type="text" id="apellido_paterno" name="apellido_paterno" required>
+                    <label for="apellido_materno">Apellido Materno:</label>
+                    <input type="text" id="apellido_materno" name="apellido_materno" required>
+                    <label for="domicilio">Domicilio:</label>
+                    <input type="text" id="domicilio" name="domicilio" required>
+                </section>
+                <section class="label">
+                    <label for="numero_telefonico">Número telefónico:</label>
+                    <input type="text" id="numero_telefonico" name="numero_telefonico" required>
+                    <label for="curp">CURP:</label>
+                    <input type="text" id="curp" name="curp" required>
+                    <label for="correo_electronico">Correo electrónico:</label>
+                    <input type="email" id="correo_electronico" name="correo_electronico" required>
+                    <label for="tipos_de_usuario">Tipo de usuario:</label>
+                    <select name="tipos_de_usuario" id="tipos_de_usuario">
+                        <option value="cajero">Cajero</option>
+                        <option value="administrador">Administrador</option>
+                    </select>
+                </section>
+                <section class="label">
+                    <label for="mes">Selecciona fecha de contratación:</label>
+                    <input type="date" name="date" id="date">
+                    <label for="nombre_usuario">Nombre de Usuario:</label>
+                    <input type="text" id="nombre_usuario" name="nombre_usuario" required>
+                    <label for="contraseña">Contraseña:</label>
+                    <input type="password" id="contraseña" name="contraseña" required>
+                </section>
+                
+                <button type="submit" class="btn btn-primary mt-3" onclick="confirm('Registrado exitosamente')">Registrar</button>
+            </form>
+        </div>
     </main>
-</header>
+    <script>
+        document.getElementById('imagen').onchange = function (event) {
+            const [file] = event.target.files;
+            if (file) {
+                const preview = document.getElementById('preview');
+                preview.src = URL.createObjectURL(file);
+                preview.style.display = 'block';
+            }
+        };
+    </script>
 </body>
 </html>

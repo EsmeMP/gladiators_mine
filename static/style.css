@@ -1,181 +1,55 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&family=Roboto+Mono:ital,wght@0,100..700;1,100..700&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
 
-:root{
-    --color-primary:#FFEA99;
-    --color-dark-yellow:#FFBF00;
-    --color-gray-header:#323842;
-    --color-black:#000000;
-    --color-white:#ffffff;
-    --font-medium:1.4rem;
-    --font-large:1.6rem;
+:root {
+    --color-primary: #FFEA99;
+    --color-dark-yellow: #FFBF00;
+    --color-gray-header: #323842;
+    --color-black: #000000;
+    --color-white: #ffffff;
+    --font-medium: 1.4rem;
+    --font-large: 1.6rem;
 }
 
 /* Restablecer estilos predeterminados */
 * {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
-
-
-/* header {
-    width: 100%;
-    height: 140px; 
-    display: grid;
-    grid-template-rows: 1fr 1fr;
-}
-
-.header-icons-container {
-    width: 100%;
-    height: 80px;
-    display: grid;
-    background-color: black;
-    border-top: 25px solid rgb(93, 93, 93);
-}
-
-header .icons span {
-    color: var(--color-white);
-}
-
-.header-icons-container .icons {
-    width: 300px;
-    height: auto;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    justify-self: end;
-    margin-right: 50px;
-}
-
-header .icons span {
-    color:white;
-}
-
-nav .logo-Gladiators {
-    margin-left: 50px;
-}
-
-nav .inicio-Sesión{
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-    margin-right: 50px;
-}
-
-nav .inicio-Sesión a{
-    color: #ffff00;
-    border-bottom: 2px solid  #ffff00;
-    font-weight: bold;
-    font-size: 20px;
-}
-
-nav .Ventas{
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-    margin-right: 50px;
-}
-
-nav .Ventas a{
-    color:  #ffff00 ;
-    border-bottom: 2px solid  #ffff00  ;
-    font-weight: bold;
-    font-size: 20px;
-}
-
-nav .Productos{
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-    margin-right: 50px;
-}
-
-nav .Productos a{
-    color:  #ffff00;
-    border-bottom: 2px solid  #ffff00  ;
-    font-weight: bold;
-    font-size: 20px;
-}
-
-nav .Usuarios{
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-    margin-right: 50px;
-}
-
-nav .Usuarios a{
-    color:  #ffff00 ;
-    border-bottom: 2px solid  #ffff00  ;
-    font-weight: bold;
-    font-size: 20px;
-}
-
-nav .Soporte{
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-    margin-right: 50px;
-}
-
-nav .Soporte a{
-    color:  #ffff00 ;
-    border-bottom: 2px solid  #ffff00  ;
-    font-weight: bold;
-    font-size: 20px;
-}
-
-nav .Cerrar-sesión{
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-    margin-right: 50px;
-}
-
-nav .Cerrar-sesión a{
-    color: #ffff00 ;
-    border-bottom: 2px solid #ffff00 ;
-    font-weight: bold;
-    font-size: 20px;
-} */
 
 /* -----Primera Seccion------ */
 .incons-container {
-    background-color: var(--color-gray-header); 
+    background-color: var(--color-gray-header);
     color: var(--color-primary);
     font-size: 75%;
     padding: 0 30px;
+    display: flex;
+    justify-content: space-around; /* Centra horizontalmente */
+    align-items: end;
+    flex-wrap: wrap; /* Permite que los elementos se envuelvan en pantallas más pequeñas */
 }
 
-.incons,
-.incons-container div,
-.incons-container p {
-  margin: 0;
-  padding: 0;
+.incons, .incons-container div, .incons-container p {
+    margin: 0;
+    padding: 0;
 }
 
 .incons span {
-  color: var(--color-primary);
-}
-
-.incons-container {
-  display: flex;
-  justify-content: space-around;/* Centra horizontalmente */
-  align-items: end;
+    color: var(--color-primary);
 }
 
 .incons {
-  background-color: var(--color-black);
+    background-color: var(--color-black);
 }
 
-.correo-a a{
+.correo-a a {
     color: var(--color-primary);
     text-decoration: none;
-    font-style: italic; 
+    font-style: italic;
 }
 
 .correo-a a:active {
-    color:var(--color-dark-yellow); 
+    color: var(--color-dark-yellow);
 }
 
 .incons a {
@@ -188,14 +62,45 @@ nav .Cerrar-sesión a{
     padding: 0 0px 0 10px;
 }
 
-.incons-container div,
-.incons-container p {
-  flex: 0 1 200px; /* Toma 200px como base y permite reducirse, pero no crecerá tanto */
+.incons-container div, .incons-container p {
+    flex: 0 1 200px; /* Toma 200px como base y permite reducirse, pero no crecerá tanto */
 }
 
 .incons {
     position: relative;
     right: 30px;
+}
+
+/* Media Queries para responsividad */
+@media (max-width: 768px) {
+    .incons-container {
+        flex-direction: column;
+        align-items: center;
+        padding: 20px 10px;
+    }
+
+    .incons-container div, .incons-container p {
+        flex: 0 1 auto; /* Permite que los elementos crezcan y se reduzcan según sea necesario */
+        width: 100%;
+        text-align: center;
+        margin-bottom: 10px; /* Agrega un margen inferior para separar los elementos */
+    }
+
+    .incons {
+        position: static; /* Restablece la posición relativa */
+        margin-bottom: 10px;
+    }
+
+    .incons a {
+        width: auto;
+        margin: 0 10px;
+    }
+
+    .correo-a a {
+        display: block;
+        text-align: center;
+        margin-top: 10px;
+    }
 }
 
 /* ------Segunda Seccion ------- */
@@ -234,7 +139,71 @@ nav {
     margin-left: 20px;
     text-decoration: none;
     color: var(--color-primary);
+}@media (max-width: 768px) {
+    nav {
+        flex-direction: column; /* Cambia la dirección del flujo a columna */
+        align-items: flex-start; /* Alinea los elementos al inicio */
+        padding: 10px 20px; /* Reduce el padding */
+    }
+
+    .logo-gladiators {
+        margin-bottom: 10px; /* Espacio debajo del logo */
+    }
+
+    .secciones {
+        flex-direction: column; /* Coloca los enlaces en una columna */
+        width: 100%; /* Hace que las secciones ocupen el ancho completo */
+        align-items: flex-start; /* Alinea los enlaces al inicio */
+    }
+
+    .secciones a {
+        margin-left: 0; /* Elimina el margen izquierdo */
+        margin-bottom: 10px; /* Espacio entre los enlaces */
+    }
 }
+
+@media (max-width: 480px) {
+    .logo-gladiators img {
+        width: 30px; /* Reduce el tamaño del logo en pantallas más pequeñas */
+        margin-right: 10px;
+    }
+
+    nav {
+        padding: 10px 15px; /* Ajusta el padding para pantallas muy pequeñas */
+    }
+
+    .secciones a {
+        font-size: 14px; /* Reduce el tamaño de la fuente para pantallas pequeñas */
+    }
+}
+
+#seccion {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: -25px;
+}
+
+#seccion a {
+    color:var(--color-primary);
+    font-family:initial;
+    right: 50%;
+    text-align: right;
+}
+
+#aumento a {
+    display: flex;
+    justify-content: flex-end;
+    font-family: initial;
+    margin-top: -25px;
+}
+
+#aumento {
+    color:var(--color-primary);
+    font-family:initial;
+    padding-top: 10px;
+    font-size: 30px;
+}
+
 
 .iniciarsesion{
     background-color: #131313;
@@ -246,4 +215,498 @@ nav {
     height: 700px;
 }
 
+/* Estilos básicos */
+.inf-p {
+    display: grid;
+    width: 60%;
+    left: -5%;
+    color: var(--color-primary);
+}
 
+.correo-a {
+    display: grid;
+    width: 60%;
+    left: -5%;
+    color: var(--color-primary);
+}
+
+.imagen {
+    display: block;
+    margin: auto;
+    align-self: center;
+    align-items: center;
+    padding: 0px;
+    width: 65%;
+    height: 35%;
+}
+
+/* Estilos responsivos */
+@media (max-width: 768px) {
+    .inf-p, .correo-a {
+        width: 80%; /* Aumenta el ancho en pantallas más pequeñas */
+        left: 0; /* Restablece la posición */
+        margin: 0 auto; /* Centra el contenido */
+    }
+
+    .imagen {
+        width: 80%; /* Ajusta el tamaño de la imagen */
+        height: auto; /* Mantiene la relación de aspecto */
+    }
+}
+
+@media (max-width: 480px) {
+    .inf-p, .correo-a {
+        width: 90%; /* Aumenta aún más el ancho en pantallas pequeñas */
+        font-size: 14px; /* Ajusta el tamaño de la fuente si es necesario */
+        margin: 0 auto; /* Centra el contenido */
+    }
+
+    .imagen {
+        width: 90%; /* Ajusta el tamaño de la imagen para pantallas muy pequeñas */
+        height: auto; /* Mantiene la relación de aspecto */
+    }
+}
+
+.carousel-inner{
+    display: block;
+    margin: auto;
+    align-self: center;
+    align-items: center;
+    padding: 0px;
+    width: 65%;
+    height: 5%
+}
+
+.d-block w-100 {
+    display: block;
+    margin: auto;
+    align-self: center;
+    align-items: center;
+    padding: 0px;
+    width: 65%;
+    height: 5%
+
+}
+
+.carousel-inner {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 500px; /* Ajusta la altura del carousel según tus necesidades */
+    padding-top: 500px;
+}
+
+.carousel-item img {
+    padding: 15% ;
+    max-width: 80%; /* Ajusta el tamaño de las imágenes */
+    max-height: 80%; /* Ajusta la altura máxima de las imágenes */
+    margin:-50%; /* Centra las imágenes horizontalmente */
+}
+
+/* Estilos básicos para el carrusel */
+.carousel-inner {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 500px; /* Altura del carrusel en pantallas grandes */
+    padding-top: 0px; /* Espacio superior (ajustar según sea necesario) */
+}
+
+.carousel-item img {
+    padding: 15%;
+    max-width: 100%; /* Ajusta el tamaño de las imágenes */
+    max-height: 100%; /* Ajusta la altura máxima de las imágenes */
+    margin: -50%; /* Centra las imágenes horizontalmente */
+}
+
+/* Estilos responsivos */
+
+
+.color {
+    background-color: #0c0c0c;
+    height: 5%;
+}
+
+#tamaño a{
+    display: flex;
+    justify-content: flex-end;
+    max-width: 500px;
+    color: var(--color-primary);
+}
+
+#tamaño {
+    color: var(--color-primary);
+    font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    padding-top: 0px;
+    margin-top: 10%;
+    align-items: center;
+    text-align: center;
+    font-size: 70px;
+}
+
+
+/* @keyframes blink {
+    0% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+} */
+#tamaño{
+    animation:alternate-reverse;
+    box-shadow: 10px 10px 30px 10px rgba(0, 0, 0, 0.2);
+}
+
+#tamaño {
+    color: var(--color-primary);
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    padding-top: 10px;
+    margin-top: 0;
+    text-align: center;
+    font-size: 60px;
+    box-shadow: 10px 10px 30px 10px rgba(0, 0, 0, 0.2);
+}
+
+.cursor {
+    display: inline-block;
+    margin-left: 2px;
+    animation: blink 0.7s steps(1) infinite;
+}
+
+@keyframes blink {
+    0% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+
+/* Estilos básicos */
+.line {
+    border: 2%;
+    height: 2px;
+    background-color: yellow;
+    width: 60%;
+    margin: 20px auto;
+}
+
+.container {
+    text-align: center;
+    font-weight: bold;
+}
+
+header h1 {
+    color: yellow;
+    margin-top: 20px;
+    margin-left: 38%;
+}
+
+/* Estilos responsivos */
+@media (max-width: 768px) {
+    .line {
+        width: 80%; /* Aumenta el ancho en pantallas más pequeñas */
+    }
+
+    header h1 {
+        margin-left: 20%; /* Ajusta la alineación del texto en pantallas medianas */
+        font-size: 24px; /* Ajusta el tamaño de la fuente */
+    }
+}
+
+@media (max-width: 480px) {
+    .line {
+        width: 90%; /* Aumenta el ancho en pantallas más pequeñas */
+        height: 1px; /* Reduce la altura de la línea */
+    }
+
+    header h1 {
+        margin-left: 10%; /* Ajusta la alineación del texto en pantallas pequeñas */
+        font-size: 18px; /* Reduce el tamaño de la fuente */
+    }
+}
+
+/* Estilos básicos */
+.locations {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding-left: 0;
+    margin-left: 10%;
+}
+
+.location-item {
+    display: flex;
+    flex-direction: column; /* Alinear en filas */
+    align-items: flex-start;
+    margin-bottom: 20px;
+}
+
+.location-item img {
+    width: 200px; /* Ajustar el tamaño de la imagen según sea necesario */
+    height: auto;
+    margin-right: 20px; /* Espacio entre la imagen y el texto */
+}
+
+.location-info {
+    text-align: left;
+    flex-direction: column;
+}
+
+.location-info h2 {
+    color: #ffcc00; /* Color del título */
+}
+
+.location-info p {
+    margin: 5px 0;
+}
+
+.location-info p:last-child {
+    font-weight: bold;
+    font-size: 20px;
+}
+
+/* Estilos responsivos */
+@media (max-width: 768px) {
+    .locations {
+        margin-left: 5%; /* Reduce el margen izquierdo en pantallas medianas */
+    }
+
+    .location-item {
+        margin-bottom: 15px; /* Ajusta el margen inferior */
+    }
+
+    .location-item img {
+        width: 150px; /* Reduce el tamaño de la imagen */
+        margin-right: 15px; /* Ajusta el espacio entre la imagen y el texto */
+    }
+
+    .location-info h2 {
+        font-size: 18px; /* Ajusta el tamaño del título */
+    }
+
+    .location-info p:last-child {
+        font-size: 18px; /* Ajusta el tamaño de la fuente del último párrafo */
+    }
+}
+
+@media (max-width: 480px) {
+    .locations {
+        margin-left: 0; /* Elimina el margen izquierdo en pantallas pequeñas */
+        padding-left: 10px; /* Añade un poco de padding para pantallas pequeñas */
+    }
+
+    .location-item {
+        margin-bottom: 10px; /* Reduce el margen inferior */
+    }
+
+    .location-item img {
+        width: 100px; /* Reduce aún más el tamaño de la imagen */
+        margin-right: 10px; /* Ajusta el espacio entre la imagen y el texto */
+    }
+
+    .location-info h2 {
+        font-size: 16px; /* Ajusta el tamaño del título */
+    }
+
+    .location-info p:last-child {
+        font-size: 16px; /* Ajusta el tamaño de la fuente del último párrafo */
+    }
+}
+
+/* Estilos básicos */
+.contact-form {
+    padding: 20%;
+    margin: 8%;
+    border-radius: 15px;
+    position: relative;
+    top: -1000px;
+    left: 300px;
+    align-items: center;
+    justify-content: center;
+    width: 85%;
+    font-weight: bold;
+}
+
+.contact-form form {
+    display: flex;
+    flex-direction: column;
+}
+
+.contact-form label, .contact-form input, .contact-form select, .contact-form button {
+    margin: 7px 0;
+}
+
+.contact-form input, .contact-form select, .contact-form textarea {
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    background-color: #eee3b6;
+}
+
+.contact-form button {
+    padding: 13px;
+    width: 250px;
+    background-color: rgb(234, 234, 55);
+    border: none;
+    border-radius: 30px;
+    cursor: pointer;
+    text-align: center;
+    display: block;
+    margin-left: 25%;
+    font-weight: bold;
+}
+
+.contact-form button:hover {
+    background-color: #ffcc00;
+    transform: scale(1.1);
+}
+
+/* Estilos responsivos */
+@media (max-width: 768px) {
+    .contact-form {
+        padding: 10%;
+        margin: 5%;
+        top: 0;
+        left: 0;
+        width: 90%; /* Ajusta el ancho para pantallas medianas */
+    }
+
+    .contact-form button {
+        width: 200px; /* Reduce el tamaño del botón */
+        margin-left: auto; /* Centra el botón en pantallas medianas */
+        margin-right: auto; /* Centra el botón en pantallas medianas */
+    }
+}
+
+@media (max-width: 480px) {
+    .contact-form {
+        padding: 5%;
+        margin: 2%;
+        width: 95%; /* Ajusta el ancho para pantallas pequeñas */
+    }
+
+    .contact-form button {
+        width: 150px; /* Reduce aún más el tamaño del botón */
+        margin-left: auto; /* Centra el botón */
+        margin-right: auto; /* Centra el botón */
+    }
+
+    .contact-form input, .contact-form select, .contact-form textarea {
+        font-size: 14px; /* Ajusta el tamaño de la fuente */
+    }
+}
+/* Estilos básicos */
+.login-boton {
+    display: grid;
+    position:absolute; /* Cambia a 'fixed' para mantenerlo en una posición fija */
+    top: 55px; /* Ajusta la posición superior */
+    right: 50px; /* Ajusta la posición derecha */
+    background-color: var(--color-primary);
+    color: black;
+    border: none;
+    padding: 15px 25px; /* Relleno interno del botón */
+    cursor: pointer;
+    font-weight: bold;
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra */
+    transition: background-color 0.3s, transform 0.3s;
+}
+
+.login-boton:hover {
+    color: var(--color-white);
+    background-color: #e6b800;
+    transform: scale(1.2); /* Aumenta el tamaño al pasar el cursor */
+}
+
+.login-boton:active {
+    background-color: #cca300;
+    transform: scale(1.2);
+}
+
+/* Estilos responsivos */
+@media (max-width: 768px) {
+    .login-boton {
+        top: 40px; /* Ajusta la posición superior para pantallas medianas */
+        right: 20px; /* Ajusta la posición derecha para pantallas medianas */
+        padding: 12px 20px; /* Ajusta el tamaño del padding */
+    }
+}
+
+@media (max-width: 480px) {
+    .login-boton {
+        top: 20px; /* Ajusta la posición superior para pantallas pequeñas */
+        right: 10px; /* Ajusta la posición derecha para pantallas pequeñas */
+        padding: 10px 15px; /* Ajusta el tamaño del padding */
+        font-size: 14px; /* Ajusta el tamaño de la fuente */
+    }
+}
+
+
+/* Estilos básicos */
+footer {
+    background-color: #3f474f;
+    padding: 50px; /* Ajusta el padding a un valor razonable */
+    margin-top: 0; /* Quita el margen superior excesivo */
+    text-align: center; /* Centra el contenido del footer */
+}
+
+footer h1 {
+    color: yellow;
+    margin-top: 0; /* Ajusta el margen superior */
+    margin-left: 0; /* Quita el margen izquierdo */
+}
+
+footer .social-media {
+    display: flex; /* Usa flexbox para alinear los elementos sociales */
+    justify-content: center; /* Centra los elementos sociales horizontalmente */
+    gap: 20px; /* Espacio entre los iconos de redes sociales */
+    margin-top: 20px; /* Espacio entre el título y los iconos sociales */
+}
+
+footer .social-media a {
+    color: yellow; /* Color de los enlaces */
+    text-decoration: none; /* Quita el subrayado */
+}
+
+footer .social-media a:hover {
+    color: #ffcc00; /* Color en hover */
+    transform: scale(1.1); /* Efecto de escala en hover */
+    transition: color 0.3s, transform 0.3s; /* Transiciones suaves */
+}
+
+footer .social-media a:active {
+    background-color: #cca300; /* Color de fondo en clic */
+    transform: scale(1.2); /* Efecto de escala en clic */
+    transition: background-color 0.3s, transform 0.3s; /* Transiciones suaves */
+}
+
+/* Estilos responsivos */
+@media (max-width: 768px) {
+    footer {
+        padding: 30px; /* Reduce el padding para pantallas medianas */
+    }
+
+    footer .social-media {
+        gap: 15px; /* Reduce el espacio entre los iconos sociales */
+    }
+}
+
+@media (max-width: 480px) {
+    footer {
+        padding: 20px; /* Reduce el padding para pantallas pequeñas */
+    }
+
+    footer .social-media {
+        flex-direction: column; /* Cambia la dirección a columna para pantallas muy pequeñas */
+        gap: 10px; /* Espacio reducido entre los iconos sociales */
+    }
+}
