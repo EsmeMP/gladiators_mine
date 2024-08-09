@@ -127,126 +127,113 @@ def productos():
 
 @app.route('/registrar_venta', methods=['GET', 'POST'])
 def registrar_venta():
-    if 'username' in session and 'rol' in session:
-        username = session['username']
-        rol = session['rol']
-        
-        # Permitir acceso a usuarios con rol 1 (administrador) o rol 2 (cajero)
-        if rol in [1, 2]:
-            if request.method == 'POST':
-                # Manejar la solicitud POST para registrar la venta en la base de datos
-                conn = db.conectar()
-                cursor = conn.cursor()
+    if request.method == 'POST':
+        conn = db.conectar()
+        cursor = conn.cursor()
 
-                # Obtener el último id de venta
-                cursor.execute("SELECT COALESCE(MAX(id_venta), 0) FROM venta")
-                ultimo_id = cursor.fetchone()[0]
-                proximo_id = ultimo_id + 1  # Incrementa para el próximo número de venta
+        try:
+            # Verifica la sesión de la venta actual
+            venta_actual = session.get('venta_actual', [])
+            if not venta_actual:
+                raise ValueError("No hay productos en la venta actual.")
+            print(f"Venta actual: {venta_actual}")
 
-                # Obtener datos de la venta
-                venta_actual = session.get('venta_actual', [])
-                subtotal = sum(item['price'] for item in venta_actual)
-                total = subtotal  # Aquí puedes agregar impuestos o descuentos si es necesario
+            # Verifica el ID del usuario
+            fk_usuario = session.get('usuario_id', 2)
+            print(f"ID de usuario: {fk_usuario}")
 
-                # Obtener el ID del usuario (suponiendo que el ID está almacenado en la sesión)
-                fk_usuario = session.get('usuario_id', 2)  # Reemplaza 2 con un valor por defecto si es necesario
+            # Inserta en la tabla venta
+            cursor.execute(
+                "INSERT INTO venta (fecha_venta, hora_venta, fk_usuario) VALUES (CURRENT_DATE, CURRENT_TIME, %s) RETURNING id_venta", 
+                (fk_usuario,)
+            )
+            id_venta = cursor.fetchone()[0]
+            print(f"ID de venta: {id_venta}")
 
-                # Insertar la venta en la tabla venta
+            # Inserta los detalles de la venta
+            for item in venta_actual:
+                print(f"Insertando item: {item}")
                 cursor.execute(
-                    "INSERT INTO venta (id_venta, fecha_venta, hora_venta, fk_usuario) VALUES (%s, CURRENT_DATE, CURRENT_TIME, %s)",
-                    (proximo_id, fk_usuario)
+                    "INSERT INTO detalle_venta (cantidad, fk_producto, fk_venta) VALUES (%s, %s, %s)",
+                    (item['quantity'], item['product_id'], id_venta)
                 )
 
-                # Insertar los detalles de la venta en la tabla detalle_venta
-                for item in venta_actual:
-                    cursor.execute(
-                        "INSERT INTO detalle_venta (cantidad, fk_producto, fk_venta) VALUES (%s, %s, %s)",
-                        (item['quantity'], item['product_id'], proximo_id)
-                    )
+            conn.commit()
+            print("Venta registrada correctamente.")
 
-                conn.commit()
-                cursor.close()
-                conn.close()
+        except Exception as e:
+            conn.rollback()
+            print(f"Error al registrar la venta: {e}")
 
-                # Limpiar la sesión de la venta actual
-                session['venta_actual'] = []
-
-                # Redirigir a una página de confirmación o al índice
-                return redirect(url_for('venta_confirmada', numero_venta=proximo_id))
-            
-            # Manejar la solicitud GET para mostrar el formulario de venta
-            conn = db.conectar()
-            cursor = conn.cursor()
-
-            # Obtener el último id de venta
-            cursor.execute("SELECT COALESCE(MAX(id_venta), 0) FROM venta")
-            ultimo_id = cursor.fetchone()[0]
-            proximo_id = ultimo_id + 1  # Incrementa para el próximo número de venta
-
-            # Calcular subtotal y total de la venta actual
-            venta_actual = session.get('venta_actual', [])
-            subtotal = sum(item['price'] for item in venta_actual)
-            total = subtotal  # Aquí puedes agregar impuestos o descuentos si es necesario
-
-            cursor.execute('SELECT "nombre completo" FROM nombre_usuario WHERE "ID" = %s', (fk_usuario,))
-            usuario = cursor.fetchone()[0] 
-
+        finally:
             cursor.close()
             conn.close()
 
-            # Renderiza la página pasando el próximo número de venta y el total
-            return render_template('regVenta.html', usuario=usuario, numero_venta=proximo_id, subtotal=subtotal, total=total)
-        else:
-            return jsonify({"error": "Acceso no autorizado"}), 403
-    else:
-        return redirect(url_for('login'))
+        # Limpiar la sesión de la venta actual
+        session['venta_actual'] = []
 
+        # Redirigir a una página de confirmación o al índice
+        return redirect(url_for('venta_confirmada'))
+
+    # Manejar la solicitud GET para mostrar el formulario de venta
+    conn = db.conectar()
+    cursor = conn.cursor()
+
+    try:
+        # Obtener el último id de venta
+        cursor.execute("SELECT COALESCE(MAX(id_venta), 0) FROM venta")
+        ultimo_id = cursor.fetchone()[0]
+        proximo_id = ultimo_id + 1
+
+        # Calcular subtotal y total de la venta actual
+        venta_actual = session.get('venta_actual', [])
+        subtotal = sum(item['price'] for item in venta_actual)
+        total = subtotal
+
+        fk_usuario = session.get('usuario_id', 2)
+        cursor.execute('SELECT "nombre completo" FROM nombre_usuario WHERE "ID" = %s', (fk_usuario,))
+        usuario = cursor.fetchone()[0]
+
+    except Exception as e:
+        print(f"Error al obtener datos para el formulario de venta: {e}")
+        usuario = ""
+        proximo_id = 0
+        subtotal = 0
+        total = 0
+    finally:
+        cursor.close()
+        conn.close()
+
+    return render_template('regVenta.html', usuario=usuario, numero_venta=proximo_id, subtotal=subtotal, total=total)
 
 @app.route('/venta_confirmada')
 def venta_confirmada():
-    if 'username' in session and 'rol' in session:
-        username = session['username']
-        rol = session['rol']
+    numero_venta = request.args.get('numero_venta')
+    fecha = request.args.get('fecha')
+    hora = request.args.get('hora')
+    usuario = request.args.get('usuario')
+    total = request.args.get('total')
 
-        # Permitir acceso a usuarios con rol 1 (administrador) o rol 2 (cajero)
-        if rol in [1, 2]:
-            numero_venta = request.args.get('numero_venta')
-            fecha = request.args.get('fecha')
-            hora = request.args.get('hora')
-            usuario = request.args.get('usuario')
-            total = request.args.get('total')
+    # Si estás recuperando el total de la venta como cadena, conviértelo a un número flotante
+    try:
+        total = float(total)
+    except (TypeError, ValueError):
+        total = 0.0
 
-            # Si estás recuperando el total de la venta como cadena, conviértelo a un número flotante
-            try:
-                total = float(total)
-            except (TypeError, ValueError):
-                total = 0.0
+    return render_template('venta_confirmada.html', numero_venta=numero_venta, fecha=fecha, hora=hora, usuario=usuario, total=total)
 
-            return render_template('venta_confirmada.html', numero_venta=numero_venta, fecha=fecha, hora=hora, usuario=usuario, total=total)
-        else:
-            return jsonify({"error": "Acceso no autorizado"}), 403
-    else:
-        return redirect(url_for('login'))
+
 
 
 @app.route('/get_product_details', methods=['GET'])
 def get_product_details():
-    if 'username' in session and 'rol' in session:
-        username = session['username']
-        rol = session['rol']
-
-        # Permitir acceso a usuarios con rol 1 (administrador) o rol 2 (cajero)
-        if rol in [1, 2]:
-            code = request.args.get('code')
-            product = obtener_producto_de_db(code)
-            if product:
-                return jsonify(product)
-            else:
-                return jsonify({}), 404
-        else:
-            return jsonify({"error": "Acceso no autorizado"}), 403
+    code = request.args.get('code')
+    product = obtener_producto_de_db(code)
+    if product:
+        return jsonify(product)
     else:
-        return redirect(url_for('login'))
+        return jsonify({}), 404
+
 
 def obtener_producto_de_db(codigo):
     conn = db.conectar()
@@ -537,7 +524,7 @@ def update1_usuario(id_usuario):
             return render_template('editarUsuario.html', username=username, rol=rol, datos=datos)
         else:
             flash("No tienes permisos para acceder a esta sección", 'danger')
-            return redirect(url_for('index'))
+            return redirect(url_for('consultar_usuarios'))
     else:
         return redirect(url_for('secciones'))
 
