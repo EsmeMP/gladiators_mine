@@ -16,6 +16,7 @@ from wtforms import StringField, PasswordField, SubmitField
 from wtforms.validators import DataRequired
 from werkzeug.security import check_password_hash, generate_password_hash
 from itsdangerous import URLSafeTimedSerializer
+import itsdangerous
 
 
 
@@ -37,15 +38,16 @@ def verificar_credenciales(username, password):
             database="database_gladiators"
         )
         cursor = connection.cursor()
-        query = "SELECT username, password, rol FROM usuario WHERE username = %s"
+        query = "SELECT * FROM datos_login WHERE username = %s"
         cursor.execute(query, (username,))
         resultado = cursor.fetchone()
 
         if resultado:
-            stored_password, rol = resultado[1], resultado[2]
+            stored_password = resultado[3]  # Asumiendo que el password es el cuarto campo en el resultado
             if check_password_hash(stored_password, password):
-                return (username, rol)
+                return resultado  # Devuelve toda la tupla
         return None
+
 
     except (Exception, psycopg2.Error) as error:
         print("Error al conectar a la base de datos", error)
@@ -69,9 +71,10 @@ def login():
 
         resultado = verificar_credenciales(username, password)
         if resultado is not None:
-            session['username'] = resultado[0]
-            session['rol'] = resultado[1]
-
+            session['usuario_id'] = resultado[0]
+            session['nombre_completo'] = resultado[1]
+            session['username'] = resultado[2]
+            session['rol'] = resultado[4]
             if remember_me:
                 token = serializer.dumps(username, salt='remember-me')
                 response = make_response(redirect(url_for('secciones')))
@@ -82,6 +85,7 @@ def login():
             flash("Usuario o contraseña incorrectos")
             return redirect(url_for('login'))
     return render_template('login.html')
+
 
 @app.before_request
 def load_logged_in_user():
@@ -135,12 +139,17 @@ def registrar_venta():
             # Verifica la sesión de la venta actual
             venta_actual = session.get('venta_actual', [])
             if not venta_actual:
-                raise ValueError("No hay productos en la venta actual.")
-            print(f"Venta actual: {venta_actual}")
+                flash("No hay productos en la venta actual.")
+                return redirect(url_for('registrar_venta'))
 
-            # Verifica el ID del usuario
-            fk_usuario = session.get('usuario_id', 2)
-            print(f"ID de usuario: {fk_usuario}")
+            # Obtén el ID del usuario y el nombre completo del usuario desde la sesión
+            fk_usuario = session.get('usuario_id')
+            nombre_completo = session.get('nombre_completo')
+
+            # Verifica que el usuario esté autenticado
+            if fk_usuario is None:
+                flash("Error: Usuario no autenticado.")
+                return redirect(url_for('login'))
 
             # Inserta en la tabla venta
             cursor.execute(
@@ -148,21 +157,20 @@ def registrar_venta():
                 (fk_usuario,)
             )
             id_venta = cursor.fetchone()[0]
-            print(f"ID de venta: {id_venta}")
 
             # Inserta los detalles de la venta
             for item in venta_actual:
-                print(f"Insertando item: {item}")
                 cursor.execute(
                     "INSERT INTO detalle_venta (cantidad, fk_producto, fk_venta) VALUES (%s, %s, %s)",
                     (item['quantity'], item['product_id'], id_venta)
                 )
 
             conn.commit()
-            print("Venta registrada correctamente.")
+            flash("Venta registrada exitosamente.", "success")
 
         except Exception as e:
             conn.rollback()
+            flash(f"Error al registrar la venta: {e}", "danger")
             print(f"Error al registrar la venta: {e}")
 
         finally:
@@ -172,31 +180,28 @@ def registrar_venta():
         # Limpiar la sesión de la venta actual
         session['venta_actual'] = []
 
-        # Redirigir a una página de confirmación o al índice
-        return redirect(url_for('venta_confirmada'))
+        return redirect(url_for('venta_confirmada', nombre_completo=nombre_completo, id_venta=id_venta))
 
     # Manejar la solicitud GET para mostrar el formulario de venta
     conn = db.conectar()
     cursor = conn.cursor()
 
     try:
-        # Obtener el último id de venta
         cursor.execute("SELECT COALESCE(MAX(id_venta), 0) FROM venta")
         ultimo_id = cursor.fetchone()[0]
         proximo_id = ultimo_id + 1
 
         # Calcular subtotal y total de la venta actual
         venta_actual = session.get('venta_actual', [])
-        subtotal = sum(item['price'] for item in venta_actual)
+        subtotal = sum(item['price'] * item['quantity'] for item in venta_actual)
         total = subtotal
 
-        fk_usuario = session.get('usuario_id', 2)
-        cursor.execute('SELECT "nombre completo" FROM nombre_usuario WHERE "ID" = %s', (fk_usuario,))
-        usuario = cursor.fetchone()[0]
+        # Obtener el nombre completo desde la sesión
+        nombre_completo = session.get('nombre_completo', '')
 
     except Exception as e:
         print(f"Error al obtener datos para el formulario de venta: {e}")
-        usuario = ""
+        nombre_completo = ""
         proximo_id = 0
         subtotal = 0
         total = 0
@@ -204,7 +209,9 @@ def registrar_venta():
         cursor.close()
         conn.close()
 
-    return render_template('regVenta.html', usuario=usuario, numero_venta=proximo_id, subtotal=subtotal, total=total)
+    return render_template('regVenta.html', nombre_completo=nombre_completo, numero_venta=proximo_id, subtotal=subtotal, total=total)
+
+
 
 @app.route('/venta_confirmada')
 def venta_confirmada():
@@ -221,8 +228,6 @@ def venta_confirmada():
         total = 0.0
 
     return render_template('venta_confirmada.html', numero_venta=numero_venta, fecha=fecha, hora=hora, usuario=usuario, total=total)
-
-
 
 
 @app.route('/get_product_details', methods=['GET'])
