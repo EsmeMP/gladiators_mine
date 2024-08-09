@@ -34,10 +34,10 @@
             </section>
             <section class="secciones" style="color: yellow;">
                 <a href="{{ url_for('secciones') }}">Inicio</a>
-                <a href="{{ url_for('ventas') }}">Ventas</a>
+                <a href="{{ url_for('registrar_venta') }}">Ventas</a>
                 <a href="{{ url_for('productos') }}">Productos</a>
                 {% if rol %}
-                    <a href="{{ url_for('usuarios') }}">Usuarios</a>
+                    <a href="{{ url_for('registrar_usuario') }}">Usuarios</a>
                 {% endif %}
                 <a href="{{ url_for('soporte') }}">Soporte</a>
                 <a href="{{ url_for('logout') }}">Cerrar Sesión</a>
@@ -50,14 +50,14 @@
         <div class="button-container">
             {% if rol %}
                 <div class="button-ventas">
-                    <a href="{{ url_for('ventas') }}" style="color: black;">Ventas</a>
+                    <a href="{{ url_for('registrar_venta') }}" style="color: black;">Ventas</a>
                 </div>
                 <div class="button-usuario">
-                    <a href="{{ url_for('usuarios') }}" style="color: black;">Usuarios</a>
+                    <a href="{{ url_for('registrar_usuario') }}" style="color: black;">Usuarios</a>
                 </div>
             {% else %}
                 <div class="button-ventas">
-                    <a href="{{ url_for('ventas') }}" style="color: black;">Ventas</a>
+                    <a href="{{ url_for('registrar_venta') }}" style="color: black;">Ventas</a>
                 </div>
             {% endif %}
             <div class="button-producto">

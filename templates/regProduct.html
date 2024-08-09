@@ -40,12 +40,14 @@
                 <h5>Gladiator's</h5>
             </section>
             <section class="secciones">
-                <a href="./pages/index.html">Inicio</a>
-                <a href="./pages/index.html">Ventas</a>
-                <a href="./pages/index.html">Productos</a>
-                <a href="./pages/index.html">Usuarios</a>
-                <a href="./pages/index.html">Soporte</a>
-                <a href="./pages/index.html">Cerrar Sesión</a>
+                <a href="{{ url_for('secciones') }}">Inicio</a>
+                <a href="{{ url_for('ventas') }}">Ventas</a>
+                <a href="{{ url_for('productos') }}">Productos</a>
+                {% if rol %}
+                    <a href="{{ url_for('registrar_usuario') }}">Usuarios</a>
+                {% endif %}
+                <a href="{{ url_for('soporte') }}">Soporte</a>
+                <a href="{{ url_for('logout') }}">Cerrar Sesión</a>
             </section>
         </nav>
     </header>

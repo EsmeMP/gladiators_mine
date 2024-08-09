@@ -85,9 +85,6 @@
                                     <td>{{ fila[3] }}</td>
                                     <td>{{ fila[4] }}</td>
                                     <td>
-                                        <!-- <form action="{{ url_for('update1_usuario', id_usuario=fila[0]) }}" method="POST" style="display:inline;">
-                                            <button type="submit" class="boton-2">Editar</button>
-                                        </form> -->
                                         <form action="{{ url_for('update1_usuario', id_usuario=fila[0]) }}" method="GET" style="display:inline;">
                                             <button type="submit" class="boton-2">Editar</button>
                                         </form>
