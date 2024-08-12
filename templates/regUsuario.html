@@ -7,8 +7,12 @@
     <link rel="stylesheet" href="/static/registrar.CSS">
     <link rel="stylesheet" href="/static/assets/font/flaticon.css">
     <link rel="stylesheet" href="/static/style.css">
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <!-- <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"> -->
+    <!-- MODALES -->
+     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 <body>
     <header>
@@ -48,7 +52,7 @@
     </header>
     <h1>Registrar Usuario</h1>
     <main>
-        <div class="container mt-5">
+        <!-- <div class="container mt-5">
         {% with messages = get_flashed_messages(with_categories=true) %}
             {% if messages %}
                 {% for category, message in messages %}
@@ -60,13 +64,13 @@
                     </div>
                 {% endfor %}
             {% endif %}
-        {% endwith %}
+        {% endwith %} -->
         <!-- Tu formulario de registro aquí -->
-    </div>
+    <!-- </div> -->
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
 
-        <form action="{{ url_for('registrar_usuario') }}" method="POST" enctype="multipart/form-data">
+        <form id="myform" action="{{ url_for('registrar_usuario') }}" method="POST" enctype="multipart/form-data">
         <section class="label">
             <label for="nombre">Nombre:</label>
             <input type="text" id="nombre" name="nombre" required>
@@ -81,7 +85,7 @@
             <input type="text" id="domicilio" name="domicilio" required>
             <br><br>
             <label for="numero_telefonico">Número telefónico:</label>
-            <input type="text" id="numero_telefonico" name="numero_telefonico" required>
+            <input type="text" name="numero_telefonico" maxlength="12" pattern="\d{1,12}" title="Debe contener solo dígitos y hasta 12 dígitos" required>
             <br><br>
             <label for="curp">CURP:</label>
             <input type="text" id="curp" name="curp" required>
@@ -107,7 +111,26 @@
             <input type="file" id="imagen" name="imagen">
             <br><br>
         </section>
-        <button type="submit">Registrar</button>
+        <!-- <button type="submit">Registrar</button> -->
+         <button type="button" type="submit" class="btn btn-primary mt-3 " onclick="Swal.fire({
+                    title: '¿Estás seguro de querer realizar este cambio?',
+                    text: '¡No podrás revertir esto!',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#FFF07FFF',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: '¡Sí, realizar cambio!'
+                    }).then((result) => {
+                    if (result.isConfirmed) {
+                    Swal.fire({
+                    title: '¡Cambio realizado!',
+                    text: 'El cambio ha sido efectuado con éxito.',
+                    icon: 'success'
+                    }).then(() => {
+                    document.getElementById('myform').submit();
+                    });
+                    }
+                    })">Actualizar</button>
     </form>
     </main>
 </body>

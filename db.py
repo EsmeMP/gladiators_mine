@@ -25,3 +25,6 @@ def liberar_conexion(conn):
 
 def cerrar_pool():
     connection_pool.closeall()
+
+def cerrar_aplicacion():
+    connection_pool.closeall()

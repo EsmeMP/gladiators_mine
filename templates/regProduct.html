@@ -34,22 +34,22 @@
                 <p>Lun-Vie 10:00a.m--8:00p.m | Sab-Dom 9:00a.m--9:00p.m</p>
             </div>
         </section>
-        <nav>
-            <section class="logo-gladiators">
-                <a href="index.html"><img src="../static/assets/img/Logotipo_GladiatorsTransparente.png" alt="imagen-logo"></a>
-                <h5>Gladiator's</h5>
-            </section>
-            <section class="secciones">
-                <a href="{{ url_for('secciones') }}">Inicio</a>
-                <a href="{{ url_for('ventas') }}">Ventas</a>
-                <a href="{{ url_for('productos') }}">Productos</a>
-                {% if rol %}
-                    <a href="{{ url_for('registrar_usuario') }}">Usuarios</a>
-                {% endif %}
-                <a href="{{ url_for('soporte') }}">Soporte</a>
-                <a href="{{ url_for('logout') }}">Cerrar Sesión</a>
-            </section>
-        </nav>
+        <nav class="navbar">
+        <ul>
+            <li><a href="#">Inicio</a></li>
+            <li class="dropdown">
+                <a href="javascript:void(0)" class="dropbtn">Ventas &#9662;</a>
+                <ul class="dropdown-content">
+                    <li><a href="#">Consultar Venta</a></li>
+                    <li><a href="#">Registrar Venta</a></li>
+                </ul>
+            </li>
+            <li><a href="#">Productos</a></li>
+            <li><a href="#">Usuarios</a></li>
+            <li><a href="#">Soporte</a></li>
+            <li><a href="#">Cerrar Sesión</a></li>
+        </ul>
+    </nav>
     </header>
     <main>
         <div class="container">

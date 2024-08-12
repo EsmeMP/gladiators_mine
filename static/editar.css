@@ -36,7 +36,7 @@ h1{
     border-style:solid;
 }
 
-button[type="submit"] {
+button[type="button"] {
     width: 100px;
     height: 40px;
     padding: 0 16px;
@@ -54,10 +54,10 @@ button[type="submit"] {
     border-radius: 8px;
     margin-left: 70%;
     margin-bottom: 30%;
-    
+    margin-right: 10%;
 }
 
-button[type="submit"]:hover {
+button[type="button"]:hover {
     background-color: black;
     color: #FFF399FF;
-}
+} 

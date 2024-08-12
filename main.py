@@ -26,6 +26,40 @@ app = Flask(__name__)
 app.secret_key = 'super_secret_key'
 serializer = URLSafeTimedSerializer(app.secret_key)
 
+def actualizar_contraseñas():
+    connection = None
+    try:
+        connection = psycopg2.connect(
+            user="first_gladiator",
+            password="gladiator1st",
+            host="localhost",
+            port="5432",
+            database="database_gladiators"
+        )
+        cursor = connection.cursor()
+
+        # Leer las contraseñas existentes
+        cursor.execute("SELECT username, password FROM usuario")
+        usuarios = cursor.fetchall()
+
+        # Encriptar las contraseñas y actualizar la base de datos
+        for username, password in usuarios:
+            hashed_password = generate_password_hash(password)
+            cursor.execute(
+                "UPDATE usuari SET password = %s WHERE username = %s",
+                (hashed_password, username)
+            )
+
+        connection.commit()
+        print("Contraseñas actualizadas exitosamente")
+
+    except (Exception, psycopg2.Error) as error:
+        print("Error al conectar a la base de datos", error)
+
+    finally:
+        if connection:
+            cursor.close()
+            connection.close()
 
 def verificar_credenciales(username, password):
     connection = None
@@ -75,6 +109,18 @@ def login():
             session['nombre_completo'] = resultado[1]
             session['username'] = resultado[2]
             session['rol'] = resultado[4]
+
+            print(f"Rol del usuario autenticado: {session['rol']}")
+            flash(f"Rol del usuario autenticado: {session['rol']}")
+            if session['rol'] == 1:
+                print("El usuario es un administrador.")
+            elif session['rol'] == 2:
+                print("El usuario es un usuario estándar.")
+            else:
+                print("El rol del usuario es indefinido o incorrecto.")
+
+
+
             if remember_me:
                 token = serializer.dumps(username, salt='remember-me')
                 response = make_response(redirect(url_for('secciones')))
@@ -85,6 +131,7 @@ def login():
             flash("Usuario o contraseña incorrectos")
             return redirect(url_for('login'))
     return render_template('login.html')
+
 
 
 @app.before_request
@@ -107,11 +154,20 @@ def secciones():
     if 'username' in session and 'rol' in session:
         username = session['username']
         rol = session['rol']
-        return render_template('secciones.html', username=username, rol=rol)
+        
+        # Redirige dependiendo del rol
+        if rol == 1:
+            return render_template('secciones.html', username=username, rol=True)  # Admin
+        else:
+            return render_template('secciones.html', username=username, rol=False)  # Usuario normal
     else:
         return redirect(url_for('login'))
 
 
+
+@app.before_request
+def before_request():
+    print("Sesión actual:", session)
 
 # ---------------------------------PRODUCTOS-----------------------------------------------------------------------------
 @app.route('/productos')
@@ -119,15 +175,206 @@ def productos():
     if 'username' in session and 'rol' in session:
         username = session['username']
         rol = session['rol']
-        if rol or request.endpoint in ['productos', 'ventas']:  # Administradores y cajeros
-            return render_template('regProduct.html', username=username, rol=rol)
-        else:
-            flash("No tienes permisos para acceder a esta sección")
-            return redirect(url_for('index'))
+        return render_template('regProduct.html', username=username, rol=rol)
     else:
         return redirect(url_for('login'))
 
+@app.route('/registrar_producto', methods=['POST'])
+def registrar_producto_post():
+    # El código sigue igual
+    nombre = request.form['nombre']
+    codigo_barras = request.form['codigo_barras']
+    precio = request.form['precio']
+    stock = request.form['stock']
+    descripcion = request.form['descripcion']
+    marca = request.form['marca']
+    categoria = request.form['categoria']
+
+    file = request.files.get('imagen')
+    if file and file.filename != '':
+        filename = secure_filename(file.filename)
+        file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+        ruta_imagen = os.path.join('assets', 'img', filename).replace('\\', '/')
+    else:
+        ruta_imagen = 'assets/img/imagen_defecto.jpeg'
+
+    conn = db.conectar()
+    cur = conn.cursor()
+    try:
+        cur.execute("""
+            INSERT INTO producto (nombre, codigo_barras, precio, stock, descripcion, marca, imagen)
+            VALUES (%s, %s, %s, %s, %s, %s, %s)
+            RETURNING id_producto;
+        """, (nombre, codigo_barras, precio, stock, descripcion, marca, ruta_imagen))
+        producto_id = cur.fetchone()[0]
+        cur.execute("""
+            SELECT id_categoria
+            FROM categoria
+            WHERE nombre = %s;
+        """, (categoria,))
+        categoria_id = cur.fetchone()
+        if categoria_id:
+            categoria_id = categoria_id[0]
+        else:
+            raise ValueError(f"Categoría '{categoria}' no encontrada.")
+        cur.execute("""
+            UPDATE producto
+            SET fk_categoria = %s
+            WHERE id_producto = %s;
+        """, (categoria_id, producto_id))
+        conn.commit()
+        return redirect(url_for('consultar_productos'))
+    except Exception as e:
+        conn.rollback()
+        flash(f"Error: {e}")
+        return redirect(url_for('registrar_producto'))
+    finally:
+        cur.close()
+        db.desconectar(conn)
+
+
+@app.route('/consultar_productos')
+def consultar_productos():
+    if 'username' in session and 'rol' in session:
+        username = session['username']
+        rol = session['rol']
+
+        conn = db.conectar()
+        cursor = conn.cursor()
+
+        if rol:  # Si rol es TRUE (rol=1), es un administrador
+            cursor.execute('''SELECT * FROM info_especifica_producto''')
+        else:  # Si rol es FALSE (rol=2), otro tipo de usuario
+            cursor.execute('''SELECT * FROM info_especifica_producto''')  # Ejemplo de consulta para usuarios no admin
+
+        datos = cursor.fetchall()
+        cursor.close()
+        db.desconectar(conn)
+        
+        return render_template('consultarProductos.html', username=username, rol=rol, datos=datos)
+    else:
+        return redirect(url_for('secciones'))
+
+
+@app.route('/consultar_producto/<int:id_producto>')
+def consultar_producto(id_producto):
+    conn = None
+    try:
+        conn = db.conectar()
+        cursor = conn.cursor()
+        cursor.execute('''SELECT * FROM info_especifica_producto WHERE "ID" = %s''', (id_producto,))
+        datos = cursor.fetchone()
+        cursor.close()
+        if datos:
+            return render_template('consultarProducto.html', datos=datos)
+        else:
+            flash("Producto no encontrado.")
+            return redirect(url_for('consultar_productos'))
+    except Exception as e:
+        print(f'Error: {e}')
+        flash("Error al consultar el producto.")
+        return redirect(url_for('consultar_productos'))
+    finally:
+        if conn:
+            db.desconectar(conn)
+
+@app.route('/update1_producto/<int:id_producto>', methods=['GET'])
+def update1_producto(id_producto):
+    conn = db.conectar()
+    cursor = conn.cursor()
+    cursor.execute('''SELECT * FROM info_especifica_producto WHERE "ID" = %s''', (id_producto,))
+    datos = cursor.fetchone()
+    cursor.close()
+    db.desconectar(conn)
+    return render_template('editarProduct.html', datos=datos)
+
+
+@app.route('/update_producto_post/<int:id_producto>', methods=['POST'])
+def update_producto_post(id_producto):
+    nombre = request.form['nombre']
+    codigo_barras = request.form['codigo_barras']
+    precio = request.form['precio']
+    stock = request.form['stock']
+    descripcion = request.form['descripcion']
+    marca = request.form['marca']
+    categoria = request.form['categoria']
+
+    file = request.files.get('imagen')
+    if file and file.filename != '':
+        filename = secure_filename(file.filename)
+        file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+        ruta_imagen = os.path.join('assets', 'img', filename).replace('\\', '/')
+    else:
+        conn = db.conectar()
+        cursor = conn.cursor()
+        cursor.execute('''SELECT imagen FROM producto WHERE id_producto = %s''', (id_producto,))
+        ruta_imagen = cursor.fetchone()[0]
+        db.desconectar(conn)
+
+    conn = db.conectar()
+    cur = conn.cursor()
+    try:
+        cur.execute('''SELECT id_categoria FROM categoria WHERE nombre = %s''', (categoria,))
+        categoria_id = cur.fetchone()
+        if categoria_id:
+            categoria_id = categoria_id[0]
+        else:
+            raise ValueError(f"Categoría '{categoria}' no encontrada.")
+        
+        update_query = '''
+            UPDATE producto
+            SET nombre = %s, codigo_barras = %s, precio = %s, stock = %s, descripcion = %s, marca = %s, imagen = %s, fk_categoria = %s
+            WHERE id_producto = %s
+        '''
+        params = (nombre, codigo_barras, precio, stock, descripcion, marca, ruta_imagen, categoria_id, id_producto)
+        cur.execute(update_query, params)
+        conn.commit()
+        flash("Producto actualizado exitosamente.")
+        return redirect(url_for('consultar_productos'))
+    except Exception as e:
+        conn.rollback()
+        flash(f"Error al actualizar producto: {e}")
+        return redirect(url_for('consultar_productos'))
+    finally:
+        cur.close()
+        db.desconectar(conn)
+
+@app.route('/delete_producto/<int:id_producto>', methods=['POST'])
+def delete_producto(id_producto):
+    conn = db.conectar()
+    cursor = conn.cursor()
+    try:
+        # Asegúrate de que la tabla 'producto' es la correcta
+        cursor.execute('DELETE FROM producto WHERE id_producto = %s', (id_producto,))
+        conn.commit()
+        print(f"Producto con ID {id_producto} eliminado correctamente.")
+    except Exception as e:
+        conn.rollback()
+        print(f"Error al eliminar producto: {e}")
+    finally:
+        cursor.close()
+        db.desconectar(conn)
+    return redirect(url_for('consultar_productos'))
+
+@app.route('/buscar_producto', methods=['POST'])
+def buscar_producto():
+    buscar_texto = request.form.get('buscar', '')
+    conn = db.conectar()
+    try:
+        cursor = conn.cursor()
+        query = '''SELECT * FROM info_especifica_producto WHERE "Nombre" ILIKE %s OR "ID"::TEXT ILIKE %s'''
+        cursor.execute(query, (f'%{buscar_texto}%', f'%{buscar_texto}%'))
+        datos = cursor.fetchall()
+        cursor.close()
+    except Exception as e:
+        print(f'Error: {e}')
+        datos = []
+    finally:
+        db.desconectar(conn)
+    return render_template('consultarProductos.html', datos=datos)
+
 # ---------------------------------------------------------VENTAS---------------------------------------------------------------
+
 
 @app.route('/registrar_venta', methods=['GET', 'POST'])
 def registrar_venta():
@@ -403,6 +650,15 @@ def registrar_usuario():
                     if field not in request.form:
                         return jsonify({"error": f"Missing field: {field}"}), 400
                 
+
+                numero_telefono = request.form['numero_telefonico']
+
+                # Validar que el número de teléfono tenga como máximo 12 dígitos
+                if len(numero_telefono) > 12:
+                    flash("El número de teléfono debe tener como máximo 12 dígitos", 'danger')
+                    return redirect(url_for('registrar_usuario'))
+                
+                
                 nombre = request.form['nombre']
                 a_paterno = request.form['apellido_paterno']
                 a_materno = request.form['apellido_materno']
@@ -502,6 +758,32 @@ def consultar_usuarios():
     else:
         return redirect(url_for('secciones'))
 
+
+@app.route('/consultar_usuario/<int:id_usuario>')
+def consultar_usuario(id_usuario):
+    conn = db.conectar()
+    cursor = conn.cursor()
+    
+    # Obtener información general del usuario desde la vista `nombre_usuario`
+    cursor.execute('''SELECT * FROM nombre_usuario
+                      WHERE "ID" = %s''', (id_usuario,))
+    usuario_general = cursor.fetchone()
+    
+    # Obtener información específica del usuario desde la vista `info_especifica_user`
+    cursor.execute('''SELECT * FROM info_especifica_user
+                      WHERE "ID" = %s''', (id_usuario,))
+    usuario_especifico = cursor.fetchone()
+
+    cursor.close()
+    db.desconectar(conn)
+    
+    # Combinar la información general y específica en un solo diccionario
+    if usuario_general and usuario_especifico:
+        usuario = usuario_general + usuario_especifico
+    else:
+        usuario = None
+    
+    return render_template('consultarUsuario.html', usuario=usuario)
 
 
 @app.route('/update1_usuario/<int:id_usuario>', methods=['GET'])
@@ -646,6 +928,42 @@ def buscar_usuario():
             return jsonify({"error": "Acceso no autorizado"}), 403
     else:
         return redirect(url_for('login'))
+    
+@app.route('/delete_usuario/<int:id_usuario>', methods=['POST'])
+def delete_usuario(id_usuario):
+    if 'username' in session and 'rol' in session:
+        session_rol = session['rol']
+        
+        # Verificar que el rol sea 1 (administrador)
+        if session_rol != 1:
+            return jsonify({"error": "Acceso no autorizado"}), 403
+        
+        conn = db.conectar()
+        cursor = conn.cursor()
+        try:
+            # Obtener el fk_info_empleado antes de eliminar el usuario
+            cursor.execute('''SELECT fk_info_empleado FROM usuario WHERE id_usuario = %s''', (id_usuario,))
+            fk_info_empleado = cursor.fetchone()[0]
+            
+            # Borrar el usuario de la tabla usuario
+            cursor.execute('''DELETE FROM usuario WHERE id_usuario = %s''', (id_usuario,))
+            
+            # Borrar el registro correspondiente en la tabla info_empleado
+            cursor.execute('''DELETE FROM info_empleado WHERE id_empleado = %s''', (fk_info_empleado,))
+            
+            conn.commit()
+        except Exception as e:
+            conn.rollback()
+            print(f"Error al eliminar usuario: {e}")
+            return jsonify({"error": "No se pudo eliminar el usuario"}), 500
+        finally:
+            cursor.close()
+            db.desconectar(conn)
+        
+        return redirect(url_for('consultar_usuarios'))
+    else:
+        return redirect(url_for('secciones'))
+
 
 
 # ------------------------------SOPORTE--------------------------------------------
@@ -741,280 +1059,10 @@ def logout():
 
 
 # -------------------------PRODUCTOS--------------------------------
-@app.route('/consultar_productos')
-def consultar_productos():
-    if 'username' in session and 'rol' in session:
-        username = session['username']
-        rol = session['rol']
-        
-        if rol:  # Si rol es TRUE, es un administrador
-            conn = db.conectar()
-            cursor = conn.cursor()
-            cursor.execute('''SELECT * FROM info_especifica_producto''')
-            datos = cursor.fetchall()
-            cursor.close()
-            db.desconectar(conn)
-            
-            return render_template('consultarProductos.html', username=username, rol=rol, datos=datos)
-        else:
-            flash("No tienes permisos para acceder a esta sección")
-            return redirect(url_for('index'))
-    else:
-        return redirect(url_for('secciones'))
-
-    
-@app.route('/consultar_producto')
-def consultar_producto():
-    conn = db.conectar()
-    cursor = conn.cursor()
-    cursor.execute('''SELECT * FROM info_especifica_producto''')
-    datos = cursor.fetchall()
-    cursor.close()
-    db.desconectar(conn)
-    return render_template('consultarProducto.html', datos=datos)
 
 
 
-@app.route('/registrar_producto')
-def registrar_producto():
-    return render_template('regProduct.html')
 
-@app.route('/registrar_producto', methods=['POST'])
-def registrar_producto_post():
-    nombre = request.form['nombre']
-    codigo_barras = request.form['codigo_barras']
-    precio = request.form['precio']
-    stock = request.form['stock']
-    descripcion = request.form['descripcion']
-    marca = request.form['marca']
-    categoria = request.form['categoria']
-
-    file = request.files.get('imagen')
-    if file and file.filename != '':
-        filename = secure_filename(file.filename)
-        file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-        ruta_imagen = os.path.join('assets', 'img', filename).replace('\\', '/')
-    else:
-        ruta_imagen = 'assets/img/imagen_defecto.jpeg'
-
-    conn = db.conectar()
-    cur = conn.cursor()
-    try:
-        # Inserta en la tabla producto
-        cur.execute("""
-            INSERT INTO producto (nombre, codigo_barras, precio, stock, descripcion, marca, imagen)
-            VALUES (%s, %s, %s, %s, %s, %s, %s)
-            RETURNING id_producto;
-        """, (nombre, codigo_barras, precio, stock, descripcion, marca, ruta_imagen))
-        producto_id = cur.fetchone()[0]
-        cur.execute("""
-            SELECT id_categoria
-            FROM categoria
-            WHERE nombre = %s;
-        """, (categoria,))
-        categoria_id = cur.fetchone()
-        if categoria_id:
-            categoria_id = categoria_id[0]
-        else:
-            raise ValueError(f"Categoría '{categoria}' no encontrada.")
-        cur.execute("""
-            UPDATE producto
-            SET fk_categoria = %s
-            WHERE id_producto = %s;
-        """, (categoria_id, producto_id))
-        conn.commit()
-        return render_template('regProduct.html')
-    except Exception as e:
-        # En caso de error, deshace la transacción
-        conn.rollback()
-        return jsonify({"error": str(e)}), 400
-    finally:
-        # Cierra el cursor y la conexión
-        cur.close()
-        db.desconectar(conn)
-
-# EDICION
-@app.route('/update1_producto/<int:id_producto>', methods=['GET'])
-def update1_producto(id_producto):
-    conn = db.conectar()
-    cursor = conn.cursor()
-    cursor.execute('''SELECT * FROM info_especifica_producto WHERE "ID" = %s''', (id_producto,))
-    datos = cursor.fetchone()
-    cursor.close()
-    db.desconectar(conn)
-    return render_template('editarProduct.html', datos=datos)
-
-@app.route('/update_producto_post/<int:id_producto>', methods=['POST'])
-def update_producto_post(id_producto):
-    nombre = request.form['nombre']
-    codigo_barras = request.form['codigo_barras']
-    precio = request.form['precio']
-    stock = request.form['stock']
-    descripcion = request.form['descripcion']
-    marca = request.form['marca']
-    categoria = request.form['categoria']
-    conn = db.conectar()
-    cur = conn.cursor()
-    try:
-        ruta_imagen = None
-        if 'imagen' in request.files:
-            file = request.files['imagen']
-            if file and file.filename != '':
-                filename = secure_filename(file.filename)
-                file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-                ruta_imagen = os.path.join('assets', 'img', filename).replace('\\', '/')
-
-        if ruta_imagen:
-            cur.execute('''
-                UPDATE producto
-                SET nombre=%s, codigo_barras=%s, precio=%s, stock=%s, descripcion=%s, marca=%s, categoria=%s, imagen=%s
-                WHERE id_producto = %s
-            ''', (nombre, codigo_barras, precio, stock, descripcion, marca, categoria, ruta_imagen, id_producto))
-        else:
-            cur.execute('''
-                UPDATE producto
-                SET nombre=%s, codigo_barras=%s, precio=%s, stock=%s, descripcion=%s, marca=%s, categoria=%s
-                WHERE id_producto = %s
-            ''', (nombre, codigo_barras, precio, stock, descripcion, marca, categoria, id_producto))
-
-        cur.execute("""
-            SELECT id_categoria
-            FROM categoria
-            WHERE nombre = %s;
-        """, (categoria,))
-        categoria_id = cur.fetchone()
-        if categoria_id:
-            categoria_id = categoria_id[0]
-        else:
-            raise ValueError(f"Categoría '{categoria}' no encontrada.")
-
-        cur.execute("""
-            UPDATE producto
-            SET fk_categoria = %s
-            WHERE id_producto = %s;
-        """, (categoria_id, id_producto))
-
-        conn.commit()
-        return redirect(url_for('consultar_productos'))
-    except Exception as e:
-        conn.rollback()
-        return jsonify({"error": str(e)}), 400
-    finally:
-        cur.close()
-        db.desconectar(conn)
-
-
-@app.route('/delete_producto/<int:id_producto>', methods=['POST'])
-def delete_producto(id_producto):
-    conn = db.conectar()
-    cursor = conn.cursor()
-    try:
-        # Asegúrate de que la tabla 'producto' es la correcta
-        cursor.execute('DELETE FROM producto WHERE id_producto = %s', (id_producto,))
-        conn.commit()
-        print(f"Producto con ID {id_producto} eliminado correctamente.")
-    except Exception as e:
-        conn.rollback()
-        print(f"Error al eliminar producto: {e}")
-    finally:
-        cursor.close()
-        db.desconectar(conn)
-    return redirect(url_for('consultar_productos'))
-
-@app.route('/buscar_producto', methods=['POST'])
-def buscar_producto():
-    buscar_texto = request.form.get('buscar', '')
-    conn = db.conectar()
-    try:
-        cursor = conn.cursor()
-        query = '''SELECT * FROM info_especifica_producto WHERE "Nombre" ILIKE %s OR "ID"::TEXT ILIKE %s'''
-        cursor.execute(query, (f'%{buscar_texto}%', f'%{buscar_texto}%'))
-        datos = cursor.fetchall()
-        cursor.close()
-    except Exception as e:
-        print(f'Error: {e}')
-        datos = []
-    finally:
-        db.desconectar(conn)
-    return render_template('consultarProductos.html', datos=datos)
-
-
-@app.route('/consultar_usuario/<int:id_usuario>')
-def consultar_usuario(id_usuario):
-    if 'username' in session and 'rol' in session:
-        username = session['username']
-        rol = session['rol']
-        
-        # Verificar que el rol sea 1 (administrador)
-        if rol != 1:  # Solo los administradores pueden consultar usuarios
-            return jsonify({"error": "Acceso no autorizado"}), 403
-        
-        # Conectar a la base de datos
-        conn = db.conectar()
-        cursor = conn.cursor()
-        
-        # Obtener información general del usuario desde la vista `nombre_usuario`
-        cursor.execute('''SELECT * FROM nombre_usuario WHERE "ID" = %s''', (id_usuario,))
-        usuario_general = cursor.fetchone()
-        
-        # Obtener información específica del usuario desde la vista `info_especifica_user`
-        cursor.execute('''SELECT * FROM info_especifica_user WHERE "ID" = %s''', (id_usuario,))
-        usuario_especifico = cursor.fetchone()
-        
-        cursor.close()
-        db.desconectar(conn)
-        
-        # Combinar la información general y específica
-        usuario = {}
-        if usuario_general:
-            columns = [desc[0] for desc in cursor.description]
-            usuario_general_dict = dict(zip(columns, usuario_general))
-            usuario.update(usuario_general_dict)
-        
-        if usuario_especifico:
-            columns = [desc[0] for desc in cursor.description]
-            usuario_especifico_dict = dict(zip(columns, usuario_especifico))
-            usuario.update(usuario_especifico_dict)
-        
-        # Renderizar la plantilla con la información del usuario
-        return render_template('consultarUsuario.html', username=username, rol=rol, usuario=usuario)
-    else:
-        return redirect(url_for('login'))
-
-@app.route('/delete_usuario/<int:id_usuario>', methods=['POST'])
-def delete_usuario(id_usuario):
-    if 'username' in session and 'rol' in session:
-        session_rol = session['rol']
-        
-        # Verificar que el rol sea 1 (administrador)
-        if session_rol != 1:
-            return jsonify({"error": "Acceso no autorizado"}), 403
-        
-        conn = db.conectar()
-        cursor = conn.cursor()
-        try:
-            # Obtener el fk_info_empleado antes de eliminar el usuario
-            cursor.execute('''SELECT fk_info_empleado FROM usuario WHERE id_usuario = %s''', (id_usuario,))
-            fk_info_empleado = cursor.fetchone()[0]
-            
-            # Borrar el usuario de la tabla usuario
-            cursor.execute('''DELETE FROM usuario WHERE id_usuario = %s''', (id_usuario,))
-            
-            # Borrar el registro correspondiente en la tabla info_empleado
-            cursor.execute('''DELETE FROM info_empleado WHERE id_empleado = %s''', (fk_info_empleado,))
-            
-            conn.commit()
-        except Exception as e:
-            conn.rollback()
-            print(f"Error al eliminar usuario: {e}")
-            return jsonify({"error": "No se pudo eliminar el usuario"}), 500
-        finally:
-            cursor.close()
-            db.desconectar(conn)
-        
-        return redirect(url_for('consultar_usuarios'))
-    else:
-        return redirect(url_for('secciones'))
 
 
 
