@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/static/regVenta.css">
+    <link rel="stylesheet" href="/static/ventas_css/regVenta.css">
     <link rel="stylesheet" href="/static/assets/font/flaticon.css">
     <link rel="stylesheet" href="/static/style.css">
     <link rel="stylesheet" href="../static/assets/font/flaticon.css">
@@ -60,15 +60,7 @@
     </style>
 </head>
 <body>
-    {% with messages = get_flashed_messages() %}
-  {% if messages %}
-    <ul class=flashes>
-    {% for message in messages %}
-      <li>{{ message }}</li>
-    {% endfor %}
-    </ul>
-  {% endif %}
-{% endwith %}
+
     <header>
         <section class="incons-container">
             <!-- Aqui van los iconos de las redes sociales, eslogan, correo y horarios -->
@@ -108,172 +100,195 @@
     <main class="container">
         <div class="principal-container">
             <section class="sec-title">
+                <!-- Info de la seccion y el numero de la venta -->
                 <h5>No.Venta</h5>
                 <h5>{{ "{:08d}".format(numero_venta) }}</h5>
             </section>
             <section class="barra_busqueda">
+                <!-- Aqui se encuentra la barra de busqueda -->
                 <form class="textbox" onsubmit="return false;">
-                    <input type="text" id="productSearch" placeholder="Buscar...">
-                    <button type="button" id="abrirModal">Agregar Producto</button>
+                    <input type="text" name="buscar" placeholder="Buscar...">
+                    <!-- <button type="submit">Buscar</button>
+                    <!-- <svg class="icon" width="24" height="24" viewBox="0 0 24 24"> -->
+                    <!-- SVG content -->
+                    <!-- </svg> -->
+                    <!-- <svg class="icon" width="24" height="24" viewBox="0 0 24 24"> -->
+                    <!-- SVG content -->
+                    <!-- </svg> -->
                 </form>
             </section>
+            <!-- Esta de aqui es la tabla -->
             <section class="table_ventas">
-                <table>
-                    <thead>
-                        <tr class="fila">
-                            <th>Código</th>
-                            <th>Producto</th>
-                            <th>Cantidad</th>
-                            <th>Precio</th>
-                            <th>Total</th>
-                            <th>Acciones</th>
-                        </tr>
-                    </thead>
-                    <tbody id="table_ventas">
-                        <!-- Aquí se irán añadiendo las filas de productos -->
-                    </tbody>
-                </table>
-            </section>
-            <div id="productModal" style="display:none;">
-                <h3>Seleccionar Producto</h3>
-                <input type="text" id="productSearchInput" placeholder="Ingrese código de producto">
-                <button type="button" onclick="searchProduct()">Buscar</button>
-                <button type="button" onclick="closeModal()">Cerrar</button>
-            </div>
-            <section class="pre-visualizacion">
-    <div>
-        <img src="../static/assets/img/Logotipo_GladiatorRedondo.png" alt="Logotipo Gladiator's" class="logo-redondo">
-    </div>
-    <div class="parrafo">
-        <p>No. Venta:</p>
-        <p>{{ "{:08d}".format(numero_venta) }}</p>
-    </div>
-    <div class="container-linea">
-        <p>Atendido por:</p>
-        <p>{{ nombre_completo }}</p>
-    </div>
-    <div class="efectivo">
-        <label for="money-received">Efectivo recibido</label>
-        <input type="number" id="money-received" name="money-received" min="0" step="0.01" placeholder="00.00">
-    </div>
-    <div class="container-vuelto">
-        <p>Vuelto: $<span id="vuelto">0.00</span> </p>
-        <p>Monto Efectivo: $<span id="monto-efectivo">0.00</span></p>
-    </div>
-    <div class="container-total">
-        <p>Subtotal: ${{ "%.2f" % subtotal }}</p>
-        <p>Total: ${{ "%.2f" % total }}</p>
-    </div>
-    <div class="botones">
-        <form action="{{ url_for('registrar_venta') }}" method="POST" class="realizar-venta">
-            <input type="hidden" name="id_prod" value="24">
-            <button type="submit">Realizar Venta</button>
-        </form>
-        <a href="ruta_a_la_pagina_de_cancelacion" class="btn">Cancelar Venta</a>
-    </div>
+    <table>
+        <thead>
+            <tr class="fila">
+                <th>Código</th>
+                <th>Producto</th>
+                <th>Cantidad</th>
+                <th>Precio</th>
+                <th>Total</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody id="table_ventas">
+            <!-- Aquí se irán añadiendo las filas de productos -->
+        </tbody>
+    </table>
 </section>
+<div>
+    <div id="productModal" style="display:none;">
+        <h3>Seleccionar Producto</h3>
+        <input type="text" id="productSearch" placeholder="Ingrese código de producto">
+        <button onclick="searchProduct()">Buscar</button>
+        <button onclick="closeModal()">Cerrar</button>
+    </div>
+    <button type="button" id="abrirModal">Agregar Producto</button>
+</div>
+        <!-- Aqui se va a visualizar un tipo ticket del total -->
+        <section class="pre-visualizacion">
+            <div>
+                <!-- Logotipo y numero de venta, -->
+                <img src="../static/assets/img/Logotipo_GladiatorRedondo.png" alt="Logotipo Gladiator's" class="logo-redondo">
+            </div>
+            <div class="parrafo">
+                <p>No. Venta:</p>
+                <p>{{ "{:08d}".format(numero_venta) }}</p>
+            </div>
+            <div class="container-linea">
+                <p>Atendido por:</p>
+                <p>{{ usuario }}</p> <!-- Aquí se mostrará el nombre del usuario -->
+            </div>
+            <div class="efectivo">
+                <!-- Aqui va el efectivo recibido -->
+                <label for="money-received">Efectivo recibido</label>
+                <input type="number" id="money-received" name="money-received" min="0" step="0.01" placeholder="00.00">
+            </div>
+            <div class="container-vuelto">
+                <!-- Aqui va el vuelto , monto, subtotal, total -->
+                <p>Vuelto: $<span id="vuelto">0.00</span> </p>
+                <p>Monto Efectivo: $<span id="monto-efectivo">0.00</span></p>
+            </div>
+            <div class="container-total">
+                <p>Subtotal: ${{ "%.2f" % subtotal }}</p>
+                <p>Total: ${{ "%.2f" % total }}</p>
+            </div>
+            <div class="botones">
+                <!-- Aqui estan los botones -->
+            <!-- <button type="submit">Realizar Venta</button>
+            <a href=""><button type="submit">Cancelar Venta</button></a> -->
+                <form action="{{ url_for('registrar_venta') }}" method="POST" class="realizar-venta">
+                    <button type="submit">Realizar Venta</button>
+                </form>
+                <a href="ruta_a_la_pagina_de_cancelacion" class="btn">Cancelar Venta</a>
+            </div>
         </div>
+        </section>
     </main>
     
-    <script>
-        let ventas = [];
 
-        // Abrir y cerrar el modal
-        function openModal() {
-            document.getElementById('productModal').style.display = 'block';
-        }
+<script>
+    let ventas = [];
 
-        function closeModal() {
-            document.getElementById('productModal').style.display = 'none';
-        }
+// Abrir y cerrar el modal
+function openModal() {
+    document.getElementById('productModal').style.display = 'block';
+}
 
-        // Buscar y agregar producto
-        function searchProduct() {
-            var code = document.getElementById('productSearchInput').value;
-            fetch('/get_product_details?code=' + code)
-                .then(response => response.json())
-                .then(data => {
-                    if (data) {
-                        // Añadir el producto a la lista de ventas
-                        let cantidad = 1;
-                        let total = data.price * cantidad;
-                        let nuevaVenta = {
-                            code: code,
-                            name: data.name,
-                            price: data.price,
-                            quantity: cantidad,
-                            total: total
-                        };
-                        ventas.push(nuevaVenta);
-                        actualizarTablaVentas();
-                        updateOverallTotal();
-                    } else {
-                        alert('¡Producto no encontrado!');
-                    }
-                });
-            closeModal();
-        }
+function closeModal() {
+    document.getElementById('productModal').style.display = 'none';
+}
 
-        // Actualizar la tabla de ventas
-        function actualizarTablaVentas() {
-            let table = document.getElementById('table_ventas');
-            table.innerHTML = '';
+// Buscar y agregar producto
+function searchProduct() {
+    var code = document.getElementById('productSearch').value;
+    fetch('/get_product_details?code=' + code)
+        .then(response => response.json())
+        .then(data => {
+            if (data) {
+                // Añadir el producto a la lista de ventas
+                let cantidad = 1;
+                let total = data.price * cantidad;
+                let nuevaVenta = {
+                    code: code,
+                    name: data.name,
+                    price: data.price,
+                    quantity: cantidad,
+                    total: total
+                };
+                ventas.push(nuevaVenta);
+                actualizarTablaVentas();
+                updateOverallTotal();
+            } else {
+                alert('¡Producto no encontrado!');
+            }
+        });
+    closeModal();
+}
 
-            ventas.forEach((venta, index) => {
-                let row = table.insertRow();
-                row.innerHTML = `
-                    <td>${venta.code}</td>
-                    <td>${venta.name}</td>
-                    <td>
-                        <input type="number" value="${venta.quantity}" min="1" onchange="actualizarCantidad(${index}, this.value)">
-                    </td>
-                    <td>${venta.price.toFixed(2)}</td>
-                    <td class="line-total">${venta.total.toFixed(2)}</td>
-                    <td>
-                        <button onclick="eliminarProducto(${index})">Eliminar</button>
-                    </td>
-                `;
-            });
-        }
+// Actualizar la tabla de ventas
+function actualizarTablaVentas() {
+    let table = document.getElementById('table_ventas');
+    table.innerHTML = '';
 
-        // Actualizar la cantidad y total de un producto
-        function actualizarCantidad(index, cantidad) {
-            ventas[index].quantity = parseInt(cantidad);
-            ventas[index].total = ventas[index].price * ventas[index].quantity;
-            actualizarTablaVentas();
-            updateOverallTotal();
-        }
+    ventas.forEach((venta, index) => {
+        let row = table.insertRow();
+        row.innerHTML = `
+            <td>${venta.code}</td>
+            <td>${venta.name}</td>
+            <td>
+                <input type="number" value="${venta.quantity}" min="1" onchange="actualizarCantidad(${index}, this.value)">
+            </td>
+            <td>${venta.price.toFixed(2)}</td>
+            <td class="line-total">${venta.total.toFixed(2)}</td>
+            <td>
+                <button onclick="eliminarProducto(${index})">Eliminar</button>
+            </td>
+        `;
+    });
+}
 
-        // Eliminar un producto de la venta
-        function eliminarProducto(index) {
-            ventas.splice(index, 1);
-            actualizarTablaVentas();
-            updateOverallTotal();
-        }
+// Actualizar la cantidad y total de un producto
+function actualizarCantidad(index, cantidad) {
+    ventas[index].quantity = parseInt(cantidad);
+    ventas[index].total = ventas[index].price * ventas[index].quantity;
+    actualizarTablaVentas();
+    updateOverallTotal();
+}
 
-        // Actualizar subtotal y total general
-        function updateOverallTotal() {
-            var subtotal = ventas.reduce((sum, venta) => sum + venta.total, 0);
+// Eliminar un producto de la venta
+function eliminarProducto(index) {
+    ventas.splice(index, 1);
+    actualizarTablaVentas();
+    updateOverallTotal();
+}
 
-            document.querySelector('.container-total p:nth-child(1)').textContent = "Subtotal: $" + subtotal.toFixed(2);
-            document.querySelector('.container-total p:nth-child(2)').textContent = "Total: $" + subtotal.toFixed(2);
-        }
+// Actualizar subtotal y total general
+function updateOverallTotal() {
+    var subtotal = ventas.reduce((sum, venta) => sum + venta.total, 0);
 
-        // Calcular vuelto al ingresar efectivo
-        function calcularVuelto() {
-            var montoEfectivo = parseFloat(document.getElementById('money-received').value) || 0;
-            var subtotal = ventas.reduce((sum, venta) => sum + venta.total, 0);
-            var vuelto = montoEfectivo - subtotal;
+    document.querySelector('.container-total p:nth-child(1)').textContent = "Subtotal: $" + subtotal.toFixed(2);
+    document.querySelector('.container-total p:nth-child(2)').textContent = "Total: $" + subtotal.toFixed(2);
+}
 
-            document.getElementById('monto-efectivo').textContent = montoEfectivo.toFixed(2);
-            document.getElementById('vuelto').textContent = vuelto.toFixed(2);
-        }
+// Calcular vuelto al ingresar efectivo
+function calcularVuelto() {
+    var montoEfectivo = parseFloat(document.getElementById('money-received').value) || 0;
+    var subtotal = ventas.reduce((sum, venta) => sum + venta.total, 0);
+    var vuelto = montoEfectivo - subtotal;
 
-        // Escuchar el evento input en el campo de efectivo recibido
-        document.getElementById('money-received').addEventListener('input', calcularVuelto);
+    document.getElementById('monto-efectivo').textContent = montoEfectivo.toFixed(2);
+    document.getElementById('vuelto').textContent = vuelto.toFixed(2);
+}
 
-        // Asignar eventos al abrir el modal
-        document.getElementById('abrirModal').addEventListener('click', openModal);
-    </script>
+// Escuchar el evento input en el campo de efectivo recibido
+document.getElementById('money-received').addEventListener('input', calcularVuelto);
+
+// Asignar eventos al abrir el modal
+document.getElementById('abrirModal').addEventListener('click', openModal);
+
+// Script usuario 
+
+
+</script>
 </body>
 </html>

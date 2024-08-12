@@ -17,6 +17,8 @@ from wtforms.validators import DataRequired
 from werkzeug.security import check_password_hash, generate_password_hash
 from itsdangerous import URLSafeTimedSerializer
 import itsdangerous
+import json
+
 
 
 
@@ -378,176 +380,69 @@ def buscar_producto():
 
 @app.route('/registrar_venta', methods=['GET', 'POST'])
 def registrar_venta():
-    conn = db.conectar()
-    cursor = conn.cursor()
-    venta_actual = session.get('venta_actual', [])
-            # Obtén el ID del usuario y el nombre completo del usuario desde la sesión
-    fk_usuario = session.get('usuario_id')
-            # Verifica que el usuario esté autenticado
-    nombre_completo = session.get('nombre_completo')
-    
-    if fk_usuario is None:
-        flash("Error: Usuario no autenticado.")
-        return redirect(url_for('login'))
-
-
-
-
     if request.method == 'POST':
-        try:
-            # Verifica la sesión de la venta actual
-            print()
-            if not venta_actual:
-                flash("No hay productos en la venta actual.")
-                return redirect(url_for('registrar_venta'))
+        # Manejar la solicitud POST para registrar la venta en la base de datos
+        conn = db.conectar()
+        cursor = conn.cursor()
 
+        # Obtener el último id de venta
+        cursor.execute("SELECT COALESCE(MAX(id_venta), 0) FROM venta")
+        ultimo_id = cursor.fetchone()[0]
+        proximo_id = ultimo_id + 1  # Incrementa para el próximo número de venta
 
-            print('ya paso de aqui')
-            # Inserta en la tabla venta
+        # Obtener datos de la venta
+        venta_actual = session.get('venta_actual', [])
+        subtotal = sum(item['price'] for item in venta_actual)
+        total = subtotal  # Aquí puedes agregar impuestos o descuentos si es necesario
+
+        # Obtener el ID del usuario (suponiendo que el ID está almacenado en la sesión)
+        fk_usuario = session.get('usuario_id', 2)  # Reemplaza 1 con un valor por defecto si es necesario
+
+        # Insertar la venta en la tabla venta
+        cursor.execute(
+            "INSERT INTO venta (id_venta, fecha_venta, hora_venta, fk_usuario) VALUES (%s, CURRENT_DATE, CURRENT_TIME, %s)",
+            (proximo_id, fk_usuario)
+        )
+
+        # Insertar los detalles de la venta en la tabla detalle_venta
+        for item in venta_actual:
             cursor.execute(
-                "INSERT INTO venta (fecha_venta, hora_venta, fk_usuario) VALUES (CURRENT_DATE, CURRENT_TIME, %s) RETURNING id_venta", 
-                (fk_usuario,)
+                "INSERT INTO detalle_venta (cantidad, fk_producto, fk_venta) VALUES (%s, %s, %s)",
+                (item['quantity'], item['product_id'], proximo_id)
             )
-            id_venta = cursor.fetchone()[0]
 
-            # Inserta los detalles de la venta
-            for item in venta_actual:
-                cursor.execute(
-                    "INSERT INTO detalle_venta (cantidad, fk_producto, fk_venta) VALUES (%s, %s, %s)",
-                    (item['quantity'], item['product_id'], id_venta)
-                )
-
-            conn.commit()
-            flash("Venta registrada exitosamente.", "success")
-
-        except Exception as e:
-            conn.rollback()
-            flash(f"Error al registrar la venta: {e}", "danger")
-            print(f"Error al registrar la venta: {e}")
-
-        finally:
-            cursor.close()
-            conn.close()
+        conn.commit()
+        cursor.close()
+        conn.close()
 
         # Limpiar la sesión de la venta actual
         session['venta_actual'] = []
 
-        return redirect(url_for('venta_confirmada', nombre_completo=nombre_completo, id_venta=id_venta))
-
+        # Redirigir a una página de confirmación o al índice
+        return redirect(url_for('venta_confirmada', numero_venta=proximo_id))
+    
     # Manejar la solicitud GET para mostrar el formulario de venta
-    # conn = db.conectar()
-    # cursor = conn.cursor()
-    # session['venta_actual'] = [13]
-    try:
-        cursor.execute("SELECT COALESCE(MAX(id_venta), 0) FROM venta")
-        ultimo_id = cursor.fetchone()[0]
-        proximo_id = ultimo_id + 1
+    conn = db.conectar()
+    cursor = conn.cursor()
 
-        # Calcular subtotal y total de la venta actual
-        # venta_actual = session.get('venta_actual', [])
-        subtotal = sum(item['price'] * item['quantity'] for item in venta_actual)
-        total = subtotal
+    # Obtener el último id de venta
+    cursor.execute("SELECT COALESCE(MAX(id_venta), 0) FROM venta")
+    ultimo_id = cursor.fetchone()[0]
+    proximo_id = ultimo_id + 1  # Incrementa para el próximo número de venta
 
-        # Obtener el nombre completo desde la sesión
-        # nombre_completo = session.get('nombre_completo', '')
+    # Calcular subtotal y total de la venta actual
+    venta_actual = session.get('venta_actual', [])
+    subtotal = sum(item['price'] for item in venta_actual)
+    total = subtotal  # Aquí puedes agregar impuestos o descuentos si es necesario
 
-    except Exception as e:
-        print(f"Error al obtener datos para el formulario de venta: {e}")
-        nombre_completo = ""
-        proximo_id = 0
-        subtotal = 0
-        total = 0
-    finally:
-        cursor.close()
-        conn.close()
+    cursor.execute('SELECT "nombre completo" FROM nombre_usuario WHERE "ID" = 2')
+    usuario = cursor.fetchone()[0] 
 
-    return render_template('regVenta.html', nombre_completo=nombre_completo, numero_venta=proximo_id, subtotal=subtotal, total=total)
+    cursor.close()
+    conn.close()
 
-
-# @app.route('/search_product', methods=['GET'])
-# def search_product():
-#     code = request.args.get('code')
-#     if code:
-#         conn = db.conectar()
-#         cursor = conn.cursor()
-#         cursor.execute("SELECT id_producto, nombre_producto, precio FROM productos WHERE codigo_barras = %s", (code,))
-#         product = cursor.fetchone()
-#         conn.close()
-        
-#         if product:
-#             venta_actual = session.get('venta_actual', [])
-#             cantidad = 1
-#             total = product[2] * cantidad
-#             nueva_venta = {
-#                 'product_id': product[0],
-#                 'name': product[1],
-#                 'price': product[2],
-#                 'quantity': cantidad,
-#                 'total': total
-#             }
-#             venta_actual.append(nueva_venta)
-#             session['venta_actual'] = venta_actual
-
-#             # Actualiza el frontend de alguna manera, puede ser redireccionando o usando AJAX en JS
-#             return jsonify(nueva_venta)
-#         else:
-#             flash('¡Producto no encontrado!', 'danger')
-#             return jsonify({'error': 'Producto no encontrado'}), 404
-#     else:
-#         flash('Código de producto no proporcionado.', 'danger')
-#         return jsonify({'error': 'Código no proporcionado'}), 400
-    
-
-# @app.route('/actualizar_tabla_ventas')
-# def actualizar_tabla_ventas():
-#     venta_actual = session.get('venta_actual', [])
-#     return render_template('table_ventas.html', ventas=venta_actual)
-
-
-# @app.route('/actualizar_cantidad', methods=['POST'])
-# def actualizar_cantidad():
-#     index = int(request.form.get('index'))
-#     cantidad = int(request.form.get('cantidad'))
-#     venta_actual = session.get('venta_actual', [])
-    
-#     if 0 <= index < len(venta_actual):
-#         venta_actual[index]['quantity'] = cantidad
-#         venta_actual[index]['total'] = venta_actual[index]['price'] * cantidad
-#         session['venta_actual'] = venta_actual
-
-#         # Actualizar el total general, se puede redirigir o devolver JSON
-#         return jsonify({'success': True})
-#     return jsonify({'error': 'Índice inválido'}), 400
-
-
-# @app.route('/eliminar_producto', methods=['POST'])
-# def eliminar_producto():
-#     index = int(request.form.get('index'))
-#     venta_actual = session.get('venta_actual', [])
-    
-#     if 0 <= index < len(venta_actual):
-#         venta_actual.pop(index)
-#         session['venta_actual'] = venta_actual
-
-#         return jsonify({'success': True})
-#     return jsonify({'error': 'Índice inválido'}), 400
-
-
-# def calcular_totales(venta_actual):
-#     subtotal = sum(item['total'] for item in venta_actual)
-#     total = subtotal  # Si tienes descuentos o impuestos, puedes ajustarlo aquí
-#     return subtotal, total
-
-# @app.route('/update_totals')
-# def update_totals():
-#     venta_actual = session.get('venta_actual', [])
-#     subtotal, total = calcular_totales(venta_actual)
-#     return jsonify({'subtotal': subtotal, 'total': total})
-
-
-
-
-
+    # Renderiza la página pasando el próximo número de venta y el total
+    return render_template('regVenta.html', usuario=usuario, numero_venta=proximo_id, subtotal=subtotal, total=total)
 
 
 @app.route('/venta_confirmada')
@@ -566,7 +461,6 @@ def venta_confirmada():
 
     return render_template('venta_confirmada.html', numero_venta=numero_venta, fecha=fecha, hora=hora, usuario=usuario, total=total)
 
-
 @app.route('/get_product_details', methods=['GET'])
 def get_product_details():
     code = request.args.get('code')
@@ -575,7 +469,6 @@ def get_product_details():
         return jsonify(product)
     else:
         return jsonify({}), 404
-
 
 def obtener_producto_de_db(codigo):
     conn = db.conectar()
@@ -593,6 +486,34 @@ def obtener_producto_de_db(codigo):
         return {'name': nombre, 'price': float(precio)}
     else:
         return None
+
+
+# @app.route('/get_product_details', methods=['GET'])
+# def get_product_details():
+#     code = request.args.get('code')
+#     product = obtener_producto_de_db(code)
+#     if product:
+#         return jsonify(product)
+#     else:
+#         return jsonify({}), 404
+
+
+# def obtener_producto_de_db(codigo):
+#     conn = db.conectar()
+#     cursor = conn.cursor()
+    
+#     query = "SELECT nombre, precio FROM productos WHERE codigo = %s"
+#     cursor.execute(query, (codigo,))
+    
+#     resultado = cursor.fetchone()
+#     cursor.close()
+#     conn.close()
+
+#     if resultado:
+#         nombre, precio = resultado
+#         return {'name': nombre, 'price': float(precio)}
+#     else:
+#         return None
 
 
 
