@@ -378,26 +378,31 @@ def buscar_producto():
 
 @app.route('/registrar_venta', methods=['GET', 'POST'])
 def registrar_venta():
-    if request.method == 'POST':
-        conn = db.conectar()
-        cursor = conn.cursor()
+    conn = db.conectar()
+    cursor = conn.cursor()
+    venta_actual = session.get('venta_actual', [])
+            # Obtén el ID del usuario y el nombre completo del usuario desde la sesión
+    fk_usuario = session.get('usuario_id')
+            # Verifica que el usuario esté autenticado
+    nombre_completo = session.get('nombre_completo')
+    
+    if fk_usuario is None:
+        flash("Error: Usuario no autenticado.")
+        return redirect(url_for('login'))
 
+
+
+
+    if request.method == 'POST':
         try:
             # Verifica la sesión de la venta actual
-            venta_actual = session.get('venta_actual', [])
+            print()
             if not venta_actual:
                 flash("No hay productos en la venta actual.")
                 return redirect(url_for('registrar_venta'))
 
-            # Obtén el ID del usuario y el nombre completo del usuario desde la sesión
-            fk_usuario = session.get('usuario_id')
-            nombre_completo = session.get('nombre_completo')
 
-            # Verifica que el usuario esté autenticado
-            if fk_usuario is None:
-                flash("Error: Usuario no autenticado.")
-                return redirect(url_for('login'))
-
+            print('ya paso de aqui')
             # Inserta en la tabla venta
             cursor.execute(
                 "INSERT INTO venta (fecha_venta, hora_venta, fk_usuario) VALUES (CURRENT_DATE, CURRENT_TIME, %s) RETURNING id_venta", 
@@ -430,21 +435,21 @@ def registrar_venta():
         return redirect(url_for('venta_confirmada', nombre_completo=nombre_completo, id_venta=id_venta))
 
     # Manejar la solicitud GET para mostrar el formulario de venta
-    conn = db.conectar()
-    cursor = conn.cursor()
-
+    # conn = db.conectar()
+    # cursor = conn.cursor()
+    # session['venta_actual'] = [13]
     try:
         cursor.execute("SELECT COALESCE(MAX(id_venta), 0) FROM venta")
         ultimo_id = cursor.fetchone()[0]
         proximo_id = ultimo_id + 1
 
         # Calcular subtotal y total de la venta actual
-        venta_actual = session.get('venta_actual', [])
+        # venta_actual = session.get('venta_actual', [])
         subtotal = sum(item['price'] * item['quantity'] for item in venta_actual)
         total = subtotal
 
         # Obtener el nombre completo desde la sesión
-        nombre_completo = session.get('nombre_completo', '')
+        # nombre_completo = session.get('nombre_completo', '')
 
     except Exception as e:
         print(f"Error al obtener datos para el formulario de venta: {e}")
@@ -457,6 +462,91 @@ def registrar_venta():
         conn.close()
 
     return render_template('regVenta.html', nombre_completo=nombre_completo, numero_venta=proximo_id, subtotal=subtotal, total=total)
+
+
+# @app.route('/search_product', methods=['GET'])
+# def search_product():
+#     code = request.args.get('code')
+#     if code:
+#         conn = db.conectar()
+#         cursor = conn.cursor()
+#         cursor.execute("SELECT id_producto, nombre_producto, precio FROM productos WHERE codigo_barras = %s", (code,))
+#         product = cursor.fetchone()
+#         conn.close()
+        
+#         if product:
+#             venta_actual = session.get('venta_actual', [])
+#             cantidad = 1
+#             total = product[2] * cantidad
+#             nueva_venta = {
+#                 'product_id': product[0],
+#                 'name': product[1],
+#                 'price': product[2],
+#                 'quantity': cantidad,
+#                 'total': total
+#             }
+#             venta_actual.append(nueva_venta)
+#             session['venta_actual'] = venta_actual
+
+#             # Actualiza el frontend de alguna manera, puede ser redireccionando o usando AJAX en JS
+#             return jsonify(nueva_venta)
+#         else:
+#             flash('¡Producto no encontrado!', 'danger')
+#             return jsonify({'error': 'Producto no encontrado'}), 404
+#     else:
+#         flash('Código de producto no proporcionado.', 'danger')
+#         return jsonify({'error': 'Código no proporcionado'}), 400
+    
+
+# @app.route('/actualizar_tabla_ventas')
+# def actualizar_tabla_ventas():
+#     venta_actual = session.get('venta_actual', [])
+#     return render_template('table_ventas.html', ventas=venta_actual)
+
+
+# @app.route('/actualizar_cantidad', methods=['POST'])
+# def actualizar_cantidad():
+#     index = int(request.form.get('index'))
+#     cantidad = int(request.form.get('cantidad'))
+#     venta_actual = session.get('venta_actual', [])
+    
+#     if 0 <= index < len(venta_actual):
+#         venta_actual[index]['quantity'] = cantidad
+#         venta_actual[index]['total'] = venta_actual[index]['price'] * cantidad
+#         session['venta_actual'] = venta_actual
+
+#         # Actualizar el total general, se puede redirigir o devolver JSON
+#         return jsonify({'success': True})
+#     return jsonify({'error': 'Índice inválido'}), 400
+
+
+# @app.route('/eliminar_producto', methods=['POST'])
+# def eliminar_producto():
+#     index = int(request.form.get('index'))
+#     venta_actual = session.get('venta_actual', [])
+    
+#     if 0 <= index < len(venta_actual):
+#         venta_actual.pop(index)
+#         session['venta_actual'] = venta_actual
+
+#         return jsonify({'success': True})
+#     return jsonify({'error': 'Índice inválido'}), 400
+
+
+# def calcular_totales(venta_actual):
+#     subtotal = sum(item['total'] for item in venta_actual)
+#     total = subtotal  # Si tienes descuentos o impuestos, puedes ajustarlo aquí
+#     return subtotal, total
+
+# @app.route('/update_totals')
+# def update_totals():
+#     venta_actual = session.get('venta_actual', [])
+#     subtotal, total = calcular_totales(venta_actual)
+#     return jsonify({'subtotal': subtotal, 'total': total})
+
+
+
+
 
 
 

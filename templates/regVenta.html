@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/static/ventas_css/regVenta.css">
+    <link rel="stylesheet" href="/static/regVenta.css">
     <link rel="stylesheet" href="/static/assets/font/flaticon.css">
     <link rel="stylesheet" href="/static/style.css">
     <link rel="stylesheet" href="../static/assets/font/flaticon.css">
@@ -60,7 +60,15 @@
     </style>
 </head>
 <body>
-
+    {% with messages = get_flashed_messages() %}
+  {% if messages %}
+    <ul class=flashes>
+    {% for message in messages %}
+      <li>{{ message }}</li>
+    {% endfor %}
+    </ul>
+  {% endif %}
+{% endwith %}
     <header>
         <section class="incons-container">
             <!-- Aqui van los iconos de las redes sociales, eslogan, correo y horarios -->
@@ -158,6 +166,7 @@
     </div>
     <div class="botones">
         <form action="{{ url_for('registrar_venta') }}" method="POST" class="realizar-venta">
+            <input type="hidden" name="id_prod" value="24">
             <button type="submit">Realizar Venta</button>
         </form>
         <a href="ruta_a_la_pagina_de_cancelacion" class="btn">Cancelar Venta</a>
