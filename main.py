@@ -34,9 +34,6 @@ UPLOAD_FOLDER = os.path.join('static', 'uploads')
 # Add the configuration to the Flask app
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
-if not os.path.exists(UPLOAD_FOLDER):
-    os.makedirs(UPLOAD_FOLDER)
-
 def actualizar_contraseñas():
     connection = None
     try:
@@ -268,76 +265,126 @@ def consultar_productos():
 
 @app.route('/consultar_producto/<int:id_producto>')
 def consultar_producto(id_producto):
-    conn = db.conectar()
-    cursor = conn.cursor()
-    cursor.execute('''SELECT * FROM info_especifica_producto WHERE "ID" = %s''', (id_producto,))
-    datos = cursor.fetchall()
-    cursor.close()
-    db.desconectar(conn)
-    return render_template('consultarProducto.html', datos=datos)
+    # Verificar si el usuario está autenticado y tiene un rol en la sesión
+    if 'username' in session and 'rol' in session:
+        rol = session['rol']
+        
+        if rol == 1:  # Solo administradores (rol == 1)
+            try:
+                # Conectar a la base de datos
+                conn = db.conectar()
+                cursor = conn.cursor()
+                
+                # Ejecutar la consulta SQL para obtener los datos del producto
+                cursor.execute('SELECT * FROM info_especifica_producto WHERE ID = %s', (id_producto,))
+                datos = cursor.fetchall()
+                
+                # Cerrar el cursor y la conexión
+                cursor.close()
+                db.desconectar(conn)
+                
+                # Verificar si se encontraron datos
+                if not datos:
+                    flash("No se encontraron datos para el producto solicitado.", 'warning')
+                    return redirect(url_for('consultar_productos'))
+                
+                return render_template('consultarProducto.html', datos=datos)
+            
+            except Exception as e:
+                # Manejo básico de errores; podrías registrar el error o manejarlo de otra forma
+                flash(f"Error al consultar el producto: {e}", 'danger')
+                return redirect(url_for('consultar_productos'))
+        else:
+            flash("No tienes permisos para acceder a esta sección", 'danger')
+            return redirect(url_for('consultar_productos'))
+    else:
+        flash("Debes iniciar sesión para acceder a esta sección", 'warning')
+        return redirect(url_for('login'))
+
 
 
 
 @app.route('/update1_producto/<int:id_producto>', methods=['GET'])
 def update1_producto(id_producto):
-    conn = db.conectar()
-    cursor = conn.cursor()
-    cursor.execute('''SELECT * FROM info_especifica_producto WHERE "ID" = %s''', (id_producto,))
-    datos = cursor.fetchone()
-    cursor.close()
-    db.desconectar(conn)
-    return render_template('editarProduct.html', datos=datos)
+    if 'username' in session and 'rol' in session:
+        rol = session['rol']
+        
+        if rol == 1:  # Solo administradores (rol == 1)
+            conn = db.conectar()
+            cursor = conn.cursor()
+            cursor.execute('''SELECT * FROM info_especifica_producto WHERE "ID" = %s''', (id_producto,))
+            datos = cursor.fetchone()
+            cursor.close()
+            db.desconectar(conn)
+            return render_template('editarProduct.html', datos=datos)
+        else:
+            flash("No tienes permisos para acceder a esta sección", 'danger')
+            return redirect(url_for('consultar_productos'))
+    else:
+        return redirect(url_for('login'))
+
 
 
 @app.route('/update_producto_post/<int:id_producto>', methods=['POST'])
 def update_producto_post(id_producto):
-    nombre = request.form['nombre']
-    codigo_barras = request.form['codigo_barras']
-    precio = request.form['precio']
-    stock = request.form['stock']
-    descripcion = request.form['descripcion']
-    marca = request.form['marca']
-    categoria = request.form['categoria']
-
-    file = request.files.get('imagen')
-    if file and file.filename != '':
-        filename = secure_filename(file.filename)
-        file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-        ruta_imagen = os.path.join('assets', 'img', filename).replace('\\', '/')
-    else:
-        conn = db.conectar()
-        cursor = conn.cursor()
-        cursor.execute('''SELECT imagen FROM producto WHERE id_producto = %s''', (id_producto,))
-        ruta_imagen = cursor.fetchone()[0]
-        db.desconectar(conn)
-
-    conn = db.conectar()
-    cur = conn.cursor()
-    try:
-        cur.execute('''SELECT id_categoria FROM categoria WHERE nombre = %s''', (categoria,))
-        categoria_id = cur.fetchone()
-        if categoria_id:
-            categoria_id = categoria_id[0]
-        else:
-            raise ValueError(f"Categoría '{categoria}' no encontrada.")
+    if 'username' in session and 'rol' in session:
+        rol = session['rol']
         
-        update_query = '''
-            UPDATE producto
-            SET nombre = %s, codigo_barras = %s, precio = %s, stock = %s, descripcion = %s, marca = %s, imagen = %s, fk_categoria = %s
-            WHERE id_producto = %s
-        '''
-        params = (nombre, codigo_barras, precio, stock, descripcion, marca, ruta_imagen, categoria_id, id_producto)
-        cur.execute(update_query, params)
-        conn.commit()
-        flash("Producto actualizado exitosamente.")
-        return redirect(url_for('consultar_productos'))
-    except Exception as e:
-        conn.rollback()
-        flash(f"Error al actualizar producto: {e}")
-        return redirect(url_for('consultar_productos'))
-    finally:
-        cur.close()
-        db.desconectar(conn)
+        if rol == 1:  # Solo administradores (rol == 1)
+            nombre = request.form['nombre']
+            codigo_barras = request.form['codigo_barras']
+            precio = request.form['precio']
+            stock = request.form['stock']
+            descripcion = request.form['descripcion']
+            marca = request.form['marca']
+            categoria = request.form['categoria']
+
+            file = request.files.get('imagen')
+            if file and file.filename != '':
+                filename = secure_filename(file.filename)
+                file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+                ruta_imagen = os.path.join('assets', 'img', filename).replace('\\', '/')
+            else:
+                conn = db.conectar()
+                cursor = conn.cursor()
+                cursor.execute('''SELECT imagen FROM producto WHERE id_producto = %s''', (id_producto,))
+                ruta_imagen = cursor.fetchone()[0]
+                cursor.close()
+                db.desconectar(conn)
+
+            conn = db.conectar()
+            cur = conn.cursor()
+            try:
+                cur.execute('''SELECT id_categoria FROM categoria WHERE nombre = %s''', (categoria,))
+                categoria_id = cur.fetchone()
+                if categoria_id:
+                    categoria_id = categoria_id[0]
+                else:
+                    raise ValueError(f"Categoría '{categoria}' no encontrada.")
+                
+                update_query = '''
+                    UPDATE producto
+                    SET nombre = %s, codigo_barras = %s, precio = %s, stock = %s, descripcion = %s, marca = %s, imagen = %s, fk_categoria = %s
+                    WHERE id_producto = %s
+                '''
+                params = (nombre, codigo_barras, precio, stock, descripcion, marca, ruta_imagen, categoria_id, id_producto)
+                cur.execute(update_query, params)
+                conn.commit()
+                flash("Producto actualizado exitosamente.")
+                return redirect(url_for('consultar_productos'))
+            except Exception as e:
+                conn.rollback()
+                flash(f"Error al actualizar producto: {e}")
+                return redirect(url_for('consultar_productos'))
+            finally:
+                cur.close()
+                db.desconectar(conn)
+        else:
+            flash("No tienes permisos para acceder a esta sección", 'danger')
+            return redirect(url_for('consultar_productos'))
+    else:
+        return redirect(url_for('login'))
+
 
 @app.route('/delete_producto/<int:id_producto>', methods=['POST'])
 def delete_producto(id_producto):
@@ -770,29 +817,39 @@ def consultar_usuarios():
 
 @app.route('/consultar_usuario/<int:id_usuario>')
 def consultar_usuario(id_usuario):
-    conn = db.conectar()
-    cursor = conn.cursor()
-    
-    # Obtener información general del usuario desde la vista `nombre_usuario`
-    cursor.execute('''SELECT * FROM nombre_usuario
-                      WHERE "ID" = %s''', (id_usuario,))
-    usuario_general = cursor.fetchone()
-    
-    # Obtener información específica del usuario desde la vista `info_especifica_user`
-    cursor.execute('''SELECT * FROM info_especifica_user
-                      WHERE "ID" = %s''', (id_usuario,))
-    usuario_especifico = cursor.fetchone()
+    if 'username' in session and 'rol' in session:
+        username = session['username']
+        rol = session['rol']
+        
+        if rol == 1:  # Solo administradores (rol == 1)
+            conn = db.conectar()
+            cursor = conn.cursor()
+            
+            # Obtener información general del usuario desde la vista `nombre_usuario`
+            cursor.execute('''SELECT * FROM nombre_usuario
+                              WHERE "ID" = %s''', (id_usuario,))
+            usuario_general = cursor.fetchone()
+            
+            # Obtener información específica del usuario desde la vista `info_especifica_user`
+            cursor.execute('''SELECT * FROM info_especifica_user
+                              WHERE "ID" = %s''', (id_usuario,))
+            usuario_especifico = cursor.fetchone()
 
-    cursor.close()
-    db.desconectar(conn)
-    
-    # Combinar la información general y específica en un solo diccionario
-    if usuario_general and usuario_especifico:
-        usuario = usuario_general + usuario_especifico
+            cursor.close()
+            db.desconectar(conn)
+            
+            # Combinar la información general y específica en un solo diccionario
+            if usuario_general and usuario_especifico:
+                usuario = usuario_general + usuario_especifico
+            else:
+                usuario = None
+            
+            return render_template('consultarUsuario.html', usuario=usuario)
+        else:
+            flash("No tienes permisos para acceder a esta sección", 'danger')
+            return redirect(url_for('consultar_usuarios'))
     else:
-        usuario = None
-    
-    return render_template('consultarUsuario.html', usuario=usuario)
+        return redirect(url_for('login'))
 
 
 @app.route('/update1_usuario/<int:id_usuario>', methods=['GET'])

@@ -13,9 +13,9 @@
     <header>
         <section class="incons-container">
             <div class="incons">
-                <a href="/"><span class="flaticon-001-facebook" aria-label="Facebook"></span></a>
-                <a href="/"><span class="flaticon-003-whatsapp" aria-label="WhatsApp"></span></a>
-                <a href="/"><span class="flaticon-011-instagram" aria-label="Instagram"></span></a>
+                <a href="/"><span class="flaticon-001-facebook"></span></a>
+                <a href="/"><span class="flaticon-003-whatsapp"></span></a>
+                <a href="/"><span class="flaticon-011-instagram"></span></a>
             </div>
             <div class="inf-p">
                 <p>Más que una tienda, un universo de posibilidades...</p>
@@ -32,16 +32,28 @@
                 <a href="{{ url_for('index') }}"><img src="{{ url_for('static', filename='assets/img/Logotipo_GladiatorsTransparente.png') }}" alt="Logotipo Gladiator's"></a>
                 <h5>Gladiator's</h5>
             </section>
-            <section class="secciones" style="color: yellow;">
-                <a href="{{ url_for('secciones') }}">Inicio</a>
-                <a href="{{ url_for('registrar_venta') }}">Ventas</a>
-                <a href="{{ url_for('productos') }}">Productos</a>
-                {% if rol %}
-                    <a href="{{ url_for('registrar_usuario') }}">Usuarios</a>
-                {% endif %}
-                <a href="{{ url_for('soporte') }}">Soporte</a>
-                <a href="{{ url_for('logout') }}">Cerrar Sesión</a>
-            </section>
+            <ul class="menu secciones">
+                    <li><a href="{{ url_for('secciones') }}">Inicio</a></li>
+    
+                    <li><a href="registrar_venta">Ventas</a></li>
+    
+                    <li><a href="{{ url_for('productos') }}">Productos</a>
+                    <ul>
+                        <li class="secciones"><a href="registrar_producto">Registrar</a></li>
+                        <li class="secciones"><a href="consultar_productos">Consultar</a></li>
+                    </ul>
+                    </li>
+                    {% if rol == 1 %}
+                    <li><a href="./pages/index.html">Usuarios</a>
+                    <ul>
+                        <li class="secciones"><a href="registrar_usuario">Registrar</a></li>
+                        <li class="secciones"><a href="consultar_usuarios">Consultar</a></li>
+                    </ul>
+                    </li>
+                    {% endif %}
+                    <li><a href="{{ url_for('index') }}">Soporte</a></li>
+                    <li><a href="{{ url_for('index') }}">Cerrar Sesión</a></li>
+                </ul>
         </nav>
     </header>
     <main>

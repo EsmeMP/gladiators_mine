@@ -472,6 +472,15 @@ table {
     display: block;
 }
 
+.principal-container h5 {
+    margin-left: 80%;
+    text-align: center;
+}
+
+.barra_busqueda button {
+    margin-right: 70%;
+}
+
 .sec-title,
 .barra_busqueda,
 .table_ventas {
@@ -623,7 +632,6 @@ table {
         display: block; /* Asegúrate de que el submenú se muestre en móviles */
     }
 }
-
 
 
 

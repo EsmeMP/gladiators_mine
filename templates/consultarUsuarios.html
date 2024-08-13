@@ -34,14 +34,34 @@
                 <a href="index.html"><img src="../static/assets/img/Logotipo_GladiatorsTransparente.png" alt="imagen-logo"></a>
                 <h5>Gladiator's</h5>
             </section>
-            <section class="secciones">
-                <a href="./pages/index.html">Inicio</a>
-                <a href="./pages/index.html">Ventas</a>
-                <a href="./pages/index.html">Productos</a>
-                <a href="./pages/index.html">Usuarios</a>
-                <a href="./pages/index.html">Soporte</a>
-                <a href="./pages/index.html">Cerrar Sesión</a>
-            </section>
+            <ul class="menu secciones">
+                <li><a href="{{ url_for('secciones') }}">Inicio</a></li>
+
+                <li><a href="{{ url_for('reporte_semanal') }}">Ventas</a>
+                <ul>
+                    <li><a href="registrar_venta">Registrar</a></li>
+                    <li><a href="reporte_diario">Reporte diario</a></li>
+                    <li><a href="reporte_semanal">Reporte semanal</a></li>
+                </ul>
+                </li>
+
+                <li><a href="./pages/index.html">Productos</a>
+                <ul>
+                    <li class="secciones"><a href="registrar_producto">Registrar</a></li>
+                    <li class="secciones"><a href="consultar_productos">Consultar</a></li>
+                </ul>
+                </li>
+
+                <li><a href="./pages/index.html">Usuarios</a>
+                <ul>
+                    <li class="secciones"><a href="registrar_usuario">Registrar</a></li>
+                    <li class="secciones"><a href="consultar_usuarios">Consultar</a></li>
+                </ul>
+
+                </li>
+                <li><a href="{{ url_for('index') }}">Soporte</a></li>
+                <li><a href="{{ url_for('index') }}">Cerrar Sesión</a></li>
+            </ul>
         </nav>
     </header>
     <h1 class="p">Consultar Usuario</h1>

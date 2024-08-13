@@ -21,6 +21,31 @@
             <div class="correo-a">
                 <a href="mailto:Gladiators99zxc@gmail.com">Gladiators99zxc@gmail.com</a>
             </div>
+
+            <ul class="menu secciones">
+                    <li><a href="{{ url_for('secciones') }}">Inicio</a></li>
+    
+                    <li><a href="registrar_venta">Ventas</a></li>
+    
+                    <li><a href="{{ url_for('productos') }}">Productos</a>
+                    <ul>
+                        <li class="secciones"><a href="registrar_producto">Registrar</a></li>
+                        <li class="secciones"><a href="consultar_productos">Consultar</a></li>
+                    </ul>
+                    </li>
+                    {% if rol == 1 %}
+                    <li><a href="./pages/index.html">Usuarios</a>
+                    <ul>
+                        <li class="secciones"><a href="registrar_usuario">Registrar</a></li>
+                        <li class="secciones"><a href="consultar_usuarios">Consultar</a></li>
+                    </ul>
+    
+                    </li>
+                    {% endif %}
+                    <li><a href="{{ url_for('index') }}">Soporte</a></li>
+                    <li><a href="{{ url_for('index') }}">Cerrar Sesión</a></li>
+                </ul>
+
             <div class="inf-p">
                 <p>Lun-Vie 10:00a.m--8:00p.m
                 Sab-Dom 9:00a.m--9:00p.m</p>
