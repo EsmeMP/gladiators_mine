@@ -3,15 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Consultar Producto Gladiator's</title>
+    <title>Consultar Productos Gladiator's</title>
     <link rel="stylesheet" href="../static/style/style.css">
-    <link rel="stylesheet" type="text/css"   href="../../styles/font/flaticon.css">
+    <link rel="stylesheet" type="text/css" href="../static/font/flaticon.css">
     <link rel="stylesheet" href="../static/style/consulta_especifica.css">
+    <style>
+        .product-image {
+            max-width: 100px;
+            max-height: 100px;
+        }
+    </style>
 </head>
-<body>
+<body> 
     <header>
         <section class="incons-container">
-            <!-- Aqui van  los iconos de las redes sociales, eslogan, correo y horarios -->
             <div class="incons">
                 <a href="/"><span class="flaticon-001-facebook"></span></a>
                 <a href="/"><span class="flaticon-003-whatsapp"></span></a>
@@ -21,45 +26,66 @@
                 <p>Más que una tienda, un universo de posibilidades...</p>
             </div>
             <div class="correo-a">
-                <a href="Gladiators99zxc@gmail.com">Gladiators99zxc@gmail.com</a>
+                <a href="mailto:Gladiators99zxc@gmail.com">Gladiators99zxc@gmail.com</a>
             </div>
             <div class="inf-p">
-                <p>Lun-Vie 10:00a.m--8:00p.m
-                Sab-Dom 9:00a.m--9:00p.m</p>
+                <p>Lun-Vie 10:00a.m--8:00p.m | Sab-Dom 9:00a.m--9:00p.m</p>
             </div>
-        </section>
+        </section> 
         <nav>
-            <!-- Aqui va el logo y nombre de la tienda y el nombre de las secciones -->
             <section class="logo-gladiators">
-                <a href="index.html"><img src="../static/assets/img/Logotipo_GladiatorsTransparente.png"alt="imagen-logo"></a>
+                <a href="index.html"><img src="../static/img/Logotipo_GladiatorsTransparente.png" alt="imagen-logo"></a>
                 <h5>Gladiator's</h5>
             </section>
             <section class="secciones">
-                <a href="{{ url_for('consultar_productos') }}">Productos</a>
                 <a href="./pages/index.html">Inicio</a>
                 <a href="./pages/index.html">Ventas</a>
                 <a href="./pages/index.html">Productos</a>
-                <a href="{{ url_for('registrar_producto_post')}}">Productos</a>
+                <a href="./pages/index.html">Usuarios</a>
                 <a href="./pages/index.html">Soporte</a>
                 <a href="./pages/index.html">Cerrar Sesión</a>
             </section>
         </nav>
     </header>
-    <div class="gbox">
-        <img src="{{ url_for('static', filename=producto[3]) }}" alt="Foto producto" style="width: 200PX;">
+    <div class="container">
+        {% for producto in datos %}
+        <div class="producto-container">
+                <div class="info-container">
+                    <h1 class="text">{{ producto[1] }}</h1>
+                    <hr class="line">
+                    <div class="photo-info-wrapper">
+                        <div class="foto">
+                            <img src="{{ url_for('static', filename=producto[8]) }}" alt="Foto producto">
+                            <label>Imagen del Producto</label>
+                        </div>
+                    <div class="details">
+                        <div class="pp">
+                            <p class="informacion">&nbsp;  ID: <br>&nbsp; {{ producto[0] }}</p>
+                            <p class="informacion2">&nbsp; Nombre: <br>&nbsp; {{ producto[1] }}</p>
+                        </div>
+                        <div class="pp">
+                            <p class="informacion3">&nbsp; Código de barras: <br>&nbsp; {{ producto[2] }}</p>
+                            <p class="informacion4">&nbsp; Precio: <br>&nbsp; {{ producto[3] }}</p>
+                        </div>
+                        <div class="pp">
+                            <p class="informacion7">&nbsp; Marca: <br>&nbsp; {{ producto[6] }}</p>
+                            <p class="informacion8">&nbsp; Categoría: <br>&nbsp; {{ producto[7] }}</p>
+                        </div>
+                        <div class="pp">
+                            <p class="informacion5">&nbsp; Stock: <br>&nbsp; {{ producto[4] }}</p>
+                            <p class="informacion6">&nbsp; Descripción: <br>&nbsp; {{ producto[5] }}</p>
+                        </div>
+                        <div class="button-container">
+                            <a href="{{ url_for('update1_producto', id_producto=producto[0]) }}" class="button-1">Editar</a>
+                        <a href="{{ url_for('consultar_productos') }}" class="button-2">Regresar</a>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
     </div>
-<p class="text">{{ producto[1] }}</p>
-<p class="text" style="background-color: aqua;">{{ producto[10] }}</p>
-<a href="{{ url_for('update1_producto', id_producto=producto[0]) }}" class="button-1">Editar</a>
-<a href="{{ url_for('consultar_productos') }}" class="button-2">Regresar</a>
-<hr class="line">
-<p class="informacion">ID: {{ producto[0] }}</p>
-<p class="informacion2">Nombre: {{ producto[1] }}</p>
-<p class="informacion3">Codigo de barras: {{ producto[2] }}</p>
-<p class="informacion4">Precio: {{ producto[3] }}</p>
-<p class="informacion5">Stock: {{ producto[4] }}</p>
-<p class="informacion6">Descripcion: {{ producto[5] }}</p>
-<p class="informacion7">Marca: {{ producto[6] }}</p>
-<p class="informacion8">Categoria: {{ producto[7] }}</p>
+        {% endfor %}
+    </div>
 </body>
 </html>

@@ -99,51 +99,53 @@
     <h1>Ventas</h1>
     <main class="container">
         <div class="principal-container">
-            <section class="sec-title">
-                <!-- Info de la seccion y el numero de la venta -->
-                <h5>No.Venta</h5>
-                <h5>{{ "{:08d}".format(numero_venta) }}</h5>
-            </section>
-            <section class="barra_busqueda">
-                <!-- Aqui se encuentra la barra de busqueda -->
-                <form class="textbox" onsubmit="return false;">
-                    <input type="text" name="buscar" placeholder="Buscar...">
-                    <!-- <button type="submit">Buscar</button>
-                    <!-- <svg class="icon" width="24" height="24" viewBox="0 0 24 24"> -->
-                    <!-- SVG content -->
-                    <!-- </svg> -->
-                    <!-- <svg class="icon" width="24" height="24" viewBox="0 0 24 24"> -->
-                    <!-- SVG content -->
-                    <!-- </svg> -->
-                </form>
-            </section>
-            <!-- Esta de aqui es la tabla -->
-            <section class="table_ventas">
-    <table>
-        <thead>
-            <tr class="fila">
-                <th>Código</th>
-                <th>Producto</th>
-                <th>Cantidad</th>
-                <th>Precio</th>
-                <th>Total</th>
-                <th>Acciones</th>
-            </tr>
-        </thead>
-        <tbody id="table_ventas">
-            <!-- Aquí se irán añadiendo las filas de productos -->
-        </tbody>
-    </table>
-</section>
-<div>
-    <div id="productModal" style="display:none;">
-        <h3>Seleccionar Producto</h3>
-        <input type="text" id="productSearch" placeholder="Ingrese código de producto">
-        <button onclick="searchProduct()">Buscar</button>
-        <button onclick="closeModal()">Cerrar</button>
+            <!-- <div class="contenedor-tabla"> -->
+                <section class="sec-title">
+                    <!-- Info de la seccion y el numero de la venta -->
+                    <h5>No.Venta</h5>
+                    <h5>{{ "{:08d}".format(numero_venta) }}</h5>
+                </section>
+                <section class="barra_busqueda">
+                    <button type="button" id="abrirModal">Agregar Producto</button>
+                    <!-- Aqui se encuentra la barra de busqueda -->
+                    <!-- <form class="textbox" onsubmit="return false;">
+                        <input type="text" name="buscar" placeholder="Buscar..."> -->
+                        <!-- <button type="submit">Buscar</button>
+                        <!-- <svg class="icon" width="24" height="24" viewBox="0 0 24 24"> -->
+                        <!-- SVG content -->
+                        <!-- </svg> -->
+                        <!-- <svg class="icon" width="24" height="24" viewBox="0 0 24 24"> -->
+                        <!-- SVG content -->
+                        <!-- </svg> -->
+                    </form>
+                </section>
+                <!-- Esta de aqui es la tabla -->
+                <section class="table_ventas">
+        <table>
+            <thead>
+                <tr class="fila">
+                    <th>Código</th>
+                    <th>Producto</th>
+                    <th>Cantidad</th>
+                    <th>Precio</th>
+                    <th>Total</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody id="table_ventas">
+                <!-- Aquí se irán añadiendo las filas de productos -->
+            </tbody>
+        </table>
+    </section>
+        <div>
+            <div id="productModal" style="display:none;">
+                <h3>Seleccionar Producto</h3>
+                <input type="text" id="productSearch" placeholder="Ingrese código de producto">
+                <button onclick="searchProduct()">Buscar</button>
+                <button onclick="closeModal()">Cerrar</button>
+            </div>
+        </div>
     </div>
-    <button type="button" id="abrirModal">Agregar Producto</button>
-</div>
         <!-- Aqui se va a visualizar un tipo ticket del total -->
         <section class="pre-visualizacion">
             <div>

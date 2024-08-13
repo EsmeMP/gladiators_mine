@@ -257,28 +257,17 @@ def consultar_productos():
     else:
         return redirect(url_for('secciones'))
 
-
 @app.route('/consultar_producto/<int:id_producto>')
 def consultar_producto(id_producto):
-    conn = None
-    try:
-        conn = db.conectar()
-        cursor = conn.cursor()
-        cursor.execute('''SELECT * FROM info_especifica_producto WHERE "ID" = %s''', (id_producto,))
-        datos = cursor.fetchone()
-        cursor.close()
-        if datos:
-            return render_template('consultarProducto.html', datos=datos)
-        else:
-            flash("Producto no encontrado.")
-            return redirect(url_for('consultar_productos'))
-    except Exception as e:
-        print(f'Error: {e}')
-        flash("Error al consultar el producto.")
-        return redirect(url_for('consultar_productos'))
-    finally:
-        if conn:
-            db.desconectar(conn)
+    conn = db.conectar()
+    cursor = conn.cursor()
+    cursor.execute('''SELECT * FROM info_especifica_producto WHERE "ID" = %s''', (id_producto,))
+    datos = cursor.fetchall()
+    cursor.close()
+    db.desconectar(conn)
+    return render_template('consultarProducto.html', datos=datos)
+
+
 
 @app.route('/update1_producto/<int:id_producto>', methods=['GET'])
 def update1_producto(id_producto):

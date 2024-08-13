@@ -75,6 +75,18 @@ h1 {
     margin: 0 10%;
 }
 
+.barra_busqueda button{
+    background: #FFEB99FF;
+    padding: 10px;
+    border-radius: 10px;
+    border: #0f0f0f;
+}
+ .barra_busqueda button:hover{
+    background: #000;
+    color: #FFEB99;
+ }
+
+
 /* Texto dentro de la barra de busqueda "Buscar" */
 .textbox input {
     width: 80%;
@@ -315,6 +327,51 @@ input[type=number] {
     text-decoration: none;
     cursor: pointer;
 }
+.principal-container {
+    display: flex; /* Los hijos estarán en fila */
+    justify-content: space-between; /* Espacio entre los contenedores */
+    align-items: flex-start; /* Alinea los contenedores al inicio */
+    padding: 20px;
+    gap: 20px; /* Espacio entre los contenedores */
+    width: 100%;
+    box-sizing: border-box; /* Incluye padding y border en el width */
+}
+
+/* Contenedor de la tabla */
+.contenedor-tabla {
+    width: 70%; /* Ocupa el 70% del contenedor principal */
+    box-sizing: border-box;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0px 0px 1px #171a1f, 0px 0px 2px #171a1f;
+}
+
+/* Contenedor de previsualización */
+.pre-visualizacion {
+    width: 30%; /* Ocupa el 30% del contenedor principal */
+    height: auto;
+    box-sizing: border-box;
+    padding: 20px;
+    background: #F8F9FAFF;
+    border-radius: 4px;
+    box-shadow: 0px 0px 1px #171a1f, 0px 0px 2px #171a1f;
+}
+
+.principal-container {
+    display: flex;
+    justify-content: space-between; /* Espacio entre ambos contenedores */
+    align-items: flex-start; /* Alineación superior */
+}
+
+.contenedor-tabla {
+    flex: 1; /* Ocupa el espacio disponible */
+    margin-right: 20px; /* Espacio entre la tabla y la pre-visualización */
+}
+
+.pre-visualizacion {
+    width: 300px; /* Ancho fijo para la pre-visualización */
+}
+
 
 .botones button:hover {
     background-color: rgb(24, 19, 9);
@@ -325,6 +382,105 @@ input[type=number] {
     background-color: rgb(24, 19, 9);
     color: #FFEB99;
 }
+
+
+.container {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 50px;
+    gap: 20px; /* Ajusta el espacio entre los elementos */
+}
+
+/* Contenedor principal (tabla) */
+.principal-container{
+    display: flex;
+    width: 100%; /* Asegura que el contenedor ocupe todo el ancho disponible */
+    justify-content: space-between;
+    padding: 20px;
+    box-shadow: 0px 0px 1px #171a1f, 0px 0px 2px #171a1f;
+    margin-right: 20px;
+    position: relative;
+}
+
+/* Contenedor de la tabla */
+.contenedor-tabla {
+    width: 70%; /* Ajusta el tamaño según sea necesario */
+    padding: 20px;
+}
+
+/* Contenedor de pre-visualización */
+.pre-visualizacion {
+    width: 25%; /* Ajusta el tamaño según sea necesario */
+    padding: 20px;
+    box-shadow: 0px 0px 1px #171a1f, 0px 0px 2px #171a1f;
+}
+
+/* Estilos en toda la tabla */
+table {
+    border: 2px solid #EFB034FF;
+    border-collapse: collapse;
+    width: 100%; /* Asegura que la tabla ocupe todo el ancho del contenedor */
+    background-color: #f2f2f2;
+    margin: 0 auto; /* Centra la tabla dentro de su contenedor */
+}
+
+.container {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 50px;
+    gap: 20px; /* Ajusta el espacio entre los elementos */
+}
+
+/* Contenedor principal (tabla) */
+.principal-container{
+    display: flex;
+    width: 100%; /* Asegura que el contenedor ocupe todo el ancho disponible */
+    justify-content: space-between;
+    padding: 20px;
+    box-shadow: 0px 0px 1px #171a1f, 0px 0px 2px #171a1f;
+    margin-right: 20px;
+    position: relative;
+}
+
+/* Contenedor de la tabla */
+.contenedor-tabla {
+    width: 70%; /* Ajusta el tamaño según sea necesario */
+    padding: 20px;
+}
+
+/* Contenedor de pre-visualización */
+.pre-visualizacion {
+    width: 25%; /* Ajusta el tamaño según sea necesario */
+    padding: 20px;
+    box-shadow: 0px 0px 1px #171a1f, 0px 0px 2px #171a1f;
+}
+
+/* Estilos en toda la tabla */
+table {
+    border: 2px solid #EFB034FF;
+    border-collapse: collapse;
+    width: 100%; /* Asegura que la tabla ocupe todo el ancho del contenedor */
+    background-color: #f2f2f2;
+    margin: 0 auto; /* Centra la tabla dentro de su contenedor */
+}
+
+/* ---- */
+.principal-container section{
+    display: block;
+}
+
+
+
+
+
+
+
+
+
+
+
 /* Los dos contenedores principales responsivos */
 @media (max-width: 800px) {
     .container {
@@ -357,3 +513,4 @@ Amarillo Ocre: #CC7722
 Amarillo Ámbar: #FFBF00
 Amarillo Dorado Oscuro: #B8860B
 Amarillo Maíz: #FBEC5D */
+
