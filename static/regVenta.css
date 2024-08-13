@@ -176,6 +176,7 @@ td, th {
 .logo-redondo {
     width: 40px;
     height: auto;
+    margin-right: 75%;
 }
 
 /* Contenedor amarillo del numero de la venta */
@@ -467,11 +468,161 @@ table {
 }
 
 /* ---- */
-.principal-container section{
+.principal-container {
     display: block;
 }
 
+.sec-title,
+.barra_busqueda,
+.table_ventas {
+    display: block;
+    margin-bottom: 10px; /* Añade margen entre los elementos */
+}
 
+.barra_busqueda {
+    margin-top: 10px; /* Añade margen superior si es necesario */
+}
+
+.table_ventas table {
+    width: 100%; /* Para que la tabla ocupe todo el ancho disponible */
+}
+
+.sec-title {
+    display: flex;
+    flex-direction: column; /* Coloca los elementos en una columna (uno debajo del otro) */
+    align-items: center; /* Centra los elementos horizontalmente */
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+.barra_busqueda {
+    display: flex;
+    justify-content: center; /* Centra el botón en la barra de búsqueda */
+    margin-bottom: 15px;
+}
+
+.table_ventas {
+    margin-bottom: 20px;
+    width: 100%; /* Asegura que la tabla ocupe todo el ancho */
+}
+
+.sec-title {
+    display: flex;
+    align-items: center; /* Alinea los elementos verticalmente al centro */
+    justify-content: space-between; /* Distribuye los elementos con espacio entre ellos */
+    margin-bottom: 15px;
+}
+
+.barra_busqueda {
+    display: flex;
+    align-items: center; /* Alinea los elementos verticalmente al centro */
+    justify-content: space-between; /* Distribuye los elementos con espacio entre ellos */
+    margin-bottom: 15px;
+}
+
+.barra_busqueda button {
+    margin-left: 10px; /* Añade un margen izquierdo para separar el botón del resto */
+}
+
+.table_ventas {
+    margin-bottom: 20px;
+    width: 100%;
+}
+
+/* Estilo base para el menú */
+.menu {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    z-index: 1000;
+}
+
+.menu li {
+    position: relative;
+    display: inline-block;
+    z-index: 1000;
+}
+
+.menu li:hover ul {
+    display: block;
+    z-index: 1000;
+}
+
+.menu ul {
+    display: none;
+    position: absolute;
+    top: 120%; /* Ajusta la posición vertical del submenú */
+    left: 0;
+    z-index: 1000;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+}
+
+.menu ul li {
+    margin-bottom: 0; /* Espacio vertical entre elementos del submenú */
+}
+
+.menu ul li a {
+    display: block;
+    background-color: #342E00FF;
+    color: #FFF07FFF;
+    text-decoration: none;
+    padding: 10px; /* Espaciado interno para los enlaces */
+}
+
+/* Estilo para pantallas grandes (computadoras y laptops) */
+@media (min-width: 1024px) {
+
+    .menu li {
+        display: inline-block;
+    }
+
+    .menu ul {
+        top: 160%; /* Ajusta la distancia vertical del submenú */
+    }
+}
+
+/* Estilo para pantallas medianas (tablets y laptops pequeñas) */
+@media (max-width: 1024px) and (min-width: 768px) {
+    .menu li {
+        display: inline-block; /* O puedes cambiar a block si quieres un menú vertical */
+    }
+
+    .menu ul {
+        top: 120%; /* Ajusta la distancia vertical del submenú */
+    }
+}
+
+/* Estilo para pantallas pequeñas (celulares) */
+@media (max-width: 768px) {
+    .menu {
+        text-align: center; /* Centra el menú */
+    }
+
+    .menu li {
+        display: block; /* Cambia a bloque para una visualización vertical en móviles */
+    }
+
+    .menu ul {
+        position: static; /* Elimina la posición absoluta para móviles */
+        top: auto; /* Restablece la posición vertical */
+        left: auto; /* Restablece la posición horizontal */
+        width: 100%; /* Ocupa el ancho completo */
+    }
+
+    .menu ul li {
+        margin-bottom: 0; /* Espacio vertical entre elementos del submenú */
+    }
+
+    .menu ul li a {
+        padding: 15px; /* Aumenta el padding para mejorar la usabilidad en pantallas táctiles */
+    }
+
+    .menu li:hover ul {
+        display: block; /* Asegúrate de que el submenú se muestre en móviles */
+    }
+}
 
 
 

@@ -1,21 +1,23 @@
+/* Estilos generales para la tabla */
 table {
     border: 2px solid #EFB034FF;
     border-collapse: collapse;
     width: 85%;
     background-color: #f2f2f2;
-    margin: -100px 100px 0 100px;
+    margin: 0 auto; /* Centra la tabla horizontalmente */
 }
 
-/* Centrar la barra de busqueda */
-.barra_busqueda form{
-    margin: 0 33%;
-    padding: 70px;
-    position: center;
+/* Estilos para la barra de búsqueda */
+.barra_busqueda form {
+    margin: 0 auto;
+    padding: 30px;
+    display: flex;
+    justify-content: center;
 }
 
-/* Texto dentro de la barra de busqueda "Buscar" */
+/* Estilos para el input de búsqueda */
 .textbox input {
-    width: 80%;
+    width: 40%;
     height: 90%;
     padding-left: 12px;
     font-family: Inter;
@@ -26,37 +28,41 @@ table {
     border: 2px solid #EFB034FF;
 }
 
-/* Boton de busqueda XD */
+/* Estilos para el botón de búsqueda */
 .textbox button {
     font-family: Inter;
-    font-size: 70%;
-    font-weight: 700;
+    font-size: 15px; 
+    font-weight: 700; 
     background-color: #EFB034FF;
     color: white;
     border: none;
-    border-radius: 4px;
-    padding: 5px;
+    border-radius: 2px;
+    padding: 4px 4px; 
     cursor: pointer;
+    width: 65px; 
+    height: 20px; 
+    display: inline-block; 
 }
 
-/* Propiedad hover de la barra */
+/* Propiedad hover del input */
 .textbox input:hover {
     background: #FFFFFFFF;
     border-color: #FFEB99FF;
 }
 
-/* Propiedad hover del boton */
+/* Propiedad hover del botón */
 .textbox button:hover {
     background-color: rgb(230, 155, 4);
 }
 
-/* Propiedad focus del input (letra) */
+/* Propiedad focus del input */
 .textbox input:focus {
     outline: none;
     color: #EFB034FF;
     border: 2px solid #EFB034FF;
 }
 
+/* Estilos para los botones */
 .botones button {
     background-color: #FFEB99;
     border: none;
@@ -71,7 +77,7 @@ table {
 }
 
 /* Estilos en el encabezado de la tabla */
-thead{
+thead {
     background-color: #FFEB99FF;
     border: 2px solid #EFB034FF;
 }
@@ -81,53 +87,302 @@ tbody tr {
     border-bottom: 1px solid #EFB034FF;
 }
 
-/* Estilos en ambos elementos de la tabla encabezado y cuerpo */
+/* Estilos en ambos elementos de la tabla */
 td, th {
     padding: 5px;
     text-align: left;
 }
 
-h1{
+h1 {
     padding-top: 10px;
-    align-items: center;
     margin-top: 40px;
     padding-left: 120px;
     margin-bottom: 40px;
 }
-.p{
-    position:fixed;
-    top: 60px;
-    left: 400px;
-    width: 487px;
+
+/* Estilos para el elemento p */
+.p {
+    position: relative; /* Se cambió a relative, ya que static no tiene en cuenta top y left */
+    top: 5px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 90%;
+    max-width: 487px;
     height: 54px;
     background: #FFF399FF;
-    border-radius: 8px 8px 8px 8px;
+    border-radius: 8px;
     border-width: 1px;
     border-color: #BCC1CAFF;
-    border-style:solid;
+    border-style: solid;
+    box-sizing: border-box; /* Incluye padding y border en el ancho total */
 }
+
+
+/* Estilos para el botón */
 .boton-2 {
-    background-color: #FFF399FF; /* Color de fondo verde */
-    border: none; /* Sin borde */
-    color: rgb(28, 24, 24); /* Color del texto */
-    padding: 10px 20px; /* Espaciado interno */
-    text-align: center; /* Alineación del texto */
-    text-decoration: none; /* Sin subrayado */
-    display: inline-block; /* Mostrar en línea */
-    font-size: 16px; /* Tamaño de la fuente */
-    margin: 4px 2px; /* Espaciado alrededor del botón */
-    cursor: pointer; /* Cursor de mano al pasar sobre el botón */
-    border-radius: 5px; /* Bordes redondeados */
-    transition: background-color 0.3s ease; /* Transición suave para el cambio de color */
+    background-color: #FFF399FF;
+    border: none;
+    color: rgb(28, 24, 24);
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
 }
 
-.boton-2:hover {
-    background-color: #FFF399FF; /* Color de fondo al pasar el ratón */
+.boton-2:hover, .boton-2:active {
+    background-color: #FFF399FF;
 }
 
-.boton-2:active {
-    background-color: #FFF399FF; /* Color de fondo al hacer clic */
+/* Media Queries */
+
+/* Para dispositivos de pantalla pequeña (celulares) */
+@media (max-width: 600px) {
+    table {
+        width: 100%;
+        margin: 0;
+    }
+
+    .barra_busqueda form {
+        padding: 20px;
+        flex-direction: column;
+    }
+
+    .textbox input, .textbox button {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+
+    h1 {
+        padding-left: 10px;
+    }
+
+    .p {
+        left: 0;
+        width: 100%;
+        transform: none;
+    }
+
+    .botones button {
+        width: 100%;
+        padding: 10px;
+        font-size: 14px;
+    }
+}
+
+/* Para dispositivos de pantalla media (tabletas y pantallas pequeñas de laptops) */
+@media (min-width: 601px) and (max-width: 1024px) {
+    .barra_busqueda form {
+        padding: 40px;
+    }
+
+    .textbox input {
+        width: 90%;
+    }
+
+    .textbox button {
+        width: auto;
+    }
+
+    h1 {
+        padding-left: 30px;
+    }
+
+    .p {
+        left: 50%;
+        width: 90%;
+        transform: translateX(-50%);
+    }
+}
+
+nav {
+    background-color: rgb(0, 0, 0);
+    padding: 10px 20px;
+    margin-bottom: 20px;
+     width: 100%; /* Asegura que el nav ocupe el 100% del ancho de la pantalla */
+    box-sizing: border-box;
+}
+
+.logo-gladiators {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+.logo-gladiators img {
+    max-height: 50px;
+    margin-right: 10px;
+}
+
+.logo-gladiators h5 {
+    color: #FFF07FFF;
+    font-size: 24px;
+    margin: 0;
+}
+
+.secciones {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    align-items: center;
+}
+
+.secciones a {
+    color: #FFF07FFF;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 14px;
+    padding: 10px 15px;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+}
+
+.secciones a:hover {
+    background-color: #FFF07FFF;
+    color: #342E00FF;
+}
+
+@media (min-width: 1025px) {
+    .secciones {
+        justify-content: flex-end;
+    }
+    .secciones a {
+        font-size: 16px;
+        padding: 10px 20px;
+    }
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+    .secciones {
+        justify-content: center;
+    }
+    .secciones a {
+        font-size: 15px;
+        padding: 8px 12px;
+    }
+}
+
+@media (max-width: 768px) {
+    .secciones {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 5px;
+        padding: 10px 0;
+    }
+
+    .secciones a {
+        font-size: 14px;
+        padding: 8px 10px;
+        width: 100%;
+        text-align: left;
+    }
+}
+
+/* Estilos para la imagen del producto en la tabla */
+.product-image {
+    width: 200px;   /* Ajustado a 200px */
+    height: 200px;  /* Ajustado a 200px */
+    object-fit: cover; /* Mantiene la proporción y cubre el área del contenedor */
 }
 
 
 
+/* Estilo base para el menú */
+.menu {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    z-index: 1000;
+}
+
+.menu li {
+    position: relative;
+    display: inline-block;
+    z-index: 1000;
+}
+
+.menu li:hover ul {
+    display: block;
+    z-index: 1000;
+}
+
+.menu ul {
+    display: none;
+    position: absolute;
+    top: 160%; /* Ajusta la posición vertical del submenú */
+    left: 0;
+    z-index: 1000;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+}
+
+.menu ul li {
+    margin-bottom: 0; /* Espacio vertical entre elementos del submenú */
+}
+
+.menu ul li a {
+    display: block;
+    background-color: #342E00FF;
+    color: #FFF07FFF;
+    text-decoration: none;
+    padding: 10px; /* Espaciado interno para los enlaces */
+}
+
+/* Estilo para pantallas grandes (computadoras y laptops) */
+@media (min-width: 1024px) {
+
+    .menu li {
+        display: inline-block;
+    }
+
+    .menu ul {
+        top: 160%; /* Ajusta la distancia vertical del submenú */
+    }
+}
+
+/* Estilo para pantallas medianas (tablets y laptops pequeñas) */
+@media (max-width: 1024px) and (min-width: 768px) {
+    .menu li {
+        display: inline-block; /* O puedes cambiar a block si quieres un menú vertical */
+    }
+
+    .menu ul {
+        top: 120%; /* Ajusta la distancia vertical del submenú */
+    }
+}
+
+/* Estilo para pantallas pequeñas (celulares) */
+@media (max-width: 768px) {
+    .menu {
+        text-align: center; /* Centra el menú */
+    }
+
+    .menu li {
+        display: block; /* Cambia a bloque para una visualización vertical en móviles */
+    }
+
+    .menu ul {
+        position: static; /* Elimina la posición absoluta para móviles */
+        top: auto; /* Restablece la posición vertical */
+        left: auto; /* Restablece la posición horizontal */
+        width: 100%; /* Ocupa el ancho completo */
+    }
+
+    .menu ul li {
+        margin-bottom: 0; /* Espacio vertical entre elementos del submenú */
+    }
+
+    .menu ul li a {
+        padding: 15px; /* Aumenta el padding para mejorar la usabilidad en pantallas táctiles */
+    }
+
+    .menu li:hover ul {
+        display: block; /* Asegúrate de que el submenú se muestre en móviles */
+    }
+}

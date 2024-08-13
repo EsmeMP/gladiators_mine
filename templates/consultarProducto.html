@@ -4,9 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Consultar Productos Gladiator's</title>
-    <link rel="stylesheet" href="../static/style/style.css">
-    <link rel="stylesheet" type="text/css" href="../static/font/flaticon.css">
-    <link rel="stylesheet" href="../static/style/consulta_especifica.css">
+    <link rel="stylesheet" href="../static/style.css">
+    <link rel="stylesheet" type="text/css" href="../static/assets/font/flaticon.css">
+    <link rel="stylesheet" href="../static/consulta_especifica.css">
+    <link rel="stylesheet" href="../static/consulta_general.css">
+    <link rel="stylesheet" type="text/css" href="../static/consulta_general.css">
+
     <style>
         .product-image {
             max-width: 100px;
@@ -14,7 +17,7 @@
         }
     </style>
 </head>
-<body> 
+<body>
     <header>
         <section class="incons-container">
             <div class="incons">
@@ -31,20 +34,36 @@
             <div class="inf-p">
                 <p>Lun-Vie 10:00a.m--8:00p.m | Sab-Dom 9:00a.m--9:00p.m</p>
             </div>
-        </section> 
+        </section>
         <nav>
             <section class="logo-gladiators">
-                <a href="index.html"><img src="../static/img/Logotipo_GladiatorsTransparente.png" alt="imagen-logo"></a>
+                <a href="index.html"><img src="../static/assets/img/Logotipo_GladiatorsTransparente.png" alt="imagen-logo"></a>
                 <h5>Gladiator's</h5>
             </section>
-            <section class="secciones">
-                <a href="./pages/index.html">Inicio</a>
-                <a href="./pages/index.html">Ventas</a>
-                <a href="./pages/index.html">Productos</a>
-                <a href="./pages/index.html">Usuarios</a>
-                <a href="./pages/index.html">Soporte</a>
-                <a href="./pages/index.html">Cerrar Sesión</a>
-            </section>
+            <ul class="menu secciones">
+                <li><a href="{{ url_for('secciones') }}">Inicio</a></li>
+
+                <li><a href="registrar_venta">Ventas</a></li>
+
+                <li><a href="{{ url_for('productos') }}">Productos</a>
+                <ul>
+                    <li class="secciones"><a href="registrar_producto">Registrar</a></li>
+                    <li class="secciones"><a href="consultar_productos">Consultar</a></li>
+                </ul>
+                </li>
+                {% if rol == 1 %}
+                <li><a href="./pages/index.html">Usuarios</a>
+                <ul>
+                    <li class="secciones"><a href="registrar_usuario">Registrar</a></li>
+                    <li class="secciones"><a href="consultar_usuarios">Consultar</a></li>
+                </ul>
+
+                </li>
+                {% endif %}
+                <li><a href="{{ url_for('index') }}">Soporte</a></li>
+                <li><a href="{{ url_for('index') }}">Cerrar Sesión</a></li>
+            </ul>
+        </section>
         </nav>
     </header>
     <div class="container">

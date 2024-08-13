@@ -3,28 +3,81 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Editar Productos Gladiator's</title>
-    <link rel="stylesheet" href="../../Index_General/style.css">
-    <link rel="stylesheet" type="text/css"   href="../../styles/font/flaticon.css">
-    <link rel="stylesheet" href="../static/style/registrar.CSS">
+    <title>Editar producto</title>
+    <link rel="stylesheet" href="../static/registrar.CSS">
+    <link rel="stylesheet" href="../static/assets/font/flaticon.css">
+    <link rel="stylesheet" href="../static/style.css">
 </head>
+<header>
+    <section class="incons-container">
+        <!-- Aqui van  los iconos de las redes sociales, eslogan, correo y horarios -->
+        <div class="incons">
+            <a href="/"><span class="flaticon-001-facebook"></span></a>
+            <a href="/"><span class="flaticon-003-whatsapp"></span></a>
+            <a href="/"><span class="flaticon-011-instagram"></span></a>
+        </div>
+        <div class="inf-p">
+            <p>Más que una tienda, un universo de posibilidades...</p>
+        </div>
+        <div class="correo-a">
+            <a href="Gladiators99zxc@gmail.com">Gladiators99zxc@gmail.com</a>
+        </div>
+        <div class="inf-p">
+            <p>Lun-Vie 10:00a.m--8:00p.m
+            Sab-Dom 9:00a.m--9:00p.m</p>
+        </div>
+    </section>
+    <nav>
+        <!-- Aqui va el logo y nombre de la tienda y el nombre de las secciones -->
+        <section class="logo-gladiators">
+            <a href="index.html"><img src="../static/assets/img/Logotipo_GladiatorsTransparente.png"alt="imagen-logo"></a>
+            <h5>Gladiator's</h5>
+        </section>
+        <section>
+            <ul class="menu secciones">
+                <li><a href="{{ url_for('secciones') }}">Inicio</a></li>
+
+                <li><a href="registrar_venta">Ventas</a></li>
+
+                <li><a href="{{ url_for('productos') }}">Productos</a>
+                <ul>
+                    <li class="secciones"><a href="productos">Registrar</a></li>
+                    <li class="secciones"><a href="consultar_productos">Consultar</a></li>
+                </ul>
+                </li>
+                {% if rol == 1 %}
+                <li><a href="./pages/index.html">Usuarios</a>
+                <ul>
+                    <li class="secciones"><a href="registrar_usuario">Registrar</a></li>
+                    <li class="secciones"><a href="consultar_usuarios">Consultar</a></li>
+                </ul>
+
+                </li>
+                {% endif %}
+                <li><a href="{{ url_for('index') }}">Soporte</a></li>
+                <li><a href="{{ url_for('index') }}">Cerrar Sesión</a></li>
+            </ul>
+        </section>
+    </nav>
+</header>
 <body>
     <div class="container-fluid">
     <h2>Edición de nombre del producto</h2>
+    <hr class="line">
     <br>
     <form action="{{ url_for('update_producto_post', id_producto=datos[0]) }}" method="POST" enctype="multipart/form-data">
         <section class="label">
             <label for="nombre">Nombre:</label>
             <input type="text" id="nombre" name="nombre" value="{{ datos[1] }}" required>
             <br><br>
-            <label for="codigo_barras">Codigo de barras:</label>
-            <input type="int" id="codigo_barras" name="codigo_barras" value="{{ datos[2] }}" required>
+            <label for="codigo_barras">Código de barras:</label>
+            <input type="text" id="codigo_barras" name="codigo_barras" class="campo-especifico" value="{{ datos[2] }}" required>
             <br><br>
-            <label for="precio">precio:</label>
-            <input type="float" id="precio" name="precio" value="{{ datos[3] }}" required>
+            <label for="precio">Precio:</label>
+            <input type="text" step="0.01" id="precio" name="precio" class="campo-especifico" value="{{ datos[3] }}" required>
             <br><br>
-            <label for="stock">stock:</label>
-            <input type="int" id="stock" name="stock" value="{{ datos[4] }}" required>
+            <label for="stock">Stock:</label>
+            <input type="text" id="stock" name="stock" class="campo-especifico" value="{{ datos[4] }}" required>
             <br><br>
         </section>
         <section class="label">
@@ -48,7 +101,6 @@
             <br><br>
             <!-- Mostrar la imagen actual -->
             <img src="{{ url_for('static', filename=datos[8]) }}" alt="Imagen actual" style="max-width: 200px;">
-            <br><br>
         </section>
         <button type="submit">Actualizar</button>
     </form>

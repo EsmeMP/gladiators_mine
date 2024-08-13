@@ -28,6 +28,15 @@ app = Flask(__name__)
 app.secret_key = 'super_secret_key'
 serializer = URLSafeTimedSerializer(app.secret_key)
 
+# Define the folder to save uploaded files
+UPLOAD_FOLDER = os.path.join('static', 'uploads')
+
+# Add the configuration to the Flask app
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+
+if not os.path.exists(UPLOAD_FOLDER):
+    os.makedirs(UPLOAD_FOLDER)
+
 def actualizar_contraseñas():
     connection = None
     try:
@@ -897,37 +906,21 @@ def update_usuario_post(id_usuario):
 
 @app.route('/buscar_usuario', methods=['POST'])
 def buscar_usuario():
-    if 'username' in session and 'rol' in session:
-        username = session['username']
-        rol = session['rol']
-        
-        # Permitir acceso a usuarios con rol 1 (administrador) o rol 2 (cajero)
-        if rol in [1, 2]:  # Si el rol es 1 o 2, se permite el acceso
-            buscar_texto = request.form['buscar']
-            
-            # Conectar a la base de datos
-            conn = db.conectar()
-            cursor = conn.cursor()
-            
-            # Ejecutar consulta en PostgreSQL
-            cursor.execute('''
-                SELECT * FROM usuario
-                WHERE username ILIKE %s OR id_usuario::TEXT ILIKE %s
-            ''', (f'%{buscar_texto}%', f'%{buscar_texto}%'))
-            
-            # Recuperar la información
-            datos = cursor.fetchall()
-            
-            # Cerrar cursor y conexión
-            cursor.close()
-            db.desconectar(conn)
-            
-            # Renderizar la plantilla con los resultados de la búsqueda y los datos del usuario
-            return render_template('consultarUsuarios.html', username=username, rol=rol, datos=datos)
-        else:
-            return jsonify({"error": "Acceso no autorizado"}), 403
-    else:
-        return redirect(url_for('login'))
+    buscar_texto = request.form.get('buscar', '')
+    conn = db.conectar()
+    try:
+        cursor = conn.cursor()
+        query = '''SELECT * FROM consulta_general WHERE nombre ILIKE %s OR id::TEXT ILIKE %s'''
+        cursor.execute(query, (f'%{buscar_texto}%', f'%{buscar_texto}%'))
+        datos = cursor.fetchall()
+        cursor.close()
+    except Exception as e:
+        print(f'Error: {e}')
+        datos = []
+    finally:
+        db.desconectar(conn)
+    return render_template('consultarUsuarios.html', datos=datos)
+
     
 @app.route('/delete_usuario/<int:id_usuario>', methods=['POST'])
 def delete_usuario(id_usuario):

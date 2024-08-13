@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="/static/consulta_especifica.css">
     <link rel="stylesheet" href="/static/assets/font/flaticon.css">
     <link rel="stylesheet" href="/static/style.css">
+    <link rel="stylesheet" href="../static/consulta_especifica.css">
 </head>
 <body>
     <header>
@@ -34,34 +35,74 @@
                 <a href="index.html"><img src="../static/assets/img/Logotipo_GladiatorsTransparente.png"alt="imagen-logo"></a>
                 <h5>Gladiator's</h5>
             </section>
-            <section class="secciones">
-                <a href="./pages/index.html">Inicio</a>
-                <a href="./pages/index.html">Ventas</a>
-                <a href="./pages/index.html">Productos</a>
-                <a href="{{ url_for('consultar_usuarios')}}">Usuarios</a>
-                <a href="./pages/index.html">Soporte</a>
-                <a href="./pages/index.html">Cerrar Sesión</a>
-            </section>
+            <section>
+            <ul class="menu secciones">
+                <li><a href="{{ url_for('secciones') }}">Inicio</a></li>
+
+                <li><a href="registrar_venta">Ventas</a></li>
+
+                <li><a href="{{ url_for('productos') }}">Productos</a>
+                <ul>
+                    <li class="secciones"><a href="registrar_producto">Registrar</a></li>
+                    <li class="secciones"><a href="consultar_productos">Consultar</a></li>
+                </ul>
+                </li>
+                {% if rol == 1 %}
+                <li><a href="./pages/index.html">Usuarios</a>
+                <ul>
+                    <li class="secciones"><a href="registrar_usuario">Registrar</a></li>
+                    <li class="secciones"><a href="consultar_usuarios">Consultar</a></li>
+                </ul>
+
+                </li>
+                {% endif %}
+                <li><a href="{{ url_for('index') }}">Soporte</a></li>
+                <li><a href="{{ url_for('index') }}">Cerrar Sesión</a></li>
+            </ul>
+        </section>
         </nav>
     </header>
-    <div class="gbox">
-        <img src="{{ url_for('static', filename=usuario[3]) }}" alt="Foto del Usuario" style="width: 200PX;">
+<div class="container">
+        <div class="info-container">
+            <h1 class="text">{{ usuario[1] }}</h1>
+
+            
+            <hr class="line">
+            <div class="photo-info-wrapper">
+                <div class="foto">
+                    <img src="{{ url_for('static', filename=usuario[3]) }}" alt="Foto del Usuario">
+                    <label>Foto del Usuario</label>
+                </div>
+                <div class="details">
+                    <div class="pp">
+                        <p class="informacion">&nbsp; ID: <br>&nbsp; {{ usuario[4] }}</p>
+                        <p class="informacion2">&nbsp; Nombre: <br>&nbsp; {{ usuario[5] }}</p>
+                    </div>
+                    <div class="pp">
+                        <p class="informacion3">&nbsp; Apellido Paterno: <br>&nbsp; {{ usuario[6] }}</p>
+                        <p class="informacion4">&nbsp; Apellido Materno: <br>&nbsp; {{ usuario[7] }}</p>
+                    </div>
+                    <div class="pp">
+                        <p class="informacion5">&nbsp; Domicilio: <br>&nbsp; {{ usuario[8] }}</p>
+                        <p class="informacion6">&nbsp; Número de teléfono: <br>&nbsp; {{ usuario[9] }}</p>
+                    </div>
+                    <div class="pp">
+                        <p class="informacion7">&nbsp; Nombre de Usuario: <br>&nbsp; {{ usuario[10] }}</p>
+                        <p class="informacion8">&nbsp; CURP: <br>&nbsp; {{ usuario[11] }}</p>
+                    </div>
+                    <div class="pp">
+                        <p class="informacion9">&nbsp; Tipo de Usuario: <br>&nbsp; {{ usuario[12] }}</p>
+                        <p class="informacion10">&nbsp; Fecha de contratación: <br>&nbsp; {{ usuario[13] }}</p>
+                    </div>
+                    <div class="pp">
+                        <!-- <p class="informacion11">&nbsp; Contraseña: <br>&nbsp; {{ usuario[14] }}</p> -->
+                        <p class="informacion12">&nbsp; Correo electrónico: <br>&nbsp; {{ usuario[15] }}</p>
+                    </div>
+                    <div class="button-container">
+                        <a href="{{ url_for('update1_usuario', id_usuario=usuario[0]) }}" class="button-1">Editar</a>
+                        <a href="{{ url_for('consultar_usuarios') }}" class="button-2">Regresar</a>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-<p class="text">{{ usuario[1] }}</p>
-<p class="text" style="background-color: aqua;">{{ usuario[10] }}</p>
-<a href="{{ url_for('update1_usuario', id_usuario=usuario[0]) }}" class="button-1">Editar</a>
-<a href="{{ url_for('consultar_usuarios') }}" class="button-2">Regresar</a>
-<hr class="line">
-<p class="informacion">ID: {{ usuario[4] }}</p>
-<p class="informacion2">Nombre: {{ usuario[5] }}</p>
-<p class="informacion3">Apellido Paterno: {{ usuario[6] }}</p>
-<p class="informacion4">Apellido Materno: {{ usuario[7] }}</p>
-<p class="informacion5">Domicilio: {{ usuario[8] }}</p>
-<p class="informacion6">Número de teléfono: {{ usuario[9] }}</p>
-<p class="informacion7">Nombre de Usuario: {{ usuario[10] }}</p>
-<p class="informacion8">CURP: {{ usuario[11] }}</p>
-<p class="informacion9">Tipo de Usuario: {{ usuario[12] }}</p>
-<p class="informacion10">Fecha de contratación: {{ usuario[13] }}</p>
-<p class="informacion11">Correo electrónico: {{ usuario[15] }}</p>
-</body>
-</html>

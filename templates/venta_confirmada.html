@@ -3,39 +3,77 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inicio Gladiator's</title>
+    <link rel="stylesheet" href="../static/login.css">
+    <link rel="stylesheet" href="../static/assets/font/flaticon.css">
+    <link rel="stylesheet" href="../static/style.css">
+<body>
+    <header>
+        <section class="incons-container">
+            <div class="incons">
+                <a href="/"><span class="flaticon-001-facebook"></span></a>
+                <a href="/"><span class="flaticon-003-whatsapp"></span></a>
+                <a href="/"><span class="flaticon-011-instagram"></span></a>
+            </div>
+            <div class="inf-p">
+                <p>Más que una tienda, un universo de posibilidades...</p>
+            </div>
+            <div class="correo-a">
+                <a href="mailto:Gladiators99zxc@gmail.com">Gladiators99zxc@gmail.com</a>
+            </div>
+            <div class="inf-p">
+                <p>Lun-Vie 10:00a.m--8:00p.m
+                Sab-Dom 9:00a.m--9:00p.m</p>
+            </div>
+        </section>
+        <nav>
+            <section class="logo-gladiators">
+                <a href="index.html"><img src="../static/assets/img/Logotipo_GladiatorsTransparente.png" alt="imagen-logo"></a>
+                <h5>Gladiator's</h5>
+            </section>
+        </nav>
+    </header>
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../static/navbar.css"> <!-- Usa solo una ruta correcta para CSS -->
-    <script src="../static/script.js" defer></script> <!-- Usa solo una ruta correcta para JS -->
-    <title>Confirmar la Venta</title>
-</head>
-<body>
-    <nav class="navbar">
-        <ul>
-            <li><a href="#">Inicio</a></li>
-            <li class="dropdown">
-                <a href="javascript:void(0)" class="dropbtn">Ventas &#9662;</a>
-                <ul class="dropdown-content">
-                    <li><a href="#">Consultar Venta</a></li>
-                    <li><a href="#">Registrar Venta</a></li>
-                </ul>
-            </li>
-            <li><a href="#">Productos</a></li>
-            <li><a href="#">Usuarios</a></li>
-            <li><a href="#">Soporte</a></li>
-            <li><a href="#">Cerrar Sesión</a></li>
-        </ul>
-    </nav>
+    <title>Venta Confirmada</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .confirmation-box {
+            border: 1px solid #ddd;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
 
-    <script src="../static/script.js"></script>
+        .btn-yellow {
+            background-color: #f8c14c; /* Color amarillo */
+            color: #fff; /* Texto blanco */
+            border: none;
+        }
+
+        .btn-yellow:hover {
+            background-color: #e7b841; /* Amarillo más oscuro en hover */
+        }
+    </style>
 </head>
 <body>
-    <h1>Venta Confirmada</h1>
-    <p>Número de venta: {{ numero_venta }}</p>
-    <p>Fecha: {{ fecha }}</p>
-    <p>Hora: {{ hora }}</p>
-    <p>Atendido por: {{ usuario }}</p>
-    <p>Total: ${{ "%.2f" % total }}</p>
-    <a href="{{ url_for('registrar_venta') }}">Registrar otra venta</a>
+    <div class="container mt-5">
+        <div class="confirmation-box">
+            <h1 class="text-center">Venta Confirmada</h1>
+            <!-- <p><strong>Número de venta:</strong> {{ numero_venta }}</p>
+            <p><strong>Fecha:</strong> {{ fecha_venta }}</p>
+            <p><strong>Hora:</strong> {{ hora_venta }}</p>
+            <p><strong>Atendido por:</strong> {{ usuario }}</p>
+            <p><strong>Total:</strong> ${{ "%.2f" % total }}</p> -->
+            <div class="text-center mt-4">
+                <a href="{{ url_for('registrar_venta') }}" class="btn btn-yellow">Registrar otra venta</a>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 </body>
 </html>

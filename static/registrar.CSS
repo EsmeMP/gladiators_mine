@@ -1,95 +1,305 @@
-
-.label{
-    display: inline-table;
-    padding-left: 180px;
-    max-width: 10%;
-    padding-top: 10px;
+* Estilos generales */
+body, html {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    box-sizing: border-box;
 }
 
-.blog-button{
-    background-color: var(--color-dark-yellow);
-    width: 70px;
-    height: 30px;
-    position: relative;
-    top: 300px;
-    left: 10px;
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
 }
 
-h1{
-    padding-top: 10px;
-    align-items: center;
-    margin-top: 40px;
-    padding-left: 120px;
+h1 {
+    text-align: center;
     margin-bottom: 40px;
+    font-size: 2em;
 }
 
-.p{
-    position:fixed;
-    top: 60px;
-    left: 400px;
-    width: 487px;
-    height: 54px;
-    background: #FFF399FF;
-    border-radius: 8px 8px 8px 8px;
-    border-width: 1px;
-    border-color: #BCC1CAFF;
-    border-style:solid;
+form {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr; 
+    gap: 20px;
+    align-items: start;
 }
-.text{
-    position: absolute; 
-    top: 147px; 
-    left: 1239px; 
-    width: 150px; 
-    height: 145px; 
-    background: #DEE1E6FF; /* neutral-300 */
-    border-radius: 0px; 
-}
-button[type="submit"] {
-    position: absolute;
-    top: 500px;
-    right: 140px; /* Cambia 'left' por 'right' para moverlo hacia la derecha */
-    width: 100px;
-    height: 40px;
-    padding: 0 16px;
+
+.label {
     display: flex;
-    align-items: center;
-    justify-content: center;
-    font-family: Abel;
-    font-size: 20px;
-    line-height: 36px;
-    font-weight: 700;
-    color: #342E00FF;
-    background: #FFF07FFF;
-    opacity: 1;
-    border: none;
-    border-radius: 8px;
+    flex-direction: column;
+    padding-left: 20px;
 }
+
+.label label {
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.label input[type="text"], 
+.label input[type="email"], 
+.label input[type="password"],
+.label input[type="date"],
+.label select {
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    width: 90%;
+}
+
 .foto {
     display: flex;
     flex-direction: column;
-    align-items: center; /* Centra los elementos horizontalmente */
-    justify-content: center; /* Centra los elementos verticalmente */
-    border: 2px dashed #ddd; /* Añade un borde para indicar el área donde se puede colocar la imagen */
-    border-radius: 8px; /* Bordes redondeados */
-    padding: 10px; /* Espaciado interno ajustado para mejor visualización */
-    width: 150px; /* Ancho del contenedor reducido */
-    height: 150px; /* Alto del contenedor reducido */
-    background-color: #f9f9f9; /* Color de fondo */
-    position: relative; /* Posiciona el contenedor relativamente para usar posicionamiento absoluto en elementos internos si es necesario */
-    margin-left: auto; /* Empuja el contenedor a la derecha si está en un contenedor con display flex o grid */
-    margin-right: 20px; /* Espacio desde el borde derecho del contenedor padre */
-    margin-top: -30px; /* Mueve el contenedor más arriba desde el borde superior del contenedor padre */
-    font-size: 12px; /* Tamaño de fuente más pequeño para el texto dentro del contenedor */
+    align-items: center;
+    justify-content: center;
+    border: 2px dashed #ddd;
+    border-radius: 8px;
+    padding: 20px;
+    background-color: #f9f9f9;
+    text-align: center;
+    grid-column: span 1;
+    width: 250px; height: 200px;
+    margin-left: 100px;
+}
+
+.foto img {
+    max-width: 100%;
+    height: auto;
+    display: none;
+    margin-top: 10px;
+    width: 200px; height: 200px
 }
 
 .foto label {
-    margin-bottom: 5px; /* Espacio debajo de la etiqueta */
-    font-size: 12px; /* Tamaño de fuente más pequeño para la etiqueta */
-    display: block; /* Asegura que la etiqueta ocupe una línea completa */
-    text-align: center; /* Centra el texto de la etiqueta */
+    font-size: 14px;
+    margin-bottom: 10px;
 }
 
 .foto input[type="file"] {
-    margin-top: 5px; /* Espacio entre la etiqueta y el campo de entrada */
-    font-size: 12px; /* Tamaño de fuente del campo de entrada */
+    font-size: 14px;
+}
+
+button[type="submit"] {
+    padding: 10px 20px;
+    font-size: 18px;
+    font-weight: 700;
+    color: #342E00FF;
+    background: #FFF07FFF;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    grid-column: span 3; 
+    justify-self: center; 
+    margin-top: 20px;
+    width: 150px;
+    height: 50px;
+}
+
+@media (max-width: 768px) {
+    form {
+        grid-template-columns: 1fr;
+    }
+    .foto {
+        margin-top: 20px;
+    }
+    button[type="submit"] {
+        width: 100%;
+        grid-column: span 1; 
+    }
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+    form {
+        grid-template-columns: 1fr 1fr; 
+    }
+    button[type="submit"] {
+        width: 200px; 
+    }
+}
+
+nav {
+    background-color: rgb(0, 0, 0);
+    padding: 10px 20px;
+    margin-bottom: 20px;
+}
+
+.logo-gladiators {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+.logo-gladiators img {
+    max-height: 50px;
+    margin-right: 10px;
+}
+
+.logo-gladiators h5 {
+    color: #FFF07FFF;
+    font-size: 24px;
+    margin: 0;
+}
+
+.secciones {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    align-items: center;
+}
+
+.secciones a {
+    color: #FFF07FFF;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 14px;
+    padding: 10px 15px;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+}
+
+.secciones a:hover {
+    background-color: #FFF07FFF;
+    color: #342E00FF;
+}
+
+@media (min-width: 1025px) {
+    .secciones {
+        justify-content: flex-end;
+    }
+    .secciones a {
+        font-size: 16px;
+        padding: 10px 20px;
+    }
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+    .secciones {
+        justify-content: center;
+    }
+    .secciones a {
+        font-size: 15px;
+        padding: 8px 12px;
+    }
+}
+
+/* Celulares */
+@media (max-width: 768px) {
+    .secciones {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 5px;
+        padding: 10px 0;
+    }
+
+    .secciones a {
+        font-size: 14px;
+        padding: 8px 10px;
+        width: 100%;
+        text-align: left;
+    }
+}
+
+.product-image {
+    width: 200px;   /* Ajustado a 200px */
+    height: 200px;  /* Ajustado a 200px */
+    object-fit: cover; /* Mantiene la proporción y cubre el área del contenedor */
+}
+
+
+/* Estilo base para el menú */
+.menu {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    z-index: 1000;
+}
+
+.menu li {
+    position: relative;
+    display: inline-block;
+    z-index: 1000;
+}
+
+.menu li:hover ul {
+    display: block;
+    z-index: 1000;
+}
+
+.menu ul {
+    display: none;
+    position: absolute;
+    top: 160%; /* Ajusta la posición vertical del submenú */
+    left: 0;
+    z-index: 1000;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+}
+
+.menu ul li {
+    margin-bottom: 0; /* Espacio vertical entre elementos del submenú */
+}
+
+.menu ul li a {
+    display: block;
+    background-color: #342E00FF;
+    color: #FFF07FFF;
+    text-decoration: none;
+    padding: 10px; /* Espaciado interno para los enlaces */
+}
+
+/* Estilo para pantallas grandes (computadoras y laptops) */
+@media (min-width: 1024px) {
+
+    .menu li {
+        display: inline-block;
+    }
+
+    .menu ul {
+        top: 160%; /* Ajusta la distancia vertical del submenú */
+    }
+}
+
+/* Estilo para pantallas medianas (tablets y laptops pequeñas) */
+@media (max-width: 1024px) and (min-width: 768px) {
+    .menu li {
+        display: inline-block; /* O puedes cambiar a block si quieres un menú vertical */
+    }
+
+    .menu ul {
+        top: 120%; /* Ajusta la distancia vertical del submenú */
+    }
+}
+
+/* Estilo para pantallas pequeñas (celulares) */
+@media (max-width: 768px) {
+    .menu {
+        text-align: center; /* Centra el menú */
+    }
+
+    .menu li {
+        display: block; /* Cambia a bloque para una visualización vertical en móviles */
+    }
+
+    .menu ul {
+        position: static; /* Elimina la posición absoluta para móviles */
+        top: auto; /* Restablece la posición vertical */
+        left: auto; /* Restablece la posición horizontal */
+        width: 100%; /* Ocupa el ancho completo */
+    }
+
+    .menu ul li {
+        margin-bottom: 0; /* Espacio vertical entre elementos del submenú */
+    }
+
+    .menu ul li a {
+        padding: 15px; /* Aumenta el padding para mejorar la usabilidad en pantallas táctiles */
+    }
+
+    .menu li:hover ul {
+        display: block; /* Asegúrate de que el submenú se muestre en móviles */
+    }
 }

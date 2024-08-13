@@ -71,6 +71,7 @@
                         <th>Apellidos</th>
                         <th>Nombre de Usuario</th>
                         <th>Tipo de Usuario</th>
+                        <th>Imagen</th>
                         <th>Acciones</th>
                     </tr>
                 </thead>
@@ -83,10 +84,15 @@
                                     <td>{{ fila[1] }}</td>
                                     <td>{{ fila[2] }}</td>
                                     <td>{{ fila[3] }}</td>
-                                    <td>{{ fila[4] }}</td>
+                                    <td>{{ fila[5] }}</td>
+                                    <td>{% if fila[4] %}
+                                        <img src="{{ url_for('static', filename=fila[4]) }}" alt="Imagen del producto" class="product-image">
+                                    {% else %}
+                                        No disponible
+                                    {% endif %}</td>
                                     <td>
                                         <form action="{{ url_for('update1_usuario', id_usuario=fila[0]) }}" method="GET" style="display:inline;">
-                                            <button type="submit" class="boton-2">Editar</button>
+                                            <button type="submit" class="/">📝</button>
                                         </form>
                                         <a href="{{ url_for('consultar_usuario', id_usuario=fila[0]) }}">👁️‍🗨️</a>
                                     </td>

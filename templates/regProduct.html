@@ -4,10 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registrar Producto Gladiator's</title>
-    <link rel="stylesheet" href="../static/assets/font/flaticon.css">
     <link rel="stylesheet" href="../static/registrar.CSS">
     <link rel="stylesheet" href="../static/style.css">
-    <link rel="stylesheet" href="../static/registrar.CSS">
+    <link rel="stylesheet" href="../static/assets/font/flaticon.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../static/consulta_general.css">
+   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <style>
         .preview-img {
             max-width: 100%;
@@ -18,80 +21,104 @@
 </head>
 <body>
     <header>
-        <section class="incons-container">
-            <div class="incons">
-                <a href="/"><span class="flaticon-001-facebook"></span></a>
-                <a href="/"><span class="flaticon-003-whatsapp"></span></a>
-                <a href="/"><span class="flaticon-011-instagram"></span></a>
-            </div>
-            <div class="inf-p">
-                <p>Más que una tienda, un universo de posibilidades...</p>
-            </div>
-            <div class="correo-a">
-                <a href="mailto:Gladiators99zxc@gmail.com">Gladiators99zxc@gmail.com</a>
-            </div>
-            <div class="inf-p">
-                <p>Lun-Vie 10:00a.m--8:00p.m | Sab-Dom 9:00a.m--9:00p.m</p>
-            </div>
-        </section>
-        <nav class="navbar">
-        <ul>
-            <li><a href="#">Inicio</a></li>
-            <li class="dropdown">
-                <a href="javascript:void(0)" class="dropbtn">Ventas &#9662;</a>
-                <ul class="dropdown-content">
-                    <li><a href="#">Consultar Venta</a></li>
-                    <li><a href="#">Registrar Venta</a></li>
-                </ul>
-            </li>
-            <li><a href="#">Productos</a></li>
-            <li><a href="#">Usuarios</a></li>
-            <li><a href="#">Soporte</a></li>
-            <li><a href="#">Cerrar Sesión</a></li>
-        </ul>
-    </nav>
+            <section class="incons-container">
+                <div class="incons">
+                    <a href="/"><span class="flaticon-001-facebook"></span></a>
+                    <a href="/"><span class="flaticon-003-whatsapp"></span></a>
+                    <a href="/"><span class="flaticon-011-instagram"></span></a>
+                </div>
+                <div class="inf-p">
+                    <p>Más que una tienda, un universo de posibilidades...</p>
+                </div>
+                <div class="correo-a">
+                    <a href="mailto:Gladiators99zxc@gmail.com">Gladiators99zxc@gmail.com</a>
+                </div>
+                <div class="inf-p">
+                    <p>Lun-Vie 10:00a.m--8:00p.m | Sab-Dom 9:00a.m--9:00p.m</p>
+                </div>
+            </section>
+            <nav>
+                <section class="logo-gladiators">
+                    <a href="index.html"><img src="../static/assets/img/Logotipo_GladiatorsTransparente.png" alt="imagen-logo"></a>
+                    <h5>Gladiator's</h5>
+                </section>
+                <ul class="menu secciones">
+                    <li><a href="{{ url_for('secciones') }}">Inicio</a></li>
+    
+                    <li><a href="registrar_venta">Ventas</a></li>
+    
+                    <li><a href="./pages/index.html">Productos</a>
+                    <ul>
+                        <li class="secciones"><a href="productos">Registrar</a></li>
+                        <li class="secciones"><a href="consultar_productos">Consultar</a></li>
+                    </ul>
+                    </li>
+    
+                    <li><a href="./pages/index.html">Usuarios</a>
+                    <ul>
+                        <li class="secciones"><a href="registrar_usuario">Registrar</a></li>
+                        <li class="secciones"><a href="consultar_usuarios">Consultar</a></li>
+                    </ul>
+    
+                    </li>
+                    <li><a href="{{ url_for('index') }}">Soporte</a></li>
+                    <li><a href="{{ url_for('index') }}">Cerrar Sesión</a></li>
+                </ul>
+                </section>
+            </nav>
     </header>
     <main>
         <div class="container">
             <h1>Registrar Producto</h1>
-            <form action="{{ url_for('registrar_producto_post') }}" method="POST" enctype="multipart/form-data">
-                <section class="foto">
-                    <foto for="imagen">Imagen:</foto>
+            <form id="myform" action="{{ url_for('registrar_producto_post') }}" method="POST" enctype="multipart/form-data">
+                <div class="foto">
+                    <label for="imagen">Imagen:</label>
                     <input type="file" id="imagen" name="imagen" required>
-                </section>
-                <section class="label">
+                    <img id="preview" class="preview-img" src="#" alt="Vista previa de la imagen" style="display: none;">
+                </div> 
+                <div class="label">
                     <label for="nombre">Nombre:</label>
                     <input type="text" id="nombre" name="nombre" required>
-                    <label for="apellido_paterno">Apellido Paterno:</label>
-                    <input type="text" id="apellido_paterno" name="apellido_paterno" required>
-                    <label for="apellido_materno">Apellido Materno:</label>
-                    <input type="text" id="apellido_materno" name="apellido_materno" required>
-                    <label for="domicilio">Domicilio:</label>
-                    <input type="text" id="domicilio" name="domicilio" required>
-                </section>
-                <section class="label">
-                    <label for="numero_telefonico">Número telefónico:</label>
-                    <input type="text" id="numero_telefonico" name="numero_telefonico" required>
-                    <label for="curp">CURP:</label>
-                    <input type="text" id="curp" name="curp" required>
-                    <label for="correo_electronico">Correo electrónico:</label>
-                    <input type="email" id="correo_electronico" name="correo_electronico" required>
-                    <label for="tipos_de_usuario">Tipo de usuario:</label>
-                    <select name="tipos_de_usuario" id="tipos_de_usuario">
-                        <option value="cajero">Cajero</option>
-                        <option value="administrador">Administrador</option>
+                    <label for="codigo_barras">Código de Barras:</label>
+                    <input type="text" id="codigo_barras" name="codigo_barras" required>
+                    <label for="precio">Precio:</label>
+                    <input type="text" id="precio" name="precio" required>
+                    <label for="stock">Stock:</label>
+                    <input type="text" id="stock" name="stock" required>
+                </div>
+                <div class="label">
+                    <label for="descripcion">Descripción:</label>
+                    <input type="text" id="descripcion" name="descripcion" required>
+                    <label for="marca">Marca:</label>
+                    <input type="text" id="marca" name="marca" required>
+                    <br><br>
+                    <label for="categoria">Categoría:</label>
+                    <select name="categoria" id="categoria">
+                        <option value="Gorras">Gorras</option>
+                        <option value="Sudaderas">Sudaderas</option>
+                        <option value="Cinturones">Cinturones</option>
                     </select>
-                </section>
-                <section class="label">
-                    <label for="mes">Selecciona fecha de contratación:</label>
-                    <input type="date" name="date" id="date">
-                    <label for="nombre_usuario">Nombre de Usuario:</label>
-                    <input type="text" id="nombre_usuario" name="nombre_usuario" required>
-                    <label for="contraseña">Contraseña:</label>
-                    <input type="password" id="contraseña" name="contraseña" required>
-                </section>
-                
-                <button type="submit" class="btn btn-primary mt-3" onclick="confirm('Registrado exitosamente')">Registrar</button>
+                </div>
+
+                <button type="button" type="submit" class="btn btn-primary mt-3 " onclick="Swal.fire({
+                    title: '¿Estás seguro de querer realizar este cambio?',
+                    text: '¡No podrás revertir esto!',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#FFF07FFF',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: '¡Sí, realizar cambio!'
+                    }).then((result) => {
+                    if (result.isConfirmed) {
+                    Swal.fire({
+                    title: '¡Cambio realizado!',
+                    text: 'El cambio ha sido efectuado con éxito.',
+                    icon: 'success'
+                    }).then(() => {
+                    document.getElementById('myform').submit();
+                    });
+                    }
+                    })">Registrar</button>
             </form>
         </div>
     </main>

@@ -17,7 +17,7 @@
         }
     </style>
 </head>
-<body> 
+<body>
     <header>
         <section class="incons-container">
             <div class="incons">
@@ -34,7 +34,7 @@
             <div class="inf-p">
                 <p>Lun-Vie 10:00a.m--8:00p.m | Sab-Dom 9:00a.m--9:00p.m</p>
             </div>
-        </section> 
+        </section>
         <nav>
             <section class="logo-gladiators">
                 <a href="index.html"><img src="../static/assets/img/Logotipo_GladiatorsTransparente.png" alt="imagen-logo"></a>
@@ -90,7 +90,6 @@
                                         <td>{{ fila[5] }}</td>
                                         <td>{{ fila[6] }}</td>
                                         <td>{{ fila[7] }}</td>
-                                        
                                         <td>
                                             {% if fila[8] %}
                                                 <img src="{{ url_for('static', filename=fila[8]) }}" alt="Imagen del producto" class="product-image">
@@ -100,12 +99,12 @@
                                         </td>
                                         <td>
                                             <form action="{{ url_for('update1_producto', id_producto=fila[0]) }}" method="GET" style="display:inline;">
-                                                <button type="submit" class="boton-2">Editar</button>
+                                                <button type="submit" class="/">📝</button>
                                             </form>
                                             <form action="{{ url_for('delete_producto', id_producto=fila[0]) }}" method="POST" style="display:inline;">
-                                                <button type="submit" class="boton-2">Eliminar</button>
+                                                <button type="submit" class="boton-2">borrar</button>
                                             </form>
-                                            <a href="{{ url_for('consultar_producto', id_producto=fila[0]) }}" class="boton-2">Ver</a>
+                                            <a href="{{ url_for('consultar_producto', id_producto=fila[0]) }}" class="/">👁️‍🗨️</a>
                                         </td>
                                     </tr>
                                 {% else %}

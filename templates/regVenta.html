@@ -86,14 +86,28 @@
                 <a href="index.html"><img src="../static/assets/img/Logotipo_GladiatorsTransparente.png" alt="imagen-logo"></a>
                 <h5>Gladiator's</h5>
             </section>
-            <section class="secciones">
-                <a href="{{ url_for('consultar_usuarios')}}">Inicio</a>
-                <a href="./pages/index.html">Ventas</a>
-                <a href="consultar_usuario">Productos</a>
-                <a href="./consultarUsuario.html">Usuarios</a>
-                <a href="{{ url_for('consultar_usuarios')}}">Soporte</a>
-                <a href="{{ url_for('registrar_usuario')}}">Cerrar Sesión</a>
-            </section>
+            <ul class="menu secciones">
+                <li><a href="{{ url_for('secciones') }}">Inicio</a></li>
+
+                <li><a href="{{ url_for('reporte_semanal') }}">Ventas</a></li>
+
+                <li><a href="./pages/index.html">Productos</a>
+                <ul>
+                    <li class="secciones"><a href="registrar_producto">Registrar</a></li>
+                    <li class="secciones"><a href="consultar_productos">Consultar</a></li>
+                </ul>
+                </li>
+
+                <li><a href="./pages/index.html">Usuarios</a>
+                <ul>
+                    <li class="secciones"><a href="registrar_usuario">Registrar</a></li>
+                    <li class="secciones"><a href="consultar_usuarios">Consultar</a></li>
+                </ul>
+
+                </li>
+                <li><a href="./pages/index.html">Soporte</a></li>
+                <li><a href="./pages/index.html">Cerrar Sesión</a></li>
+            </ul>
         </nav>
     </header>
     <h1>Ventas</h1>
@@ -186,7 +200,6 @@
         </div>
         </section>
     </main>
-    
 
 <script>
     let ventas = [];
