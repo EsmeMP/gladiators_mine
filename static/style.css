@@ -832,8 +832,59 @@ footer .social-media a:active {
       }
 
 
+.navbar {
+    background-color: #000000!important; /* Forzar el fondo negro */
+    width: 610PX;
+    height: 20PX;
+    justify-content: flex-end; /* Mueve la barra de navegación a la derecha */
+    margin-left: 750PX;
+    position: relative;
+}
 
+/* Texto amarillo para los enlaces de navegación */
+.navbar-nav .nav-item .nav-link {
+    color: #FFEA99 !important; /* Texto amarillo */
+}
 
+/* Hover: texto amarillo y fondo negro */
+.navbar-nav .nav-item .nav-link:hover {
+    color: #FFEA99 !important; /* Texto amarillo en hover */
+    background-color: #000 !important; /* Fondo negro en hover */
+}
+
+/* Texto amarillo para la marca y otros textos dentro de la navbar */
+.navbar-brand, .navbar-toggler-icon, .navbar .h5, .logo-gladiators h5 {
+    color: #FFEA99!important; /* Texto amarillo */
+}
+
+/* Dropdown Menu */
+.dropdown-menu {
+    background-color: #0b0b0b !important; /* Fondo negro */
+    border: none;
+}
+
+/* Texto amarillo en los elementos del dropdown */
+.dropdown-item {
+    color: #FFEA99 !important; /* Texto amarillo */
+}
+
+/* Hover en el dropdown */
+.dropdown-item:hover {
+    color: #FFEA99 !important; /* Texto amarillo en hover */
+    background-color: #000000 !important; /* Fondo negro en hover */
+}
+
+.navbar-toggler {
+    border-color: yellow; /* Cambia el color del borde del botón */
+}
+
+.navbar-toggler-icon {
+    background-image: url('../static/assets/font/menu.svg');
+}
+
+.navbar-toggler:focus, .navbar-toggler:hover {
+    background-color: #000; /* Fondo negro */
+}
 
 
 

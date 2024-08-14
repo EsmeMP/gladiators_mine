@@ -284,12 +284,17 @@ nav {
 }
 
 /* Estilos para la imagen del producto en la tabla */
-.product-image {
-    width: 200px;   /* Ajustado a 200px */
-    height: 200px;  /* Ajustado a 200px */
-    object-fit: cover; /* Mantiene la proporción y cubre el área del contenedor */
+.contenedor-img {
+    text-align: center; /* Centra la imagen dentro de la celda */
+    padding: 10px; /* Añade un poco de espacio alrededor de la imagen */
 }
 
+.product-image {
+    max-width: 100px; /* Ajusta el tamaño máximo de la imagen */
+    height: auto; /* Mantiene la proporción de la imagen */
+    object-fit: cover; /* Cubre el área de la imagen, recortando si es necesario */
+    border-radius: 15px; /* Añade bordes redondeados a la imagen */
+}
 
 
 

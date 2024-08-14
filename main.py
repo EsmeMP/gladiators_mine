@@ -28,10 +28,13 @@ app = Flask(__name__)
 app.secret_key = 'super_secret_key'
 serializer = URLSafeTimedSerializer(app.secret_key)
 
-# Define the folder to save uploaded files
-UPLOAD_FOLDER = os.path.join('static', 'uploads')
+# # Define the folder to save uploaded files
+# UPLOAD_FOLDER = os.path.join('static', 'uploads')
 
-# Add the configuration to the Flask app
+# # Add the configuration to the Flask app
+# app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+
+UPLOAD_FOLDER = os.path.join('static', 'assets', 'img')
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 def actualizar_contraseñas():
@@ -263,6 +266,7 @@ def consultar_productos():
     else:
         return redirect(url_for('secciones'))
 
+
 @app.route('/consultar_producto/<int:id_producto>')
 def consultar_producto(id_producto):
     # Verificar si el usuario está autenticado y tiene un rol en la sesión
@@ -276,7 +280,7 @@ def consultar_producto(id_producto):
                 cursor = conn.cursor()
                 
                 # Ejecutar la consulta SQL para obtener los datos del producto
-                cursor.execute('SELECT * FROM info_especifica_producto WHERE ID = %s', (id_producto,))
+                cursor.execute('SELECT * FROM info_especifica_producto WHERE "ID" = %s', (id_producto,))
                 datos = cursor.fetchall()
                 
                 # Cerrar el cursor y la conexión

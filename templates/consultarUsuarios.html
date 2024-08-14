@@ -105,7 +105,7 @@
                                     <td>{{ fila[2] }}</td>
                                     <td>{{ fila[3] }}</td>
                                     <td>{{ fila[5] }}</td>
-                                    <td>{% if fila[4] %}
+                                    <td class="contenedor-img">{% if fila[4] %}
                                         <img src="{{ url_for('static', filename=fila[4]) }}" alt="Imagen del producto" class="product-image">
                                     {% else %}
                                         No disponible

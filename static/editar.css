@@ -35,99 +35,58 @@ h1{
     border-style:solid;
 }
 
-/* Estilo base para el menú */
-.menu {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    z-index: 1000;
-}
-
-.menu li {
+.navbar {
+    background-color: #000000!important; /* Forzar el fondo negro */
+    width: 610PX;
+    height: 20PX;
+    justify-content: flex-end; /* Mueve la barra de navegación a la derecha */
+    margin-left: 750PX;
     position: relative;
-    display: inline-block;
-    z-index: 1000;
 }
 
-.menu li:hover ul {
-    display: block;
-    z-index: 1000;
+/* Texto amarillo para los enlaces de navegación */
+.navbar-nav .nav-item .nav-link {
+    color: #FFEA99 !important; /* Texto amarillo */
 }
 
-.menu ul {
-    display: none;
-    position: absolute;
-    top: 120%; /* Ajusta la posición vertical del submenú */
-    left: 0;
-    z-index: 1000;
-    padding: 0;
-    margin: 0;
-    list-style: none;
+/* Hover: texto amarillo y fondo negro */
+.navbar-nav .nav-item .nav-link:hover {
+    color: #FFEA99 !important; /* Texto amarillo en hover */
+    background-color: #000 !important; /* Fondo negro en hover */
 }
 
-.menu ul li {
-    margin-bottom: 0; /* Espacio vertical entre elementos del submenú */
+/* Texto amarillo para la marca y otros textos dentro de la navbar */
+.navbar-brand, .navbar-toggler-icon, .navbar .h5, .logo-gladiators h5 {
+    color: #FFEA99!important; /* Texto amarillo */
 }
 
-.menu ul li a {
-    display: block;
-    background-color: #342E00FF;
-    color: #FFF07FFF;
-    text-decoration: none;
-    padding: 10px; /* Espaciado interno para los enlaces */
+/* Dropdown Menu */
+.dropdown-menu {
+    background-color: #0b0b0b !important; /* Fondo negro */
+    border: none;
 }
 
-/* Estilo para pantallas grandes (computadoras y laptops) */
-@media (min-width: 1024px) {
-
-    .menu li {
-        display: inline-block;
-    }
-
-    .menu ul {
-        top: 160%; /* Ajusta la distancia vertical del submenú */
-    }
+/* Texto amarillo en los elementos del dropdown */
+.dropdown-item {
+    color: #FFEA99 !important; /* Texto amarillo */
 }
 
-/* Estilo para pantallas medianas (tablets y laptops pequeñas) */
-@media (max-width: 1024px) and (min-width: 768px) {
-    .menu li {
-        display: inline-block; /* O puedes cambiar a block si quieres un menú vertical */
-    }
-
-    .menu ul {
-        top: 120%; /* Ajusta la distancia vertical del submenú */
-    }
+/* Hover en el dropdown */
+.dropdown-item:hover {
+    color: #FFEA99 !important; /* Texto amarillo en hover */
+    background-color: #000000 !important; /* Fondo negro en hover */
 }
 
-/* Estilo para pantallas pequeñas (celulares) */
-@media (max-width: 768px) {
-    .menu {
-        text-align: center; /* Centra el menú */
-    }
+.navbar-toggler {
+    border-color: yellow; /* Cambia el color del borde del botón */
+}
 
-    .menu li {
-        display: block; /* Cambia a bloque para una visualización vertical en móviles */
-    }
+.navbar-toggler-icon {
+    background-image: url('../static/assets/font/menu.svg');
+}
 
-    .menu ul {
-        position: static; /* Elimina la posición absoluta para móviles */
-        top: auto; /* Restablece la posición vertical */
-        left: auto; /* Restablece la posición horizontal */
-        width: 100%; /* Ocupa el ancho completo */
-    }
-
-    .menu ul li {
-        margin-bottom: 0; /* Espacio vertical entre elementos del submenú */
-    }
-
-    .menu ul li a {
-        padding: 15px; /* Aumenta el padding para mejorar la usabilidad en pantallas táctiles */
-    }
-
-    .menu li:hover ul {
-        display: block; /* Asegúrate de que el submenú se muestre en móviles */
-    }
+.navbar-toggler:focus, .navbar-toggler:hover {
+    background-color: #000; /* Fondo negro */
 }
 
 
