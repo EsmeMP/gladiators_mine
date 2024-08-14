@@ -831,18 +831,18 @@ footer .social-media a:active {
         display: none;
       }
 
-
-.navbar {
-    background-color: #000000!important; /* Forzar el fondo negro */
-    width: 610PX;
-    height: 20PX;
+/* Fondo negro para la barra de navegación */
+.navbar { /* Elemento navbar */
+    background-color: #000000 !important; /* Forzar el fondo negro */
+    width: 610px;
+    height: 20px;
     justify-content: flex-end; /* Mueve la barra de navegación a la derecha */
-    margin-left: 750PX;
+    margin-left: 750px;
     position: relative;
 }
 
 /* Texto amarillo para los enlaces de navegación */
-.navbar-nav .nav-item .nav-link {
+.navbar-nav .nav-item .nav-link { /* Enlaces dentro del navbar */
     color: #FFEA99 !important; /* Texto amarillo */
 }
 
@@ -853,18 +853,18 @@ footer .social-media a:active {
 }
 
 /* Texto amarillo para la marca y otros textos dentro de la navbar */
-.navbar-brand, .navbar-toggler-icon, .navbar .h5, .logo-gladiators h5 {
-    color: #FFEA99!important; /* Texto amarillo */
+.navbar-brand, .navbar-toggler-icon, .navbar .h5, .logo-gladiators h5 { /* Texto dentro del navbar */
+    color: #FFEA99 !important; /* Texto amarillo */
 }
 
 /* Dropdown Menu */
-.dropdown-menu {
+.dropdown-menu { /* Menú desplegable dentro del navbar */
     background-color: #0b0b0b !important; /* Fondo negro */
     border: none;
 }
 
 /* Texto amarillo en los elementos del dropdown */
-.dropdown-item {
+.dropdown-item { /* Elementos del menú desplegable */
     color: #FFEA99 !important; /* Texto amarillo */
 }
 
@@ -874,17 +874,20 @@ footer .social-media a:active {
     background-color: #000000 !important; /* Fondo negro en hover */
 }
 
-.navbar-toggler {
+.navbar-toggler { /* Botón de toggle para dispositivos móviles */
     border-color: yellow; /* Cambia el color del borde del botón */
 }
 
-.navbar-toggler-icon {
+.navbar-toggler-icon { /* Icono del botón de toggle */
     background-image: url('../static/assets/font/menu.svg');
 }
 
 .navbar-toggler:focus, .navbar-toggler:hover {
     background-color: #000; /* Fondo negro */
 }
+
+
+
 
 
 

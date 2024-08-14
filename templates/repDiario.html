@@ -7,56 +7,85 @@
     <link rel="stylesheet" href="../static/assets/font/flaticon.css">
     <link rel="stylesheet" href="../static/style.css">
     <link rel="stylesheet" href="../static/repVenta.CSS">
+<link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<link rel="stylesheet" href="../static/navbar.css">
+
+
 </head>
 <body>
     <header>
         <section class="incons-container">
-            <!-- Aqui van  los iconos de las redes sociales, eslogan, correo y horarios -->
             <div class="incons">
-                <a href="/"><span class="flaticon-001-facebook"></span></a>
-                <a href="/"><span class="flaticon-003-whatsapp"></span></a>
-                <a href="/"><span class="flaticon-011-instagram"></span></a>
+                <a href="/"><span class="flaticon-001-facebook" aria-label="Facebook"></span></a>
+                <a href="/"><span class="flaticon-003-whatsapp" aria-label="WhatsApp"></span></a>
+                <a href="/"><span class="flaticon-011-instagram" aria-label="Instagram"></span></a>
             </div>
             <div class="inf-p">
                 <p>Más que una tienda, un universo de posibilidades...</p>
             </div>
             <div class="correo-a">
-                <a href="Gladiators99zxc@gmail.com">Gladiators99zxc@gmail.com</a>
+                <a href="mailto:Gladiators99zxc@gmail.com">Gladiators99zxc@gmail.com</a>
             </div>
             <div class="inf-p">
-                <p>Lun-Vie 10:00a.m--8:00p.m
-                Sab-Dom 9:00a.m--9:00p.m</p>
+                <p>Lun-Vie 10:00a.m--8:00p.m<br>Sab-Dom 9:00a.m--9:00p.m</p>
             </div>
         </section>
         <nav>
-            <!-- Aqui va el logo y nombre de la tienda y el nombre de las secciones -->
             <section class="logo-gladiators">
-                <a href="index.html"><img src="../static/assets/img/Logotipo_GladiatorsTransparente.png" alt="imagen-logo"></a>
+                <a href="{{ url_for('index') }}"><img src="{{ url_for('static', filename='assets/img/Logotipo_GladiatorsTransparente.png') }}" alt="Logotipo Gladiator's"></a>
                 <h5>Gladiator's</h5>
             </section>
-            <ul class="menu secciones">
-                    <li><a href="{{ url_for('secciones') }}">Inicio</a></li>
-    
-                    <li><a href="registrar_venta">Ventas</a></li>
-    
-                    <li><a href="{{ url_for('productos') }}">Productos</a>
-                    <ul>
-                        <li class="secciones"><a href="registrar_producto">Registrar</a></li>
-                        <li class="secciones"><a href="consultar_productos">Consultar</a></li>
-                    </ul>
+            <nav class="navbar navbar-expand-lg">
+                <div class="container">
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('secciones') }}">Inicio</a>
                     </li>
-                    {% if rol == 1 %}
-                    <li><a href="./pages/index.html">Usuarios</a>
-                    <ul>
-                        <li class="secciones"><a href="registrar_usuario">Registrar</a></li>
-                        <li class="secciones"><a href="consultar_usuarios">Consultar</a></li>
-                    </ul>
-    
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="ventasDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Ventas
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="ventasDropdown">
+                            <a class="dropdown-item" href="{{ url_for('registrar_venta') }}">Registrar</a>
+                            <a class="dropdown-item" href="{{ url_for('reporte_diario') }}">Reporte Diario</a>
+                            <a class="dropdown-item" href="{{ url_for('reporte_semanal') }}">Reporte Semanal</a>
+                        </div>
                     </li>
-                    {% endif %}
-                    <li><a href="{{ url_for('index') }}">Soporte</a></li>
-                    <li><a href="{{ url_for('index') }}">Cerrar Sesión</a></li>
-                </ul>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="productosDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Productos
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="productosDropdown">
+                            <a class="dropdown-item" href="{{ url_for('productos') }}">Registrar</a>
+                            <a class="dropdown-item" href="{{ url_for('consultar_productos') }}">Consultar</a>
+                        </div>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="usuariosDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Usuarios
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="usuariosDropdown">
+                            <a class="dropdown-item" href="{{ url_for('registrar_usuario') }}">Registrar</a>
+                            <a class="dropdown-item" href="{{ url_for('consultar_usuarios') }}">Consultar</a>
+                        </div>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('index') }}">Soporte</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('index') }}">Cerrar Sesión</a>
+                    </li>
+                    </ul>
+                </div>
+                </div>
+            </nav>
         </nav>
     </header>
     <main>

@@ -34,8 +34,7 @@ serializer = URLSafeTimedSerializer(app.secret_key)
 # # Add the configuration to the Flask app
 # app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
-UPLOAD_FOLDER = os.path.join('static', 'assets', 'img')
-app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+
 
 def actualizar_contraseñas():
     connection = None

@@ -25,10 +25,9 @@ h5 {
 .incons-container {
     background-color: var(--color-gray-header);
     color: var(--color-primary);
-    font-size: 75%;
-    padding: 0 30px;
+    font-size: 85%;
+    padding: 0 0px;
 }
-
 
 .incons-container {
     display: flex;
@@ -52,6 +51,18 @@ h5 {
     color: #f9c405;
 }
 
+.incons {
+    background-color: #f0f0f000; 
+    padding: 10px;
+    border-radius: 5px; 
+}
+
+.incons {
+    margin-left: 20px !important; /* Ajusta el margen derecho si es necesario */
+}
+
+
+
 nav {
     background-color: #111;
     padding: 10px;
@@ -68,8 +79,14 @@ nav {
 
 .logo-gladiators img {
     max-width: 50px;
-    margin-right: 10px;
+    margin-left: 15%;
 }
+
+.logo-gladiators h5 {
+margin-right: 0px;
+}
+
+
 
 .secciones a {
     color: #fff;

@@ -13,6 +13,33 @@
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<style>
+    .logo-gladiators {
+    display: flex;
+    align-items: center;
+    margin-left: 2%;
+    position: relative;
+    top: 10px; 
+}
+
+.logo-gladiators img {
+    max-width: 50px;
+}
+
+.logo-gladiators h5 {
+    margin-right: 5%; /* Ajusta este valor para el espacio entre la imagen y el texto */
+}
+
+.navbar {
+    height: 0px !important; /* Forzar altura */
+    padding: 0 !important; /* Forzar padding */
+}
+
+    .navbar-expand-lg .navbar-collapse {
+        margin-left: 30%;
+    }
+
+</style>
 
 
 </head>
@@ -54,9 +81,9 @@
                         Ventas
                         </a>
                         <div class="dropdown-menu" aria-labelledby="ventasDropdown">
-                        <a class="dropdown-item" href="registrar_venta">Registrar</a>
-                        <a class="dropdown-item" href="reporte_diario">Reporte Diario</a>
-                        <a class="dropdown-item" href="reporte_semanal">Reporte Semanal</a>
+                            <a class="dropdown-item" href="{{ url_for('registrar_venta') }}">Registrar</a>
+                            <a class="dropdown-item" href="{{ url_for('reporte_diario') }}">Reporte Diario</a>
+                            <a class="dropdown-item" href="{{ url_for('reporte_semanal') }}">Reporte Semanal</a>
                         </div>
                     </li>
                     <li class="nav-item dropdown">
@@ -64,8 +91,8 @@
                         Productos
                         </a>
                         <div class="dropdown-menu" aria-labelledby="productosDropdown">
-                        <a class="dropdown-item" href="productos">Registrar</a>
-                        <a class="dropdown-item" href="consultar_productos">Consultar</a>
+                            <a class="dropdown-item" href="{{ url_for('productos') }}">Registrar</a>
+                            <a class="dropdown-item" href="{{ url_for('consultar_productos') }}">Consultar</a>
                         </div>
                     </li>
                     <li class="nav-item dropdown">
@@ -73,8 +100,8 @@
                         Usuarios
                         </a>
                         <div class="dropdown-menu" aria-labelledby="usuariosDropdown">
-                        <a class="dropdown-item" href="registrar_usuario">Registrar</a>
-                        <a class="dropdown-item" href="consultar_usuarios">Consultar</a>
+                            <a class="dropdown-item" href="{{ url_for('registrar_usuario') }}">Registrar</a>
+                            <a class="dropdown-item" href="{{ url_for('consultar_usuarios') }}">Consultar</a>
                         </div>
                     </li>
                     <li class="nav-item">

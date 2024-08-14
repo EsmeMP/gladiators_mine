@@ -109,11 +109,11 @@ h1 {
     width: 90%;
     max-width: 487px;
     height: 54px;
-    background: #FFF399FF;
-    border-radius: 8px;
-    border-width: 1px;
-    border-color: #BCC1CAFF;
-    border-style: solid;
+    /* background: #FFF399FF; */
+    /* border-radius: 8px; */
+    /* border-width: 1px; */
+    /* border-color: #BCC1CAFF; */
+    /* border-style: solid; */
     box-sizing: border-box; /* Incluye padding y border en el ancho total */
 }
 
