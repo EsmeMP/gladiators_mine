@@ -135,6 +135,39 @@ h1{
         margin: 0 auto; /* Centra horizontalmente en pantallas pequeñas */
     }
 }
+/* CAMBIO DE FONDO */
+/* Estilo para el modo claro */
+body {
+    background-color: white;
+    color: black;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+/* Estilo para el modo oscuro */
+body.dark-mode {
+    background-color: #121212;
+    color: white;
+}
+
+/* Estilo para el botón de modo oscuro */
+.toggle-dark-mode {
+    cursor: pointer;
+    font-size: 28px;
+    position:absolute;
+    top: 100px;
+    right: 20px;
+    color: #FFEA99; /* Amarillo como en otros elementos */
+}
+
+/* Estilo para el ícono en modo oscuro */
+body.dark-mode .toggle-dark-mode {
+    color: #FFEA99; /* Cambia el color del ícono en modo oscuro si lo deseas */
+}
+
+.toggle-dark-mode i{
+    padding-right:20px;
+    margin-bottom: 0px;
+}
 
 /* Amarillo Pastel: #FFFFCC
 Amarillo Normal: #FFD700

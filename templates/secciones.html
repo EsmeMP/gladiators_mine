@@ -13,6 +13,7 @@
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 <style>
     .logo-gladiators {
     display: flex;
@@ -95,6 +96,7 @@
                             <a class="dropdown-item" href="{{ url_for('consultar_productos') }}">Consultar</a>
                         </div>
                     </li>
+                    {%  if rol is true %}
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="usuariosDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         Usuarios
@@ -104,6 +106,7 @@
                             <a class="dropdown-item" href="{{ url_for('consultar_usuarios') }}">Consultar</a>
                         </div>
                     </li>
+                    {%  endif %}
                     <li class="nav-item">
                         <a class="nav-link" href="{{ url_for('index') }}">Soporte</a>
                     </li>
@@ -115,6 +118,9 @@
                 </div>
             </nav>
         </nav>
+        <div id="toggleDarkMode" class="toggle-dark-mode">
+            <i class="fas fa-lightbulb"></i>
+        </div>
     </header>
     <main>
         <h1>Bienvenido, {{ username }}</h1>
@@ -143,5 +149,10 @@
             {% endif %}
         </div>
     </main>
+    <script>
+        document.getElementById('toggleDarkMode').addEventListener('click', function() {
+            document.body.classList.toggle('dark-mode');
+        });
+        </script>
 </body>
 </html>

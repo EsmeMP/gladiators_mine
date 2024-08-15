@@ -28,48 +28,48 @@ app = Flask(__name__)
 app.secret_key = 'super_secret_key'
 serializer = URLSafeTimedSerializer(app.secret_key)
 
-# # Define the folder to save uploaded files
-# UPLOAD_FOLDER = os.path.join('static', 'uploads')
+# Define the folder to save uploaded files
+UPLOAD_FOLDER = os.path.join('static', 'uploads')
 
-# # Add the configuration to the Flask app
-# app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+# Add the configuration to the Flask app
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 
 
-def actualizar_contraseñas():
-    connection = None
-    try:
-        connection = psycopg2.connect(
-            user="first_gladiator",
-            password="gladiator1st",
-            host="localhost",
-            port="5432",
-            database="database_gladiators"
-        )
-        cursor = connection.cursor()
+# def actualizar_contraseñas():
+#     connection = None
+#     try:
+#         connection = psycopg2.connect(
+#             user="first_gladiator",
+#             password="gladiator1st",
+#             host="localhost",
+#             port="5432",
+#             database="database_gladiators"
+#         )
+#         cursor = connection.cursor()
 
-        # Leer las contraseñas existentes
-        cursor.execute("SELECT username, password FROM usuario")
-        usuarios = cursor.fetchall()
+#         # Leer las contraseñas existentes
+#         cursor.execute("SELECT username, password FROM usuario")
+#         usuarios = cursor.fetchall()
 
-        # Encriptar las contraseñas y actualizar la base de datos
-        for username, password in usuarios:
-            hashed_password = generate_password_hash(password)
-            cursor.execute(
-                "UPDATE usuari SET password = %s WHERE username = %s",
-                (hashed_password, username)
-            )
+#         # Encriptar las contraseñas y actualizar la base de datos
+#         for username, password in usuarios:
+#             hashed_password = generate_password_hash(password)
+#             cursor.execute(
+#                 "UPDATE usuari SET password = %s WHERE username = %s",
+#                 (hashed_password, username)
+#             )
 
-        connection.commit()
-        print("Contraseñas actualizadas exitosamente")
+#         connection.commit()
+#         print("Contraseñas actualizadas exitosamente")
 
-    except (Exception, psycopg2.Error) as error:
-        print("Error al conectar a la base de datos", error)
+#     except (Exception, psycopg2.Error) as error:
+#         print("Error al conectar a la base de datos", error)
 
-    finally:
-        if connection:
-            cursor.close()
-            connection.close()
+#     finally:
+#         if connection:
+#             cursor.close()
+#             connection.close()
 
 def verificar_credenciales(username, password):
     connection = None
@@ -183,64 +183,76 @@ def before_request():
 @app.route('/productos')
 def productos():
     if 'username' in session and 'rol' in session:
-        username = session['username']
         rol = session['rol']
-        return render_template('regProduct.html', username=username, rol=rol)
+        if rol == 1:  # Solo administradores pueden acceder
+            username = session['username']
+            return render_template('regProduct.html', username=username, rol=rol)
+        else:
+            flash("No tienes permisos para acceder a esta sección", 'danger')
+            return redirect(url_for('consultar_productos'))  # Redirige a la página principal de productos
     else:
         return redirect(url_for('login'))
 
 @app.route('/registrar_producto', methods=['POST'])
 def registrar_producto_post():
-    # El código sigue igual
-    nombre = request.form['nombre']
-    codigo_barras = request.form['codigo_barras']
-    precio = request.form['precio']
-    stock = request.form['stock']
-    descripcion = request.form['descripcion']
-    marca = request.form['marca']
-    categoria = request.form['categoria']
+    if 'username' in session and 'rol' in session:
+        rol = session['rol']
+        if rol == 1:  # Solo administradores (rol == 1)
+            # El código de registro de producto sigue aquí
+            nombre = request.form['nombre']
+            codigo_barras = request.form['codigo_barras']
+            precio = request.form['precio']
+            stock = request.form['stock']
+            descripcion = request.form['descripcion']
+            marca = request.form['marca']
+            categoria = request.form['categoria']
 
-    file = request.files.get('imagen')
-    if file and file.filename != '':
-        filename = secure_filename(file.filename)
-        file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-        ruta_imagen = os.path.join('assets', 'img', filename).replace('\\', '/')
-    else:
-        ruta_imagen = 'assets/img/imagen_defecto.jpeg'
+            file = request.files.get('imagen')
+            if file and file.filename != '':
+                filename = secure_filename(file.filename)
+                file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+                ruta_imagen = os.path.join('assets', 'img', filename).replace('\\', '/')
+            else:
+                ruta_imagen = 'assets/img/imagen_defecto.jpeg'
 
-    conn = db.conectar()
-    cur = conn.cursor()
-    try:
-        cur.execute("""
-            INSERT INTO producto (nombre, codigo_barras, precio, stock, descripcion, marca, imagen)
-            VALUES (%s, %s, %s, %s, %s, %s, %s)
-            RETURNING id_producto;
-        """, (nombre, codigo_barras, precio, stock, descripcion, marca, ruta_imagen))
-        producto_id = cur.fetchone()[0]
-        cur.execute("""
-            SELECT id_categoria
-            FROM categoria
-            WHERE nombre = %s;
-        """, (categoria,))
-        categoria_id = cur.fetchone()
-        if categoria_id:
-            categoria_id = categoria_id[0]
+            conn = db.conectar()
+            cur = conn.cursor()
+            try:
+                cur.execute("""
+                    INSERT INTO producto (nombre, codigo_barras, precio, stock, descripcion, marca, imagen)
+                    VALUES (%s, %s, %s, %s, %s, %s, %s)
+                    RETURNING id_producto;
+                """, (nombre, codigo_barras, precio, stock, descripcion, marca, ruta_imagen))
+                producto_id = cur.fetchone()[0]
+                cur.execute("""
+                    SELECT id_categoria
+                    FROM categoria
+                    WHERE nombre = %s;
+                """, (categoria,))
+                categoria_id = cur.fetchone()
+                if categoria_id:
+                    categoria_id = categoria_id[0]
+                else:
+                    raise ValueError(f"Categoría '{categoria}' no encontrada.")
+                cur.execute("""
+                    UPDATE producto
+                    SET fk_categoria = %s
+                    WHERE id_producto = %s;
+                """, (categoria_id, producto_id))
+                conn.commit()
+                return redirect(url_for('consultar_productos'))
+            except Exception as e:
+                conn.rollback()
+                flash(f"Error: {e}")
+                return redirect(url_for('registrar_producto'))
+            finally:
+                cur.close()
+                db.desconectar(conn)
         else:
-            raise ValueError(f"Categoría '{categoria}' no encontrada.")
-        cur.execute("""
-            UPDATE producto
-            SET fk_categoria = %s
-            WHERE id_producto = %s;
-        """, (categoria_id, producto_id))
-        conn.commit()
-        return redirect(url_for('consultar_productos'))
-    except Exception as e:
-        conn.rollback()
-        flash(f"Error: {e}")
-        return redirect(url_for('registrar_producto'))
-    finally:
-        cur.close()
-        db.desconectar(conn)
+            flash("No tienes permisos para registrar productos", 'danger')
+            return redirect(url_for('consultar_productos'))
+    else:
+        return redirect(url_for('login'))
 
 
 @app.route('/consultar_productos')

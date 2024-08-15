@@ -6,6 +6,7 @@
     <link rel="stylesheet" href="/static/ventas_css/regVenta.css">
     <link rel="stylesheet" href="/static/assets/font/flaticon.css">
     <link rel="stylesheet" href="/static/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="../static/assets/font/flaticon.css">
     <link rel="stylesheet" href="../static/regVenta.css">
     <link rel="stylesheet" href="../static/style.css">
@@ -105,8 +106,8 @@
                         </a>
                         <div class="dropdown-menu" aria-labelledby="ventasDropdown">
                             <a class="dropdown-item" href="{{ url_for('registrar_venta') }}">Registrar</a>
-                            <a class="dropdown-item" href="{{ url_for('reporte_diario') }}">Reporte Diario</a>
-                            <a class="dropdown-item" href="{{ url_for('reporte_semanal') }}">Reporte Semanal</a>
+                            <!-- <a class="dropdown-item" href="{{ url_for('reporte_diario') }}">Reporte Diario</a>
+                            <a class="dropdown-item" href="{{ url_for('reporte_semanal') }}">Reporte Semanal</a> -->
                         </div>
                     </li>
                     <li class="nav-item dropdown">
@@ -118,6 +119,7 @@
                             <a class="dropdown-item" href="{{ url_for('consultar_productos') }}">Consultar</a>
                         </div>
                     </li>
+                    {%  if rol is true %}
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="usuariosDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         Usuarios
@@ -127,6 +129,7 @@
                             <a class="dropdown-item" href="{{ url_for('consultar_usuarios') }}">Consultar</a>
                         </div>
                     </li>
+                    {%  endif %}
                     <li class="nav-item">
                         <a class="nav-link" href="{{ url_for('index') }}">Soporte</a>
                     </li>
@@ -138,6 +141,9 @@
                 </div>
             </nav>
         </nav>
+        <div id="toggleDarkMode" class="toggle-dark-mode">
+            <i class="fas fa-lightbulb"></i>
+        </div>
     </header>
     <h1>Ventas</h1>
     <main class="container">
@@ -190,7 +196,7 @@
         </div>
     </div>
         <!-- Aqui se va a visualizar un tipo ticket del total -->
-        <section class="pre-visualizacion">
+        <section class="pre-visualizacion" style=" width: 40%; ">
             <div>
                 <!-- Logotipo y numero de venta, -->
                 <img src="../static/assets/img/Logotipo_GladiatorRedondo.png" alt="Logotipo Gladiator's" class="logo-redondo">
@@ -334,5 +340,10 @@ document.getElementById('abrirModal').addEventListener('click', openModal);
 
 
 </script>
+<script>
+        document.getElementById('toggleDarkMode').addEventListener('click', function() {
+            document.body.classList.toggle('dark-mode');
+        });
+        </script>
 </body>
 </html>
