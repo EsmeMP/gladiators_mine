@@ -55,8 +55,8 @@
                         </a>
                         <div class="dropdown-menu" aria-labelledby="ventasDropdown">
                             <a class="dropdown-item" href="{{ url_for('registrar_venta') }}">Registrar</a>
-                            <a class="dropdown-item" href="{{ url_for('reporte_diario') }}">Reporte Diario</a>
-                            <a class="dropdown-item" href="{{ url_for('reporte_semanal') }}">Reporte Semanal</a>
+                            <!-- <a class="dropdown-item" href="{{ url_for('reporte_diario') }}">Reporte Diario</a>
+                            <a class="dropdown-item" href="{{ url_for('reporte_semanal') }}">Reporte Semanal</a> -->
                         </div>
                     </li>
                     <li class="nav-item dropdown">
@@ -99,7 +99,7 @@
     <h2>Edición de nombre del producto</h2>
     <hr class="line">
     <br>
-    <form action="{{ url_for('update_producto_post', id_producto=datos[0]) }}" method="POST" enctype="multipart/form-data">
+    <form id="myform" action="{{ url_for('update_producto_post', id_producto=datos[0]) }}" method="POST" enctype="multipart/form-data">
         <section class="label">
             <label for="nombre">Nombre:</label>
             <input type="text" id="nombre" name="nombre" value="{{ datos[1] }}" required>

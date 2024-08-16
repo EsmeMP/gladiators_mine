@@ -28,48 +28,48 @@ app = Flask(__name__)
 app.secret_key = 'super_secret_key'
 serializer = URLSafeTimedSerializer(app.secret_key)
 
-# Define the folder to save uploaded files
-UPLOAD_FOLDER = os.path.join('static', 'uploads')
 
-# Add the configuration to the Flask app
+
+# UPLOAD_FOLDER = os.path.join('assets', 'img')
+# app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+
+UPLOAD_FOLDER = os.path.join('static', 'assets', 'img')
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
+def actualizar_contraseñas():
+    connection = None
+    try:
+        connection = psycopg2.connect(
+            user="first_gladiator",
+            password="gladiator1st",
+            host="localhost",
+            port="5432",
+            database="database_gladiators"
+        )
+        cursor = connection.cursor()
 
+        # Leer las contraseñas existentes
+        cursor.execute("SELECT username, password FROM usuario")
+        usuarios = cursor.fetchall()
 
-# def actualizar_contraseñas():
-#     connection = None
-#     try:
-#         connection = psycopg2.connect(
-#             user="first_gladiator",
-#             password="gladiator1st",
-#             host="localhost",
-#             port="5432",
-#             database="database_gladiators"
-#         )
-#         cursor = connection.cursor()
+        # Encriptar las contraseñas y actualizar la base de datos
+        for username, password in usuarios:
+            hashed_password = generate_password_hash(password)
+            cursor.execute(
+                "UPDATE usuari SET password = %s WHERE username = %s",
+                (hashed_password, username)
+            )
 
-#         # Leer las contraseñas existentes
-#         cursor.execute("SELECT username, password FROM usuario")
-#         usuarios = cursor.fetchall()
+        connection.commit()
+        print("Contraseñas actualizadas exitosamente")
 
-#         # Encriptar las contraseñas y actualizar la base de datos
-#         for username, password in usuarios:
-#             hashed_password = generate_password_hash(password)
-#             cursor.execute(
-#                 "UPDATE usuari SET password = %s WHERE username = %s",
-#                 (hashed_password, username)
-#             )
+    except (Exception, psycopg2.Error) as error:
+        print("Error al conectar a la base de datos", error)
 
-#         connection.commit()
-#         print("Contraseñas actualizadas exitosamente")
-
-#     except (Exception, psycopg2.Error) as error:
-#         print("Error al conectar a la base de datos", error)
-
-#     finally:
-#         if connection:
-#             cursor.close()
-#             connection.close()
+    finally:
+        if connection:
+            cursor.close()
+            connection.close()
 
 def verificar_credenciales(username, password):
     connection = None
