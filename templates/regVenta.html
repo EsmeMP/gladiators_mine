@@ -235,7 +235,7 @@
                 <form action="{{ url_for('registrar_venta') }}" method="POST" class="realizar-venta">
                     <button type="submit">Realizar Venta</button>
                 </form>
-                <a href="ruta_a_la_pagina_de_cancelacion" class="btn">Cancelar Venta</a>
+                <a href="{{ url_for('registrar_venta') }}" class="btn">Cancelar Venta</a>
             </div>
         </div>
         </section>
