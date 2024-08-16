@@ -782,7 +782,7 @@ def registrar_usuario():
                     # Finaliza la transacción
                     cur.execute("COMMIT;")
 
-                    flash('Usuario registrado con éxito', 'success')
+                    # flash('Usuario registrado con éxito', 'success')
 
                     return render_template('regUsuario.html', username=username, rol=rol)
 
