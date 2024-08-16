@@ -142,9 +142,20 @@
                                     {% endif %}</td>
                                     <td>
                                         <form action="{{ url_for('update1_usuario', id_usuario=fila[0]) }}" method="GET" style="display:inline;">
-                                            <button type="submit" class="/">📝</button>
+                                            <button type="submit" class="/">
+                                                <div class="gif-container">
+                                                    <img src="../static/assets/img/editar.png" alt="Static GIF Frame" class="gif-static">
+                                                    <img src="../static/assets/img/editar.gif" alt="Animated GIF" class="gif-animated">
+                                                </div>
+                                            </button>
                                         </form>
-                                        <a href="{{ url_for('consultar_usuario', id_usuario=fila[0]) }}">👁️‍🗨️</a>
+                                        <a href="{{ url_for('consultar_usuario', id_usuario=fila[0]) }}" class="/">
+                                            <div class="gif-container">
+                                                <img src="../static/assets/img/ver11.png" alt="Static GIF Frame" class="gif-static">
+                                                <img src="../static/assets/img/ver12.gif" alt="Animated GIF" class="gif-animated">
+                                            </div>
+                                        </a>
+                                    </td>
                                     </td>
 
                                 </tr>

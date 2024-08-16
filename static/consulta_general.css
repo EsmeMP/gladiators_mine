@@ -427,4 +427,31 @@ body.dark-mode .toggle-dark-mode {
 }
 /* Los dos contenedores principales responsivos */
 
-
+.gif-container {
+    display: inline-block;
+    position: relative;
+    width: 50px; /* Ajusta el tamaño según sea necesario */
+    height: 50px; /* Ajusta el tamaño según sea necesario */
+}
+.gif-container img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: none;
+}
+.gif-static {
+    display: block;
+    border: none;
+}
+.gif-animated {
+    display: none;
+    border: none;
+}
+.gif-container:hover .gif-static {
+    display: none;
+}
+.gif-container:hover .gif-animated {
+    display: block;
+}
