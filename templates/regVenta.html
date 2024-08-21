@@ -155,10 +155,10 @@
         <div class="principal-container">
             <!-- <div class="contenedor-tabla"> -->
                 <section class="sec-title">
-                    <!-- Info de la seccion y el numero de la venta -->
-                    <h5>No.Venta</h5>
-                    <h5>{{ "{:08d}".format(numero_venta) }}</h5>
-                </section>
+    <h5>No.Venta</h5>
+    <h5>{{ "{:08d}".format(numero_venta) }}</h5>
+</section>
+
                 <section class="barra_busqueda">
                     <button type="button" id="abrirModal">Agregar Producto</button>
                     <!-- Aqui se encuentra la barra de busqueda -->
@@ -225,18 +225,18 @@
                 <p>Monto Efectivo: $<span id="monto-efectivo">0.00</span></p>
             </div>
             <div class="container-total">
-                <p>Subtotal: ${{ "%.2f" % subtotal }}</p>
-                <p>Total: ${{ "%.2f" % total }}</p>
-            </div>
+    <p>Total: ${{ "%.2f" % (total if total is not none else 0.0) }}</p>
+</div>
+
             <div class="botones">
-                <!-- Aqui estan los botones -->
-            <!-- <button type="submit">Realizar Venta</button>
-            <a href=""><button type="submit">Cancelar Venta</button></a> -->
-                <form action="{{ url_for('registrar_venta') }}" method="POST" class="realizar-venta">
-                    <button type="submit">Realizar Venta</button>
-                </form>
-                <a href="{{ url_for('registrar_venta') }}" class="btn">Cancelar Venta</a>
-            </div>
+    <!-- Formulario para realizar la venta -->
+    <form action="{{ url_for('registrar_venta') }}" method="POST" class="realizar-venta" id="ventaForm">
+        <input type="hidden" name="venta_actual" id="venta_actual">
+        <button type="submit">Realizar Venta</button>
+    </form>
+    <!-- Enlace para cancelar la venta -->
+    <a href="{{ url_for('registrar_venta') }}" class="btn">Cancelar Venta</a>
+</div>
         </div>
         </section>
     </main>
@@ -271,6 +271,10 @@ function searchProduct() {
                     total: total
                 };
                 ventas.push(nuevaVenta);
+
+                // Guardar en sessionStorage
+                sessionStorage.setItem('venta_actual', JSON.stringify(ventas));
+
                 actualizarTablaVentas();
                 updateOverallTotal();
             } else {
@@ -341,9 +345,12 @@ document.getElementById('money-received').addEventListener('input', calcularVuel
 // Asignar eventos al abrir el modal
 document.getElementById('abrirModal').addEventListener('click', openModal);
 
-// Script usuario 
+// Script llenar campo oculto
 
-
+document.getElementById('ventaForm').addEventListener('submit', function() {
+    var ventaActual = JSON.parse(sessionStorage.getItem('venta_actual')) || [];
+    document.getElementById('venta_actual').value = JSON.stringify(ventaActual);
+});
 </script>
 <script>
         document.getElementById('toggleDarkMode').addEventListener('click', function() {
