@@ -306,10 +306,10 @@ function actualizarTablaVentas() {
     });
 }
 
-// Actualizar la cantidad y total de un producto
 function actualizarCantidad(index, cantidad) {
     ventas[index].quantity = parseInt(cantidad);
     ventas[index].total = ventas[index].price * ventas[index].quantity;
+    sessionStorage.setItem('venta_actual', JSON.stringify(ventas)); // Sincroniza con sessionStorage
     actualizarTablaVentas();
     updateOverallTotal();
 }
@@ -349,6 +349,7 @@ document.getElementById('abrirModal').addEventListener('click', openModal);
 
 document.getElementById('ventaForm').addEventListener('submit', function() {
     var ventaActual = JSON.parse(sessionStorage.getItem('venta_actual')) || [];
+    console.log("Productos en la venta actual:", ventaActual); // Verifica que la cantidad sea correcta aquí
     document.getElementById('venta_actual').value = JSON.stringify(ventaActual);
 });
 </script>
