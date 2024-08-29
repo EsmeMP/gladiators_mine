@@ -59,8 +59,8 @@
                         </a>
                         <div class="dropdown-menu" aria-labelledby="ventasDropdown">
                             <a class="dropdown-item" href="{{ url_for('registrar_venta') }}">Registrar</a>
-                            <!-- <a class="dropdown-item" href="{{ url_for('reporte_diario') }}">Reporte Diario</a>
-                            <a class="dropdown-item" href="{{ url_for('reporte_semanal') }}">Reporte Semanal</a> -->
+                            <a class="dropdown-item" href="{{ url_for('reporte_diario') }}">Reporte Diario</a>
+                            <a class="dropdown-item" href="{{ url_for('reporte_semanal') }}">Reporte Semanal</a>
                         </div>
                     </li>
                     <li class="nav-item dropdown">
@@ -100,70 +100,69 @@
     </header>
 <body>
     <div class="container-fluid">
-    <h2>Edición de nombre del usuario</h2>
+    <h2>Edición del Usuario</h2>
     <hr class="line">
     <br>
     <form id="myform" action="{{ url_for('update_usuario_post', id_usuario=datos[0]) }}" method="POST" enctype="multipart/form-data">
         <section class="foto">
-            <label for="imagen">Imagen:</label>
-            <input type="file" id="imagen" name="imagen" required>
-            <img id="preview" class="preview-img" src="#" alt="Vista previa de la imagen" style="display: none;">
-        </div>
-            <br><br>
+        <label for="imagen">Imagen:</label>
+        <input type="file" id="imagen" name="imagen" required>
+        <img id="preview" class="preview-img" src="#" alt="Vista previa de la imagen" style="display: none;"
+        >
         </section>
-        <section class="label">
-            <label for="nombre">Nombre:</label>
-            <input type="text" id="nombre" name="nombre" value="{{ datos[1] }}" required>
-            <br><br>
-            <label for="apellido_paterno">Apellido Paterno:</label>
-            <input type="text" id="apellido_paterno" name="apellido_paterno" value="{{ datos[2] }}" required>
-            <br><br>
-            <label for="apellido_materno">Apellido Materno:</label>
-            <input type="text" id="apellido_materno" name="apellido_materno" value="{{ datos[3] }}" required>
-            <br><br>
-            <label for="domicilio">Domicilio:</label>
-            <input type="text" id="domicilio" name="domicilio" value="{{ datos[4] }}" required>
-            <br><br>
-        </section>
-        <section class="label">
-            <label for="numero_telefonico">Número telefónico:</label>
-            <input type="text" id="numero_telefonico" name="numero_telefonico" value="{{ datos[5] }}" required>
-            <br><br>
-            <label for="curp">CURP:</label>
-            <input type="text" id="curp" name="curp" value="{{ datos[6] }}" required>
-            <br><br>
-            <label for="correo_electronico">Correo electrónico:</label>
-            <input type="email" id="correo_electronico" name="correo_electronico" value="{{ datos[11] }}" required>
-            <br><br>
-            <label for="tipos_de_usuario">Tipo de usuario:</label>
-            <select name="tipos_de_usuario" id="tipos_de_usuario">
-                <option value="cajero" {% if datos[8] == 'cajero' %}selected{% endif %}>Cajero</option>
-                <option value="administrador" {% if datos[8] == 'administrador' %}selected{% endif %}>Administrador</option>
-            </select>
-            <br><br>
-        </section>
-        <section class="label">
-            <label for="date">Selecciona fecha de contratación:</label>
-            <input type="date" name="date" id="date" value="{{ datos[9].strftime('%Y-%m-%d') }}">
-        </section>
-        <section class="label">
-            <label for="nombre_usuario">Nombre de Usuario:</label>
-            <input type="text" id="nombre_usuario" name="nombre_usuario" value="{{ datos[7] }}" required>
-        </section>
-        <section class="label">
-            <label for="contraseña">Contraseña:</label>
-            <input type="password" id="contraseña" name="contraseña" value="{{ datos[10] }}" required>
-        </section>
-        <button type="button" type="submit" class="boton-reg" onclick="Swal.fire({
+
+<section class="label">
+    <label for="nombre">Nombre:</label>
+    <input type="text" id="nombre" name="nombre" value="{{ datos[1] }}" required>
+    <br><br>
+    <label for="apellido_paterno">Apellido Paterno:</label>
+    <input type="text" id="apellido_paterno" name="apellido_paterno" value="{{ datos[2] }}" required>
+    <br><br>
+    <label for="apellido_materno">Apellido Materno:</label>
+    <input type="text" id="apellido_materno" name="apellido_materno" value="{{ datos[3] }}" required>
+    <br><br>
+    <label for="domicilio">Domicilio:</label>
+    <input type="text" id="domicilio" name="domicilio" value="{{ datos[4] }}" required>
+    <br><br>
+    <label for="date">Selecciona fecha de contratación:</label>
+    <input type="date" name="date" id="date" value="{{ datos[9].strftime('%Y-%m-%d') }}">
+    <br><br>
+    <label for="contraseña">Contraseña:</label>
+    <input type="password" id="contraseña" name="contraseña" value="{{ datos[10] }}" required>
+</section>
+
+<section class="label">
+    <label for="numero_telefonico">Número telefónico:</label>
+    <input type="text" id="numero_telefonico" name="numero_telefonico" value="{{ datos[5] }}" required>
+    <br><br>
+    <label for="curp">CURP:</label>
+    <input type="text" id="curp" name="curp" value="{{ datos[6] }}" required>
+    <br><br>
+    <label for="correo_electronico">Correo electrónico:</label>
+    <input type="email" id="correo_electronico" name="correo_electronico" value="{{ datos[11] }}" required>
+    <br><br>
+    <label for="tipos_de_usuario">Tipo de usuario:</label>
+    <select name="tipos_de_usuario" id="tipos_de_usuario">
+        <option value="cajero" {% if datos[8] == 'cajero' %}selected{% endif %}>Cajero</option>
+        <option value="administrador" {% if datos[8] == 'administrador' %}selected{% endif %}>Administrador</option>
+    </select>
+    <br><br>
+    <label for="nombre_usuario">Nombre de Usuario:</label>
+    <input type="text" id="nombre_usuario" name="nombre_usuario" value="{{ datos[7] }}" required>
+</section>
+
+        <div style="display: flex; gap: 10px; justify-content: center; position:relative; top: -10px;">
+            <form id="myform" method="POST" style="display:inline;">
+                <button type="button" style="position: relative;top: -20px;" class="boton-reg" onclick="Swal.fire({
                     title: '¿Estás seguro de querer realizar este cambio?',
                     text: '¡No podrás revertir esto!',
                     icon: 'warning',
                     showCancelButton: true,
                     confirmButtonColor: '#FFF07F',
                     cancelButtonColor: '#d33',
-                    confirmButtonText: '¡Sí, realizar cambio',
+                    confirmButtonText: '¡Sí, realizar cambio!',
                     customClass: {
-                        confirmButton: 'swal2-confirm-custom'  // Clase personalizada para el botón de confirmación
+                        confirmButton: 'swal2-confirm-custom'
                     }
                 }).then((result) => {
                     if (result.isConfirmed) {
@@ -175,36 +174,36 @@
                             document.getElementById('myform').submit();
                         });
                     }
-})">Actualizar</button>
-        </form>
-        </form>
-        <form id="formdel" action="{{ url_for('delete_usuario', id_usuario=datos[0]) }}" method="POST" style="display:inline;" class="delete">
-    <button type="button" style="padding: 10px 20px; font-size: 18px; font-weight: 700; color: rgb(220, 220, 220); background: rgb(164, 0, 0); border: none; border-radius: 8px; cursor: pointer; grid-column: span 3; justify-self: center; margin-top: 20px; width: 150px; height: 50px;" class="boton-eliminar" onclick="Swal.fire({
-        title: '¿Estás seguro de querer realizar este cambio?',
-        text: '¡No podrás revertir esto!',
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#FFF07FFF',
-        cancelButtonColor: '#d33',
-        confirmButtonText: '¡Sí, realizar cambio!',
-        customClass: {
-            confirmButton: 'custom-confirm-button'
-        }
-    }).then((result) => {
-        if (result.isConfirmed) {
-            Swal.fire({
-                title: '¡Cambio realizado!',
-                text: 'El cambio ha sido efectuado con éxito.',
-                icon: 'success'
-            }).then(() => {
-                document.getElementById('formdel').submit();
-            });
-        }
-    })">Eliminar</button>
-</form>
-
-    </div>
-    <script>
+                })">Actualizar</button>
+            </form>
+        
+            <form id="formdel" action="{{ url_for('delete_usuario', id_usuario=datos[0]) }}" method="POST" style="display:inline;">
+                <button type="button" style="padding: 10px 20px; font-size: 18px; font-weight: 700; color: rgb(220, 220, 220); background: rgb(164, 0, 0); border: none; border-radius: 8px; cursor: pointer; width: 150px; height: 50px;" class="boton-eliminar" onclick="Swal.fire({
+                    title: '¿Estás seguro de querer realizar este cambio?',
+                    text: '¡No podrás revertir esto!',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#FFF07FFF',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: '¡Sí, realizar cambio!',
+                    customClass: {
+                        confirmButton: 'custom-confirm-button'
+                    }
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        Swal.fire({
+                            title: '¡Cambio realizado!',
+                            text: 'El cambio ha sido efectuado con éxito.',
+                            icon: 'success'
+                        }).then(() => {
+                            document.getElementById('formdel').submit();
+                        });
+                    }
+                })">Eliminar</button>
+            </form>
+        </div>
+</div>
+<script>
     document.getElementById('imagen').onchange = function (event) {
         const [file] = event.target.files;
         if (file) {
@@ -214,6 +213,7 @@
         }
     };
 </script>
+
 <script>
         document.getElementById('toggleDarkMode').addEventListener('click', function() {
             document.body.classList.toggle('dark-mode');

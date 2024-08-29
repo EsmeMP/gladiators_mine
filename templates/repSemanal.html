@@ -12,6 +12,14 @@
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <link rel="stylesheet" href="../static/navbar.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+<link rel="stylesheet" href="../static/navbar.css">
+<style>
+    .toggle-dark-mode i{
+        position: relative;
+        top: -35px;
+    }
+</style>
 
 
 </head>
@@ -67,6 +75,7 @@
                             <a class="dropdown-item" href="{{ url_for('consultar_productos') }}">Consultar</a>
                         </div>
                     </li>
+                    {%  if rol is true %}
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="usuariosDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         Usuarios
@@ -76,6 +85,7 @@
                             <a class="dropdown-item" href="{{ url_for('consultar_usuarios') }}">Consultar</a>
                         </div>
                     </li>
+                    {%  endif %}
                     <li class="nav-item">
                         <a class="nav-link" href="{{ url_for('index') }}">Soporte</a>
                     </li>
@@ -87,6 +97,9 @@
                 </div>
             </nav>
         </nav>
+        <div id="toggleDarkMode" class="toggle-dark-mode">
+            <i class="fas fa-lightbulb"></i>
+        </div>
     </header>
     <main>
         <h1>Reportes de las Ventas Semanal</h1>
@@ -136,9 +149,14 @@
             <div class="boton-total">
             <!-- Aqui va el total y el boton para descargar -->
             <h3>Total: ${{ total }}</h3>
-                <a href="ruta/al/archivo.ext" download="nombre_del_archivo.ext" class="descargar-boton">Descargar</a>
+                <a href="{{ url_for('descargar_reporte_semanal') }}" class="descargar-boton">Descargar</a>
             </div>
         </section>
     </main>
 </body>
+<script>
+        document.getElementById('toggleDarkMode').addEventListener('click', function() {
+            document.body.classList.toggle('dark-mode');
+        });
+</script>
 </html>

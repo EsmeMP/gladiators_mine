@@ -11,8 +11,14 @@
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 <link rel="stylesheet" href="../static/navbar.css">
-
+<style>
+    .toggle-dark-mode i{
+        position: relative;
+        top: -35px;
+    }
+</style>
 
 </head>
 <body>
@@ -67,6 +73,7 @@
                             <a class="dropdown-item" href="{{ url_for('consultar_productos') }}">Consultar</a>
                         </div>
                     </li>
+                    {%  if rol is true %}
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="usuariosDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         Usuarios
@@ -76,6 +83,7 @@
                             <a class="dropdown-item" href="{{ url_for('consultar_usuarios') }}">Consultar</a>
                         </div>
                     </li>
+                    {%  endif %}
                     <li class="nav-item">
                         <a class="nav-link" href="{{ url_for('index') }}">Soporte</a>
                     </li>
@@ -87,6 +95,9 @@
                 </div>
             </nav>
         </nav>
+        <div id="toggleDarkMode" class="toggle-dark-mode">
+            <i class="fas fa-lightbulb"></i>
+        </div>
     </header>
     <main>
         <h1>Reportes de las Ventas Diarias</h1>
@@ -118,7 +129,7 @@
                         <td>{{ fila[2] }}</td>
                         <td>{{ fila[3] }}</td>
                         <td>{{ fila[4] }}</td>
-                        <td><button>Ver</button></td>
+                        <td><a href="{{ url_for('consulta_venta', id=fila[0]) }}">Ver</a></td>
                     </tr>
                 {% endfor %}
             {% else %}
@@ -131,8 +142,13 @@
             <div class="boton-total">
             <!-- Aqui va el total y el boton para descargar -->
             <h3>Total: ${{ total }}</h3>
-            <a href="ruta/al/archivo.ext" download="nombre_del_archivo.ext" class="descargar-boton">Descargar</a>
+            <a href="{{ url_for('descargar_reporte') }}" download="reporte_diario.pdf" class="descargar-boton">Descargar</a>
         </div>
         </section>
     </main>
+    <script>
+        document.getElementById('toggleDarkMode').addEventListener('click', function() {
+            document.body.classList.toggle('dark-mode');
+        });
+    </script>
 </body>

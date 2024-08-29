@@ -18,9 +18,24 @@ from werkzeug.security import check_password_hash, generate_password_hash
 from itsdangerous import URLSafeTimedSerializer
 import itsdangerous
 import json
-from db import conectar, desconectar 
+from db import conectar, desconectar
+from flask import send_file, abort
+from io import BytesIO
+from reportlab.lib.pagesizes import letter
+from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Table, TableStyle, Image
+from reportlab.lib import colors
+from reportlab.lib.units import inch
+from reportlab.lib.styles import getSampleStyleSheet
+import os
 
-
+from flask import send_file, render_template, request, session, redirect, url_for, jsonify
+from fpdf import FPDF
+import io
+from fpdf import FPDF
+import io
+from flask import send_file, session, redirect, url_for, render_template, request, jsonify
+from flask import Flask, send_file, session, redirect, url_for, render_template, request, jsonify
+from werkzeug.utils import secure_filename
 
 
 app = Flask(__name__)
@@ -263,9 +278,9 @@ def consultar_productos():
         cursor = conn.cursor()
 
         if rol:  # Si rol es TRUE (rol=1), es un administrador
-            cursor.execute('''SELECT * FROM info_especifica_producto''')
+            cursor.execute('''SELECT * FROM info_especifica_producto ORDER BY "ID"''')
         else:  # Si rol es FALSE (rol=2), otro tipo de usuario
-            cursor.execute('''SELECT * FROM info_especifica_producto''')  # Ejemplo de consulta para usuarios no admin
+            cursor.execute('''SELECT * FROM info_especifica_producto ORDER BY "ID"''')  # Ejemplo de consulta para usuarios no admin
 
         datos = cursor.fetchall()
         cursor.close()
@@ -527,7 +542,80 @@ def registrar_venta():
 
 
 
+@app.route('/generar_ticket', methods=['POST'])
+def generar_ticket():
+    try:
+        # Obtener datos del request
+        efectivo_recibido = float(request.form.get('efectivo_recibido', 0.00))
+        vuelto = efectivo_recibido - float(request.form.get('total', 0.00))
+        monto_efectivo = efectivo_recibido
+        subtotal = float(request.form.get('subtotal', 0.00))
+        total = float(request.form.get('total', 0.00))
 
+        # Configuración del PDF
+        buffer = BytesIO()
+        doc = SimpleDocTemplate(buffer, pagesize=letter)
+
+        styles = getSampleStyleSheet()
+        style_normal = styles["Normal"]
+        style_heading = styles["Heading1"]
+
+        # Cargar el logotipo
+        logo_path = "static/assets/img/Logotipo_GladiatorRedondo.png"
+
+        if os.path.exists(logo_path):
+            img = Image(logo_path)
+            img.drawHeight = 0.5 * inch
+            img.drawWidth = 0.5 * inch
+            elementos = [img]
+        else:
+            abort(404, description="Logotipo no encontrado")
+
+        # Añadir número de venta
+        elementos.append(Spacer(1, 12))
+        elementos.append(Paragraph(f"<b>No. Venta:</b> 00000076", style_normal))
+
+        elementos.append(Spacer(1, 12))
+
+        # Añadir título
+        elementos.append(Paragraph("<b>Efectivo recibido</b>", style_heading))
+        elementos.append(Paragraph(f"{efectivo_recibido:.2f}", style_heading))
+
+        elementos.append(Spacer(1, 12))
+
+        # Crear tabla de datos
+        data = [
+            ["Vuelto:", f"${vuelto:.2f}"],
+            ["Monto Efectivo:", f"${monto_efectivo:.2f}"],
+            ["Subtotal:", f"${subtotal:.2f}"],
+            ["Total:", f"${total:.2f}"],
+        ]
+
+        table = Table(data, hAlign='LEFT')
+        table.setStyle(TableStyle([
+            ('BACKGROUND', (0, 0), (-1, 0), colors.whitesmoke),
+            ('TEXTCOLOR', (0, 0), (-1, 0), colors.black),
+            ('ALIGN', (0, 0), (-1, -1), 'LEFT'),
+            ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
+            ('BOTTOMPADDING', (0, 0), (-1, 0), 12),
+            ('BACKGROUND', (0, 1), (-1, -1), colors.whitesmoke),
+            ('GRID', (0, 0), (-1, -1), 0.5, colors.black),
+        ]))
+        elementos.append(table)
+
+        # Añadir total al final en grande
+        elementos.append(Spacer(1, 36))
+        elementos.append(Paragraph(f"<b>Total: ${total:.2f}</b>", style_heading))
+
+        # Construir y retornar el PDF
+        doc.build(elementos)
+        buffer.seek(0)
+
+        return send_file(buffer, as_attachment=True, download_name='ticket.pdf', mimetype='application/pdf')
+
+    except Exception as e:
+        print(f"Error generando el ticket: {e}")
+        abort(500, description="Error generando el ticket")
 
 @app.route('/venta_confirmada')
 def venta_confirmada():
@@ -574,35 +662,72 @@ def obtener_producto_de_db(codigo):
 
 
 
+# @app.route('/reporte_diario')
+# def reporte_diario():
+#     if 'username' in session and 'rol' in session:
+#         username = session['username']
+#         rol = session['rol']
+
+#         # Permitir acceso a usuarios con rol 1 (administrador) o rol 2 (cajero)
+#         if rol in [1, 2]:
+#             fecha = request.args.get('fecha')
+#             # Obtiene la fecha seleccionada del formulario
+#             print(f"Fecha seleccionada: {fecha}")
+#             conn = db.conectar()
+#             cursor = conn.cursor()
+            
+#             if fecha:
+#                 # Realiza la consulta filtrando por la fecha seleccionada
+#                 cursor.execute('''
+#                     SELECT *
+#                     FROM reporte_diario
+#                     WHERE fecha = %s
+#                 ''', (fecha,))
+#             else:
+#                 # Si no se ha seleccionado una fecha, muestra todas las ventas
+#                 cursor.execute('SELECT * FROM reporte_diario')
+            
+#             datos = cursor.fetchall()
+            
+#             if datos:
+#                 # Calcular el total de las ventas
+#                 total = sum([fila[3] for fila in datos])
+#             else:
+#                 total = 0
+            
+#             cursor.close()
+#             db.desconectar(conn)
+            
+#             # Renderiza la plantilla con los datos del reporte diario y el total
+#             return render_template('repDiario.html', datos=datos, total=total)
+#         else:
+#             return jsonify({"error": "Acceso no autorizado"}), 403
+#     else:
+#         return redirect(url_for('login'))
+
 @app.route('/reporte_diario')
 def reporte_diario():
     if 'username' in session and 'rol' in session:
         username = session['username']
         rol = session['rol']
 
-        # Permitir acceso a usuarios con rol 1 (administrador) o rol 2 (cajero)
         if rol in [1, 2]:
             fecha = request.args.get('fecha')
-            # Obtiene la fecha seleccionada del formulario
-            print(f"Fecha seleccionada: {fecha}")
             conn = db.conectar()
             cursor = conn.cursor()
             
             if fecha:
-                # Realiza la consulta filtrando por la fecha seleccionada
                 cursor.execute('''
                     SELECT *
                     FROM reporte_diario
                     WHERE fecha = %s
                 ''', (fecha,))
             else:
-                # Si no se ha seleccionado una fecha, muestra todas las ventas
                 cursor.execute('SELECT * FROM reporte_diario')
             
             datos = cursor.fetchall()
             
             if datos:
-                # Calcular el total de las ventas
                 total = sum([fila[3] for fila in datos])
             else:
                 total = 0
@@ -610,12 +735,121 @@ def reporte_diario():
             cursor.close()
             db.desconectar(conn)
             
-            # Renderiza la plantilla con los datos del reporte diario y el total
+            # Generar el PDF del reporte diario
+            pdf = FPDF()
+            pdf.add_page()
+            
+            # Ruta del logotipo
+            logo_path = "static/assets/img/Logotipo_GladiatorRedondo.png"
+            
+            # Verificar si el archivo de logotipo existe
+            if os.path.exists(logo_path):
+                try:
+                    pdf.image(logo_path, x=(210-33)/2, y=8, w=33)  # Centrar logotipo (210 es el ancho de la página en mm)
+                except Exception as e:
+                    print(f"Error al cargar la imagen: {e}")
+            else:
+                print(f"Logotipo no encontrado en la ruta: {logo_path}")
+                pdf.set_font("Arial", 'B', 12)
+                pdf.cell(200, 10, txt="Logotipo no encontrado", ln=True, align='C')
+            
+            # Título del reporte
+            pdf.ln(20)  # Espacio después del logotipo o texto alternativo
+            pdf.set_font("Arial", size=12)
+            pdf.cell(200, 10, txt="Reporte Diario", ln=True, align='C')
+            pdf.cell(200, 10, txt=f"Fecha: {fecha if fecha else 'Todas las fechas'}", ln=True, align='C')
+            pdf.ln(10)
+            
+            # Encabezados de la tabla
+            pdf.cell(40, 10, txt="ID Venta", border=1)
+            pdf.cell(60, 10, txt="Fecha", border=1)
+            pdf.cell(40, 10, txt="Hora", border=1)
+            pdf.cell(40, 10, txt="Total", border=1)
+            pdf.ln()
+
+            # Añadir los datos al PDF
+            for fila in datos:
+                pdf.cell(40, 10, txt=str(fila[0]), border=1)
+                pdf.cell(60, 10, txt=str(fila[1]), border=1)
+                pdf.cell(40, 10, txt=str(fila[2]), border=1)
+                pdf.cell(40, 10, txt=str(fila[3]), border=1)
+                pdf.ln()
+            
+            pdf.ln(10)
+            pdf.cell(200, 10, txt=f"Total: ${total:.2f}", ln=True, align='R')
+            
+            # Guardar el PDF en un buffer en memoria
+            pdf_output = io.BytesIO()
+            pdf_output.write(pdf.output(dest='S').encode('latin1'))
+            pdf_output.seek(0)
+            
+            # Guardar el buffer en la sesión para usarlo más adelante
+            session['pdf_output'] = pdf_output.getvalue()
+            
+            # Renderizar la plantilla y mostrar los datos
             return render_template('repDiario.html', datos=datos, total=total)
         else:
             return jsonify({"error": "Acceso no autorizado"}), 403
     else:
         return redirect(url_for('login'))
+
+@app.route('/descargar_reporte')
+def descargar_reporte():
+    pdf_output = session.get('pdf_output')
+    if not pdf_output:
+        return redirect(url_for('reporte_diario'))  # Redirige si no hay PDF en la sesión
+
+    # Convertir el contenido de la sesión en un BytesIO para ser enviado
+    pdf_buffer = io.BytesIO(pdf_output)
+    
+    # Descarga el archivo PDF
+    return send_file(pdf_buffer, as_attachment=True, download_name='reporte_diario.pdf', mimetype='application/pdf')
+
+
+
+
+
+# @app.route('/reporte_semanal', methods=['GET'])
+# def reporte_semanal():
+#     if 'username' in session and 'rol' in session:
+#         username = session['username']
+#         rol = session['rol']
+
+#         # Permitir acceso a usuarios con rol 1 (administrador) o rol 2 (cajero)
+#         if rol in [1, 2]:
+#             fecha1 = request.args.get('fecha1')
+#             fecha2 = request.args.get('fecha2')
+#             # Obtiene las fechas seleccionadas del formulario
+#             conn = db.conectar()
+#             cursor = conn.cursor()
+            
+#             if fecha1 and fecha2:
+#                 # Realiza la consulta filtrando por el rango de fechas seleccionado
+#                 cursor.execute('''
+#                     SELECT * FROM reporte_diario
+#                     WHERE fecha BETWEEN %s AND %s
+#                 ''', (fecha1, fecha2,))
+#             else:
+#                 # Si no se han seleccionado fechas, muestra todas las ventas
+#                 cursor.execute('SELECT * FROM reporte_diario')
+            
+#             datos = cursor.fetchall()
+            
+#             if datos:
+#                 # Calcular el total de las ventas
+#                 total = sum([fila[3] for fila in datos])
+#             else:
+#                 total = 0
+            
+#             cursor.close()
+#             db.desconectar(conn)
+            
+#             # Renderiza la plantilla con los datos del reporte semanal y el total
+#             return render_template('repSemanal.html', datos=datos, total=total)
+#         else:
+#             return jsonify({"error": "Acceso no autorizado"}), 403
+#     else:
+#         return redirect(url_for('login'))
 
 
 @app.route('/reporte_semanal', methods=['GET'])
@@ -624,41 +858,90 @@ def reporte_semanal():
         username = session['username']
         rol = session['rol']
 
-        # Permitir acceso a usuarios con rol 1 (administrador) o rol 2 (cajero)
         if rol in [1, 2]:
             fecha1 = request.args.get('fecha1')
             fecha2 = request.args.get('fecha2')
-            # Obtiene las fechas seleccionadas del formulario
+
+            if not fecha1 or not fecha2:
+                fecha1 = "default_start_date"
+                fecha2 = "default_end_date"
+
+            # Conectar a la base de datos y obtener los datos
             conn = db.conectar()
             cursor = conn.cursor()
-            
+
             if fecha1 and fecha2:
-                # Realiza la consulta filtrando por el rango de fechas seleccionado
-                cursor.execute('''
-                    SELECT * FROM reporte_diario
-                    WHERE fecha BETWEEN %s AND %s
-                ''', (fecha1, fecha2,))
+                cursor.execute('''SELECT * FROM reporte_diario WHERE fecha BETWEEN %s AND %s''', (fecha1, fecha2,))
             else:
-                # Si no se han seleccionado fechas, muestra todas las ventas
                 cursor.execute('SELECT * FROM reporte_diario')
-            
+
             datos = cursor.fetchall()
-            
-            if datos:
-                # Calcular el total de las ventas
-                total = sum([fila[3] for fila in datos])
-            else:
-                total = 0
-            
+            total = sum([fila[3] for fila in datos]) if datos else 0
+
             cursor.close()
             db.desconectar(conn)
-            
-            # Renderiza la plantilla con los datos del reporte semanal y el total
+
+            # Crear el PDF
+            pdf = FPDF()
+            pdf.add_page()
+
+            logo_path = "static/assets/img/Logotipo_GladiatorRedondo.png"
+
+            if os.path.exists(logo_path):
+                pdf.image(logo_path, x=(210-33)/2, y=8, w=33)
+            else:
+                pdf.set_font("Arial", 'B', 12)
+                pdf.cell(200, 10, txt="Logotipo no encontrado", ln=True, align='C')
+
+            pdf.ln(20)
+            pdf.set_font("Arial", size=12)
+            pdf.cell(200, 10, txt="Reporte Semanal", ln=True, align='C')
+            pdf.cell(200, 10, txt=f"Fechas: {fecha1} - {fecha2}", ln=True, align='C')
+            pdf.ln(10)
+
+            pdf.cell(40, 10, txt="ID Venta", border=1)
+            pdf.cell(60, 10, txt="Fecha", border=1)
+            pdf.cell(40, 10, txt="Hora", border=1)
+            pdf.cell(40, 10, txt="Total", border=1)
+            pdf.ln()
+
+            for fila in datos:
+                pdf.cell(40, 10, txt=str(fila[0]), border=1)
+                pdf.cell(60, 10, txt=str(fila[1]), border=1)
+                pdf.cell(40, 10, txt=str(fila[2]), border=1)
+                pdf.cell(40, 10, txt=str(fila[3]), border=1)
+                pdf.ln()
+
+            pdf.ln(10)
+            pdf.cell(200, 10, txt=f"Total: ${total:.2f}", ln=True, align='R')
+
+            # Asegurarse de que la carpeta temp_pdfs existe
+            temp_dir = "temp_pdfs"
+            if not os.path.exists(temp_dir):
+                os.makedirs(temp_dir)
+
+            # Guardar el PDF en un archivo temporal en el servidor
+            filename = f"reporte_semanal_{fecha1}_a_{fecha2}.pdf"
+            filepath = os.path.join(temp_dir, secure_filename(filename))
+            pdf.output(filepath, 'F')
+
+            session['pdf_filepath'] = filepath  # Guardar la ruta en la sesión
+
             return render_template('repSemanal.html', datos=datos, total=total)
         else:
             return jsonify({"error": "Acceso no autorizado"}), 403
     else:
         return redirect(url_for('login'))
+
+@app.route('/descargar_reporte_semanal')
+def descargar_reporte_semanal():
+    pdf_filepath = session.get('pdf_filepath')
+    if not pdf_filepath or not os.path.exists(pdf_filepath):
+        return redirect(url_for('reporte_semanal'))  # Redirige si no hay PDF en la sesión
+
+    return send_file(pdf_filepath, as_attachment=True, download_name=os.path.basename(pdf_filepath), mimetype='application/pdf')
+
+
 
 
 
@@ -814,7 +1097,7 @@ def consultar_usuarios():
         cursor = conn.cursor()
         
         # Ejecutar consulta en PostgreSQL
-        cursor.execute('SELECT * FROM consulta_general')
+        cursor.execute('SELECT * FROM consulta_general ORDER BY id')
         datos = cursor.fetchall()
         
         # Cerrar cursor y conexión
