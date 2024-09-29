@@ -36,6 +36,7 @@ import io
 from flask import send_file, session, redirect, url_for, render_template, request, jsonify
 from flask import Flask, send_file, session, redirect, url_for, render_template, request, jsonify
 from werkzeug.utils import secure_filename
+from werkzeug.security import generate_password_hash
 
 
 app = Flask(__name__)
@@ -981,7 +982,7 @@ def registrar_usuario():
         username = session['username']
         rol = session['rol']
         
-        if rol ==1 :
+        if rol == 1:
             if request.method == 'POST':
                 required_fields = [
                     'nombre', 'apellido_paterno', 'apellido_materno', 'domicilio',
@@ -1015,6 +1016,9 @@ def registrar_usuario():
                 # Convertir rol a booleano
                 rol_booleano = True if rol == 'administrador' else False
 
+                # Encriptar la contraseña antes de guardarla en la base de datos
+                hashed_password = generate_password_hash(password)
+
                 file = request.files.get('imagen')
                 if file and file.filename != '':
                     filename = secure_filename(file.filename)
@@ -1043,16 +1047,16 @@ def registrar_usuario():
                     else:
                         raise Exception("No se pudo obtener el id_empleado generado.")
                     
-                    # Inserta en usuario utilizando el ID generado
+                    # Inserta en usuario utilizando el ID generado y la contraseña encriptada
                     cur.execute("""
                         INSERT INTO usuario (fk_info_empleado, username, password, rol)
                         VALUES (%s, %s, %s, %s);
-                    """, (nuevo_id_empleado, username, password, rol_booleano))
+                    """, (nuevo_id_empleado, username, hashed_password, rol_booleano))
                     
                     # Finaliza la transacción
                     cur.execute("COMMIT;")
 
-                    # flash('Usuario registrado con éxito', 'success')
+                    flash('Usuario registrado con éxito', 'success')
 
                     return render_template('regUsuario.html', username=username, rol=rol)
 
@@ -1073,7 +1077,6 @@ def registrar_usuario():
             return redirect(url_for('index'))
     else:
         return redirect(url_for('secciones'))
-    
 
 
 @app.route('/consultar_usuarios')
