@@ -124,7 +124,7 @@ def login():
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
-        remember_me = request.form.get('remember')  # Obtener la opción "Recuérdame"
+        remember_me = request.form.get('remember')
 
         resultado = verificar_credenciales(username, password)
         if resultado is not None:
@@ -147,7 +147,7 @@ def login():
             if remember_me:
                 token = serializer.dumps(username, salt='remember-me')
                 response = make_response(redirect(url_for('secciones')))
-                response.set_cookie('remember_token', token, max_age=60*60*24*30)  # Expira en 30 días
+                response.set_cookie('remember_token', token, max_age=60*60*24*30)
                 return response
             return redirect(url_for('secciones'))
         else:
@@ -176,12 +176,11 @@ def secciones():
     if 'username' in session and 'rol' in session:
         username = session['username']
         rol = session['rol']
-        
-        # Redirige dependiendo del rol
+
         if rol == 1:
-            return render_template('secciones.html', username=username, rol=True)  # Admin
+            return render_template('secciones.html', username=username, rol=True)
         else:
-            return render_template('secciones.html', username=username, rol=False)  # Usuario normal
+            return render_template('secciones.html', username=username, rol=False)
     else:
         return redirect(url_for('login'))
 
@@ -197,12 +196,12 @@ def before_request():
 def productos():
     if 'username' in session and 'rol' in session:
         rol = session['rol']
-        if rol == 1:  # Solo administradores pueden acceder
+        if rol == 1:
             username = session['username']
             return render_template('regProduct.html', username=username, rol=rol)
         else:
             flash("No tienes permisos para acceder a esta sección", 'danger')
-            return redirect(url_for('consultar_productos'))  # Redirige a la página principal de productos
+            return redirect(url_for('consultar_productos'))
     else:
         return redirect(url_for('login'))
 
@@ -210,8 +209,8 @@ def productos():
 def registrar_producto_post():
     if 'username' in session and 'rol' in session:
         rol = session['rol']
-        if rol == 1:  # Solo administradores (rol == 1)
-            # El código de registro de producto sigue aquí
+        if rol == 1:
+
             nombre = request.form['nombre']
             codigo_barras = request.form['codigo_barras']
             precio = request.form['precio']
@@ -277,11 +276,10 @@ def consultar_productos():
         conn = db.conectar()
         cursor = conn.cursor()
 
-        if rol:  # Si rol es TRUE (rol=1), es un administrador
+        if rol:
             cursor.execute('''SELECT * FROM info_especifica_producto ORDER BY "ID"''')
-        else:  # Si rol es FALSE (rol=2), otro tipo de usuario
-            cursor.execute('''SELECT * FROM info_especifica_producto ORDER BY "ID"''')  # Ejemplo de consulta para usuarios no admin
-
+        else:
+            cursor.execute('''SELECT * FROM info_especifica_producto ORDER BY "ID"''')
         datos = cursor.fetchall()
         cursor.close()
         db.desconectar(conn)
@@ -293,25 +291,22 @@ def consultar_productos():
 
 @app.route('/consultar_producto/<int:id_producto>')
 def consultar_producto(id_producto):
-    # Verificar si el usuario está autenticado y tiene un rol en la sesión
+
     if 'username' in session and 'rol' in session:
         rol = session['rol']
         
-        if rol == 1:  # Solo administradores (rol == 1)
+        if rol == 1:
             try:
-                # Conectar a la base de datos
+
                 conn = db.conectar()
                 cursor = conn.cursor()
                 
-                # Ejecutar la consulta SQL para obtener los datos del producto
                 cursor.execute('SELECT * FROM info_especifica_producto WHERE "ID" = %s', (id_producto,))
                 datos = cursor.fetchall()
                 
-                # Cerrar el cursor y la conexión
                 cursor.close()
                 db.desconectar(conn)
                 
-                # Verificar si se encontraron datos
                 if not datos:
                     flash("No se encontraron datos para el producto solicitado.", 'warning')
                     return redirect(url_for('consultar_productos'))
@@ -319,7 +314,7 @@ def consultar_producto(id_producto):
                 return render_template('consultarProducto.html', datos=datos)
             
             except Exception as e:
-                # Manejo básico de errores; podrías registrar el error o manejarlo de otra forma
+
                 flash(f"Error al consultar el producto: {e}", 'danger')
                 return redirect(url_for('consultar_productos'))
         else:
@@ -337,7 +332,7 @@ def update1_producto(id_producto):
     if 'username' in session and 'rol' in session:
         rol = session['rol']
         
-        if rol == 1:  # Solo administradores (rol == 1)
+        if rol == 1:
             conn = db.conectar()
             cursor = conn.cursor()
             cursor.execute('''SELECT * FROM info_especifica_producto WHERE "ID" = %s''', (id_producto,))
@@ -358,7 +353,7 @@ def update_producto_post(id_producto):
     if 'username' in session and 'rol' in session:
         rol = session['rol']
         
-        if rol == 1:  # Solo administradores (rol == 1)
+        if rol == 1:
             nombre = request.form['nombre']
             codigo_barras = request.form['codigo_barras']
             precio = request.form['precio']
@@ -419,7 +414,6 @@ def delete_producto(id_producto):
     conn = db.conectar()
     cursor = conn.cursor()
     try:
-        # Asegúrate de que la tabla 'producto' es la correcta
         cursor.execute('DELETE FROM producto WHERE id_producto = %s', (id_producto,))
         conn.commit()
         print(f"Producto con ID {id_producto} eliminado correctamente.")
@@ -455,11 +449,11 @@ def buscar_producto():
 
 @app.route('/registrar_venta', methods=['GET', 'POST'])
 def registrar_venta():
-    conn = conectar()  # Obtener una conexión desde el pool
+    conn = conectar()
     cursor = conn.cursor()
 
     numero_venta = None
-    total = 0.0  # Inicializar total
+    total = 0.0
 
     nombre_completo = session.get('nombre_completo') 
 
@@ -474,11 +468,11 @@ def registrar_venta():
                     flash("No hay productos en la venta actual.")
                     return redirect(url_for('registrar_venta'))
 
-                # Obtén el ID del usuario y el nombre completo del usuario desde la sesión
+                # Obtener el ID del usuario y el nombre completo del usuario desde la sesión
                 fk_usuario = session.get('usuario_id')
                 nombre_completo = session.get('nombre_completo')
 
-                # Verifica que el usuario esté autenticado
+                # Verificar que el usuario esté autenticado
                 if fk_usuario is None:
                     flash("Error: Usuario no autenticado.")
                     return redirect(url_for('login'))
@@ -529,14 +523,14 @@ def registrar_venta():
 
         finally:
             cursor.close()
-            desconectar(conn)  # Liberar la conexión de nuevo al pool
+            desconectar(conn)
 
     else:  # Para método GET
         cursor.execute("SELECT COALESCE(MAX(id_venta) + 1, 1) FROM venta")
         numero_venta = cursor.fetchone()[0]
 
     cursor.close()
-    desconectar(conn)  # Liberar la conexión de nuevo al pool
+    desconectar(conn)
 
     return render_template('regVenta.html', numero_venta=numero_venta, total=total, usuario=nombre_completo)
 
@@ -745,7 +739,7 @@ def reporte_diario():
             # Verificar si el archivo de logotipo existe
             if os.path.exists(logo_path):
                 try:
-                    pdf.image(logo_path, x=(210-33)/2, y=8, w=33)  # Centrar logotipo (210 es el ancho de la página en mm)
+                    pdf.image(logo_path, x=(210-33)/2, y=8, w=33)
                 except Exception as e:
                     print(f"Error al cargar la imagen: {e}")
             else:
@@ -809,42 +803,124 @@ def descargar_reporte():
 
 
 
+@app.route('/reporte_semanal', methods=['GET'])
+def reporte_semanal():
+    if 'username' in session and 'rol' in session:
+        username = session['username']
+        rol = session['rol']
+
+        # Permitir acceso a usuarios con rol 1 (administrador) o rol 2 (cajero)
+        if rol in [1, 2]:
+            fecha1 = request.args.get('fecha1')
+            fecha2 = request.args.get('fecha2')
+            # Obtiene las fechas seleccionadas del formulario
+            conn = db.conectar()
+            cursor = conn.cursor()
+            
+            if fecha1 and fecha2:
+                # Realiza la consulta filtrando por el rango de fechas seleccionado
+                cursor.execute('''
+                    SELECT * FROM reporte_diario
+                    WHERE fecha BETWEEN %s AND %s
+                ''', (fecha1, fecha2,))
+            else:
+                # Si no se han seleccionado fechas, muestra todas las ventas
+                cursor.execute('SELECT * FROM reporte_diario')
+            
+            datos = cursor.fetchall()
+            
+            if datos:
+                # Calcular el total de las ventas
+                total = sum([fila[3] for fila in datos])
+            else:
+                total = 0
+            
+            cursor.close()
+            db.desconectar(conn)
+            
+            # Renderiza la plantilla con los datos del reporte semanal y el total
+            return render_template('repSemanal.html', datos=datos, total=total)
+        else:
+            return jsonify({"error": "Acceso no autorizado"}), 403
+    else:
+        return redirect(url_for('login'))
+
+
 # @app.route('/reporte_semanal', methods=['GET'])
 # def reporte_semanal():
 #     if 'username' in session and 'rol' in session:
 #         username = session['username']
 #         rol = session['rol']
 
-#         # Permitir acceso a usuarios con rol 1 (administrador) o rol 2 (cajero)
 #         if rol in [1, 2]:
 #             fecha1 = request.args.get('fecha1')
 #             fecha2 = request.args.get('fecha2')
-#             # Obtiene las fechas seleccionadas del formulario
+
+#             if not fecha1 or not fecha2:
+#                 fecha1 = "default_start_date"
+#                 fecha2 = "default_end_date"
+
+#             # Conectar a la base de datos y obtener los datos
 #             conn = db.conectar()
 #             cursor = conn.cursor()
-            
+
 #             if fecha1 and fecha2:
-#                 # Realiza la consulta filtrando por el rango de fechas seleccionado
-#                 cursor.execute('''
-#                     SELECT * FROM reporte_diario
-#                     WHERE fecha BETWEEN %s AND %s
-#                 ''', (fecha1, fecha2,))
+#                 cursor.execute('''SELECT * FROM reporte_diario WHERE fecha BETWEEN %s AND %s''', (fecha1, fecha2,))
 #             else:
-#                 # Si no se han seleccionado fechas, muestra todas las ventas
 #                 cursor.execute('SELECT * FROM reporte_diario')
-            
+
 #             datos = cursor.fetchall()
-            
-#             if datos:
-#                 # Calcular el total de las ventas
-#                 total = sum([fila[3] for fila in datos])
-#             else:
-#                 total = 0
-            
+#             total = sum([fila[3] for fila in datos]) if datos else 0
+
 #             cursor.close()
 #             db.desconectar(conn)
-            
-#             # Renderiza la plantilla con los datos del reporte semanal y el total
+
+#             # Crear el PDF
+#             pdf = FPDF()
+#             pdf.add_page()
+
+#             logo_path = "static/assets/img/Logotipo_GladiatorRedondo.png"
+
+#             if os.path.exists(logo_path):
+#                 pdf.image(logo_path, x=(210-33)/2, y=8, w=33)
+#             else:
+#                 pdf.set_font("Arial", 'B', 12)
+#                 pdf.cell(200, 10, txt="Logotipo no encontrado", ln=True, align='C')
+
+#             pdf.ln(20)
+#             pdf.set_font("Arial", size=12)
+#             pdf.cell(200, 10, txt="Reporte Semanal", ln=True, align='C')
+#             pdf.cell(200, 10, txt=f"Fechas: {fecha1} - {fecha2}", ln=True, align='C')
+#             pdf.ln(10)
+
+#             pdf.cell(40, 10, txt="ID Venta", border=1)
+#             pdf.cell(60, 10, txt="Fecha", border=1)
+#             pdf.cell(40, 10, txt="Hora", border=1)
+#             pdf.cell(40, 10, txt="Total", border=1)
+#             pdf.ln()
+
+#             for fila in datos:
+#                 pdf.cell(40, 10, txt=str(fila[0]), border=1)
+#                 pdf.cell(60, 10, txt=str(fila[1]), border=1)
+#                 pdf.cell(40, 10, txt=str(fila[2]), border=1)
+#                 pdf.cell(40, 10, txt=str(fila[3]), border=1)
+#                 pdf.ln()
+
+#             pdf.ln(10)
+#             pdf.cell(200, 10, txt=f"Total: ${total:.2f}", ln=True, align='R')
+
+#             # Asegurarse de que la carpeta temp_pdfs existe
+#             temp_dir = "temp_pdfs"
+#             if not os.path.exists(temp_dir):
+#                 os.makedirs(temp_dir)
+
+#             # Guardar el PDF en un archivo temporal en el servidor
+#             filename = f"reporte_semanal_{fecha1}_a_{fecha2}.pdf"
+#             filepath = os.path.join(temp_dir, secure_filename(filename))
+#             pdf.output(filepath, 'F')
+
+#             session['pdf_filepath'] = filepath  # Guardar la ruta en la sesión
+
 #             return render_template('repSemanal.html', datos=datos, total=total)
 #         else:
 #             return jsonify({"error": "Acceso no autorizado"}), 403
@@ -852,94 +928,13 @@ def descargar_reporte():
 #         return redirect(url_for('login'))
 
 
-@app.route('/reporte_semanal', methods=['GET'])
-def reporte_semanal():
-    if 'username' in session and 'rol' in session:
-        username = session['username']
-        rol = session['rol']
+# @app.route('/descargar_reporte_semanal')
+# def descargar_reporte_semanal():
+#     pdf_filepath = session.get('pdf_filepath')
+#     if not pdf_filepath or not os.path.exists(pdf_filepath):
+#         return redirect(url_for('reporte_semanal'))  # Redirige si no hay PDF en la sesión
 
-        if rol in [1, 2]:
-            fecha1 = request.args.get('fecha1')
-            fecha2 = request.args.get('fecha2')
-
-            if not fecha1 or not fecha2:
-                fecha1 = "default_start_date"
-                fecha2 = "default_end_date"
-
-            # Conectar a la base de datos y obtener los datos
-            conn = db.conectar()
-            cursor = conn.cursor()
-
-            if fecha1 and fecha2:
-                cursor.execute('''SELECT * FROM reporte_diario WHERE fecha BETWEEN %s AND %s''', (fecha1, fecha2,))
-            else:
-                cursor.execute('SELECT * FROM reporte_diario')
-
-            datos = cursor.fetchall()
-            total = sum([fila[3] for fila in datos]) if datos else 0
-
-            cursor.close()
-            db.desconectar(conn)
-
-            # Crear el PDF
-            pdf = FPDF()
-            pdf.add_page()
-
-            logo_path = "static/assets/img/Logotipo_GladiatorRedondo.png"
-
-            if os.path.exists(logo_path):
-                pdf.image(logo_path, x=(210-33)/2, y=8, w=33)
-            else:
-                pdf.set_font("Arial", 'B', 12)
-                pdf.cell(200, 10, txt="Logotipo no encontrado", ln=True, align='C')
-
-            pdf.ln(20)
-            pdf.set_font("Arial", size=12)
-            pdf.cell(200, 10, txt="Reporte Semanal", ln=True, align='C')
-            pdf.cell(200, 10, txt=f"Fechas: {fecha1} - {fecha2}", ln=True, align='C')
-            pdf.ln(10)
-
-            pdf.cell(40, 10, txt="ID Venta", border=1)
-            pdf.cell(60, 10, txt="Fecha", border=1)
-            pdf.cell(40, 10, txt="Hora", border=1)
-            pdf.cell(40, 10, txt="Total", border=1)
-            pdf.ln()
-
-            for fila in datos:
-                pdf.cell(40, 10, txt=str(fila[0]), border=1)
-                pdf.cell(60, 10, txt=str(fila[1]), border=1)
-                pdf.cell(40, 10, txt=str(fila[2]), border=1)
-                pdf.cell(40, 10, txt=str(fila[3]), border=1)
-                pdf.ln()
-
-            pdf.ln(10)
-            pdf.cell(200, 10, txt=f"Total: ${total:.2f}", ln=True, align='R')
-
-            # Asegurarse de que la carpeta temp_pdfs existe
-            temp_dir = "temp_pdfs"
-            if not os.path.exists(temp_dir):
-                os.makedirs(temp_dir)
-
-            # Guardar el PDF en un archivo temporal en el servidor
-            filename = f"reporte_semanal_{fecha1}_a_{fecha2}.pdf"
-            filepath = os.path.join(temp_dir, secure_filename(filename))
-            pdf.output(filepath, 'F')
-
-            session['pdf_filepath'] = filepath  # Guardar la ruta en la sesión
-
-            return render_template('repSemanal.html', datos=datos, total=total)
-        else:
-            return jsonify({"error": "Acceso no autorizado"}), 403
-    else:
-        return redirect(url_for('login'))
-
-@app.route('/descargar_reporte_semanal')
-def descargar_reporte_semanal():
-    pdf_filepath = session.get('pdf_filepath')
-    if not pdf_filepath or not os.path.exists(pdf_filepath):
-        return redirect(url_for('reporte_semanal'))  # Redirige si no hay PDF en la sesión
-
-    return send_file(pdf_filepath, as_attachment=True, download_name=os.path.basename(pdf_filepath), mimetype='application/pdf')
+#     return send_file(pdf_filepath, as_attachment=True, download_name=os.path.basename(pdf_filepath), mimetype='application/pdf')
 
 
 
@@ -951,12 +946,10 @@ def consulta_venta(id):
         username = session['username']
         rol = session['rol']
 
-        # Permitir acceso a usuarios con rol 1 (administrador) o rol 2 (cajero)
         if rol in [1, 2]:
             conn = db.conectar()
             cursor = conn.cursor()
 
-            # Ejecutar la función en PostgreSQL
             cursor.execute('SELECT * FROM ventas_por_id(%s)', (id,))
             venta_especifica = cursor.fetchall()  # Obtener todas las filas de la venta específica
 
@@ -988,19 +981,17 @@ def registrar_usuario():
         username = session['username']
         rol = session['rol']
         
-        if rol ==1 :  # Solo administradores
+        if rol ==1 :
             if request.method == 'POST':
-                # Comprobación de existencia de los campos
                 required_fields = [
-                    'nombre', 'apellido_paterno', 'apellido_materno', 'domicilio', 
-                    'numero_telefonico', 'curp', 'date', 'correo_electronico', 
+                    'nombre', 'apellido_paterno', 'apellido_materno', 'domicilio',
+                    'numero_telefonico', 'curp', 'date', 'correo_electronico',
                     'nombre_usuario', 'contraseña', 'tipos_de_usuario'
                 ]
                 
                 for field in required_fields:
                     if field not in request.form:
                         return jsonify({"error": f"Missing field: {field}"}), 400
-                
 
                 numero_telefono = request.form['numero_telefonico']
 
@@ -1008,7 +999,6 @@ def registrar_usuario():
                 if len(numero_telefono) > 12:
                     flash("El número de teléfono debe tener como máximo 12 dígitos", 'danger')
                     return redirect(url_for('registrar_usuario'))
-                
                 
                 nombre = request.form['nombre']
                 a_paterno = request.form['apellido_paterno']
@@ -1153,8 +1143,7 @@ def update1_usuario(id_usuario):
         username = session['username']
         rol = session['rol']
         
-        if rol == 1:  # Solo administradores (rol == 1)
-            # Conectar a la base de datos
+        if rol == 1:
             conn = db.conectar()
             cursor = conn.cursor()
             
@@ -1164,7 +1153,6 @@ def update1_usuario(id_usuario):
             
             datos = cursor.fetchone()
             
-            # Cerrar cursor y conexión
             cursor.close()
             db.desconectar(conn)
             
@@ -1183,7 +1171,6 @@ def update_usuario_post(id_usuario):
         session_username = session['username']
         session_rol = session['rol']
         
-        # Verificar que el rol sea 1 (administrador)
         if session_rol != 1:
             return jsonify({"error": "Acceso no autorizado"}), 403
         
@@ -1204,7 +1191,6 @@ def update_usuario_post(id_usuario):
         cur = conn.cursor()
 
         try:
-            # Manejar la subida del archivo
             if 'imagen' in request.files:
                 file = request.files['imagen']
                 if file and file.filename != '':
@@ -1279,21 +1265,17 @@ def delete_usuario(id_usuario):
     if 'username' in session and 'rol' in session:
         session_rol = session['rol']
         
-        # Verificar que el rol sea 1 (administrador)
         if session_rol != 1:
             return jsonify({"error": "Acceso no autorizado"}), 403
         
         conn = db.conectar()
         cursor = conn.cursor()
         try:
-            # Obtener el fk_info_empleado antes de eliminar el usuario
             cursor.execute('''SELECT fk_info_empleado FROM usuario WHERE id_usuario = %s''', (id_usuario,))
             fk_info_empleado = cursor.fetchone()[0]
             
-            # Borrar el usuario de la tabla usuario
             cursor.execute('''DELETE FROM usuario WHERE id_usuario = %s''', (id_usuario,))
             
-            # Borrar el registro correspondiente en la tabla info_empleado
             cursor.execute('''DELETE FROM info_empleado WHERE id_empleado = %s''', (fk_info_empleado,))
             
             conn.commit()
@@ -1357,7 +1339,7 @@ def agregar_usuario(username, password, rol):
 def agregar_usuario_view():
     username = request.form['username']
     password = request.form['password']
-    rol = request.form.get('rol') == 'admin'  # Ejemplo para determinar el rol
+    rol = request.form.get('rol') == 'admin'
 
     agregar_usuario(username, password, rol)
     flash("Usuario agregado exitosamente")

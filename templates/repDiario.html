@@ -18,6 +18,7 @@
         position: relative;
         top: -35px;
     }
+
 </style>
 
 </head>
@@ -103,12 +104,14 @@
         <h1>Reportes de las Ventas Diarias</h1>
         <section class="table_ventas">
             <!-- Aqui va la tabla de las ventas diarias -->
-             <br><br><br><br><br><br><br><br>
-             <h3>Seleccione la fecha:</h3>
-            <form method="GET" action="{{ url_for('reporte_diario') }}">
-                <input type="date" name="fecha" required>
-                <button type="submit">Buscar</button>
-            </form>
+             <br><br><br><br><br>
+            <div class="fecha">
+                <h3>Seleccione la fecha:</h3>
+                <form method="GET" action="{{ url_for('reporte_diario') }}">
+                    <input type="date" name="fecha" required>
+                    <button type="submit">Buscar</button>
+                </form>
+            </div>
             <table>
                 <thead>
                     <tr class="fila">
@@ -142,7 +145,7 @@
             <div class="boton-total">
             <!-- Aqui va el total y el boton para descargar -->
             <h3>Total: ${{ total }}</h3>
-            <a href="{{ url_for('descargar_reporte') }}" download="reporte_diario.pdf" class="descargar-boton">Descargar</a>
+            <!-- <a href="{{ url_for('descargar_reporte') }}" download="reporte_diario.pdf" class="descargar-boton">Descargar</a> -->
         </div>
         </section>
     </main>
