@@ -1,9 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&family=Roboto+Mono:ital,wght@0,100..700;1,100..700&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
 
-html{
-    overflow-x: hidden;
-}
-
 :root {
     --color-primary: #FFEA99;
     --color-dark-yellow: #FFBF00;
@@ -835,60 +831,7 @@ footer .social-media a:active {
         display: none;
       }
 
-/* Fondo negro para la barra de navegación */
-.navbar { /* Elemento navbar */
-    background-color: #000000 !important; /* Forzar el fondo negro */
-    width: 610px;
-    height: 20px;
-    justify-content: flex-end; /* Mueve la barra de navegación a la derecha */
-    margin-left: 750px;
-    position: relative;
-}
 
-/* Texto amarillo para los enlaces de navegación */
-.navbar-nav .nav-item .nav-link { /* Enlaces dentro del navbar */
-    color: #FFEA99 !important; /* Texto amarillo */
-}
-
-/* Hover: texto amarillo y fondo negro */
-.navbar-nav .nav-item .nav-link:hover {
-    color: #FFEA99 !important; /* Texto amarillo en hover */
-    background-color: #000 !important; /* Fondo negro en hover */
-}
-
-/* Texto amarillo para la marca y otros textos dentro de la navbar */
-.navbar-brand, .navbar-toggler-icon, .navbar .h5, .logo-gladiators h5 { /* Texto dentro del navbar */
-    color: #FFEA99 !important; /* Texto amarillo */
-}
-
-/* Dropdown Menu */
-.dropdown-menu { /* Menú desplegable dentro del navbar */
-    background-color: #0b0b0b !important; /* Fondo negro */
-    border: none;
-}
-
-/* Texto amarillo en los elementos del dropdown */
-.dropdown-item { /* Elementos del menú desplegable */
-    color: #FFEA99 !important; /* Texto amarillo */
-}
-
-/* Hover en el dropdown */
-.dropdown-item:hover {
-    color: #FFEA99 !important; /* Texto amarillo en hover */
-    background-color: #000000 !important; /* Fondo negro en hover */
-}
-
-.navbar-toggler { /* Botón de toggle para dispositivos móviles */
-    border-color: yellow; /* Cambia el color del borde del botón */
-}
-
-.navbar-toggler-icon { /* Icono del botón de toggle */
-    background-image: url('../static/assets/font/menu.svg');
-}
-
-.navbar-toggler:focus, .navbar-toggler:hover {
-    background-color: #000; /* Fondo negro */
-}
 
 
 
@@ -917,15 +860,3 @@ footer .social-media a:active {
         margin: 0 auto; /* Centra horizontalmente en pantallas pequeñas */
     }
 }
-
-/* Amarillo Pastel: #FFFFCC
-Amarillo Normal: #FFD700
-Mostaza: #D4AF37
-Amarillo Claro: #FFFF99
-Amarillo Dorado: #FFDF00
-Amarillo Mostaza: #FFDB58
-Amarillo Ocre: #CC7722
-Amarillo Ámbar: #FFBF00
-Amarillo Dorado Oscuro: #B8860B
-Amarillo Maíz: #FBEC5D */
-

@@ -6,7 +6,7 @@ body, html {
     box-sizing: border-box;
 }
 
-html{
+html {
     overflow-x: hidden;
 }
 
@@ -73,8 +73,8 @@ h1 {
 
 .button-container {
     display: flex;
-    justify-content: center; /* Opcional: centra los botones horizontalmente */
-    gap: 100px; /* Espacio entre los botones */
+    justify-content: center;
+    gap: 50px;
 }
 
 .button-1, .button-2 {
@@ -105,14 +105,13 @@ h1 {
 
 /* Estilo para los recuadros de información */
 .informacion, .informacion2, .informacion3, .informacion4, .informacion5, .informacion6,
-.informacion7, .informacion8,.informacion9,.informacion10,.informacion11,.informacion12 {
+.informacion7, .informacion8, .informacion9, .informacion10, .informacion11, .informacion12 {
     background: linear-gradient(to right, #FFEA4CFF 5%, #FFFFFF 5%);
     border-radius: 12px;
     border: 1px solid #BCC1CAFF;
     padding: 20px;
     box-sizing: border-box;
-    max-width: 100%; /* Ajustado a 100% para que tome todo el ancho disponible */
-    width: 400px; 
+    width: 400px; /* Tamaño fijo para pantallas grandes */
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.60);
 }
 
@@ -139,113 +138,50 @@ button[type="submit"] {
 
 /* Responsive design */
 @media (max-width: 768px) {
-    form {
-        grid-template-columns: 1fr;
+    .photo-info-wrapper {
+        flex-direction: column;
+        align-items: center;
+        gap: 30px;
     }
+
     .foto {
         margin-top: 20px;
+        width: 120px;
+        height: 120px;
     }
+
+    /* Los recuadros de información solo se ajustan en pantallas pequeñas */
+    .informacion, .informacion2, .informacion3, .informacion4, .informacion5, .informacion6,
+    .informacion7, .informacion8, .informacion9, .informacion10, .informacion11, .informacion12 {
+        width: 100%; /* En pantallas pequeñas los recuadros ocupan el 100% del ancho */
+        max-width: 100%; /* Aseguramos que no excedan el 100% del ancho disponible */
+    }
+
+    .button-container {
+        flex-direction: column;
+        gap: 20px;
+    }
+
     button[type="submit"] {
         width: 100%;
-        grid-column: span 1; 
     }
 }
 
 @media (min-width: 769px) and (max-width: 1024px) {
-    form {
-        grid-template-columns: 1fr 1fr;
+    .foto {
+        width: 130px;
+        height: 130px;
     }
+
+    /* Los recuadros de información se ajustan un poco en tablets */
+    .informacion, .informacion2, .informacion3, .informacion4, .informacion5, .informacion6,
+    .informacion7, .informacion8, .informacion9, .informacion10, .informacion11, .informacion12 {
+        width: 90%; /* En pantallas medianas, los recuadros ocupan el 90% del ancho */
+        max-width: 450px;
+    }
+
     button[type="submit"] {
         width: 200px;
-    }
-}
-
-nav {
-    background-color: rgb(0, 0, 0);
-    padding: 10px 20px;
-    width: 100%;
-    box-sizing: border-box;
-    position: relative;
-    margin: 0;
-}
-
-.logo-gladiators {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 10px;
-}
-
-.logo-gladiators img {
-    max-height: 50px;
-    margin-right: 10px;
-}
-
-.logo-gladiators h5 {
-    color: #FFF07FFF;
-    font-size: 24px;
-    margin: 0;
-}
-
-.secciones {
-    display: flex;
-    gap: 10px;
-    justify-content: center;
-    align-items: center;
-    margin: 0;
-}
-
-.secciones a {
-    color: #FFF07FFF;
-    text-decoration: none;
-    font-weight: bold;
-    font-size: 14px;
-    padding: 10px 15px;
-    border-radius: 5px;
-    transition: background-color 0.3s;
-}
-
-.secciones a:hover {
-    background-color: #FFF07FFF;
-    color: #342E00FF;
-}
-
-/* Ajustes para pantallas grandes */
-@media (min-width: 1025px) {
-    .secciones {
-        justify-content: flex-end;
-    }
-    .secciones a {
-        font-size: 16px;
-        padding: 10px 20px;
-    }
-}
-
-/* Ajustes para pantallas medianas */
-@media (min-width: 769px) and (max-width: 1024px) {
-    .secciones {
-        justify-content: center;
-    }
-    .secciones a {
-        font-size: 15px;
-        padding: 8px 12px;
-    }
-}
-
-/* Ajustes para pantallas pequeñas */
-@media (max-width: 768px) {
-    .secciones {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 5px;
-        padding: 10px 0;
-    }
-
-    .secciones a {
-        font-size: 14px;
-        padding: 8px 10px;
-        width: 100%;
-        text-align: left;
     }
 }
 
@@ -262,9 +198,7 @@ nav {
     text-align: left;
 }
 
-
 .lin {
-    border: 3%;
     height: 2px;
     background-color: rgb(34, 33, 33);
     width: 60%;
@@ -311,7 +245,6 @@ nav {
     position: absolute;
     left: 0;
     top: 0;
-    border-radius: 10%;
 }
 
 .button-ventas:hover, .button-usuario:hover, .button-producto:hover {
@@ -320,7 +253,7 @@ nav {
     transform: scale(1.07);
 }
 
-/* Parte responsiva */
+/* Responsive ajustes para diferentes dispositivos */
 
 /* Tablets */
 @media (min-width: 600px) {
@@ -342,88 +275,64 @@ nav {
         width: 500px;
     }
 }
-/* Asegurar que toda la barra de navegación tenga fondo negro */
 
-
-
-/* -------------inicio------------------------ */
-/* Fondo negro para la barra de navegación */
-.navbar {
-    background-color: #000000;
-    width: 1000px;
-    height: 20px;
-    justify-content: flex-end;
-    margin-left: 706px;
-    position: relative;
+/* Estilo para el modo claro */
+body {
+    background-color: white;
+    color: black;
+    transition: background-color 0.3s, color 0.3s;
 }
 
-/* Texto amarillo para los enlaces de navegación */
-.navbar-nav .nav-item .nav-link { /* Enlaces dentro del navbar */
-    color: #FFEA99 !important; /* Texto amarillo */
+body.dark-mode {
+    background-color: #121212;
+    color: white;
 }
 
-/* Hover: texto amarillo y fondo negro */
-.navbar-nav .nav-item .nav-link:hover {
-    color: #FFEA99 !important; /* Texto amarillo en hover */
-    background-color: #000 !important; /* Fondo negro en hover */
+.toggle-dark-mode {
+    cursor: pointer;
+    font-size: 28px;
+    position: absolute;
+    top: 100px;
+    right: 20px;
+    color: #FFEA99;
 }
 
-/* Texto amarillo para la marca y otros textos dentro de la navbar */
-.navbar-brand, .navbar-toggler-icon, .navbar .h5, .logo-gladiators h5 { /* Texto dentro del navbar */
-    color: #FFEA99 !important; /* Texto amarillo */
+body.dark-mode .toggle-dark-mode {
+    color: #FFEA99;
 }
 
-/* Dropdown Menu */
-.dropdown-menu { /* Menú desplegable dentro del navbar */
-    background-color: #0b0b0b !important; /* Fondo negro */
+body.dark-mode .text {
+    font-size: 1.5em;
+    color: rgb(250, 250, 245);
+    margin: 0;
+    text-align: left;
+}
+
+body.dark-mode .informacion, body.dark-mode .informacion2, body.dark-mode .informacion3, body.dark-mode .informacion4,
+body.dark-mode .informacion5, body.dark-mode .informacion6, body.dark-mode .informacion7, body.dark-mode .informacion8,
+body.dark-mode .informacion9, body.dark-mode .informacion10, body.dark-mode .informacion11, body.dark-mode .informacion12 {
+    background: linear-gradient(to right, yellow 5%, #1d1d1d 5%);
+    border-radius: 12px;
+    border: 1px solid #7A7A7A;
+    padding: 20px;
+    box-sizing: border-box;
+    width: 400px;
+    max-width: 100%;
+    box-shadow: 0 4px 8px rgba(255, 255, 255, 0.20);
+}
+
+body.dark-mode .button-1,
+body.dark-mode .button-2 {
+    color: #414141;
+    background: yellow;
     border: none;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
 }
 
-/* Texto amarillo en los elementos del dropdown */
-.dropdown-item { /* Elementos del menú desplegable */
-    color: #FFEA99 !important; /* Texto amarillo */
+.toggle-dark-mode i {
+    padding-right: 20px;
+    margin-bottom: 0px;
 }
-
-/* Hover en el dropdown */
-.dropdown-item:hover {
-    color: #FFEA99 !important; /* Texto amarillo en hover */
-    background-color: #000000 !important; /* Fondo negro en hover */
-}
-
-.navbar-toggler { /* Botón de toggle para dispositivos móviles */
-    border-color: yellow; /* Cambia el color del borde del botón */
-}
-
-.navbar-toggler-icon { /* Icono del botón de toggle */
-    background-image: url('../static/assets/font/menu.svg');
-}
-
-.navbar-toggler:focus, .navbar-toggler:hover {
-    background-color: #000; /* Fondo negro */
-}
-
-/* Los dos contenedores principales responsivos */
-@media (max-width: 800px) {
-    .container {
-        flex-direction: column; /* Cambia a columna en pantallas más pequeñas */
-        align-items: center; /* Centra los elementos */
-    }
-    .principal-container, .pre-visualizacion {
-        width: 100%; /* Ajusta el ancho al 100% en pantallas pequeñas */
-    }
-    .pre-visualizacion {
-        margin-top: 20px; /* Añade un margen superior para separar los elementos */
-    }
-}
-
-@media (max-width: 768px) {
-    .pre-visualizacion {
-        width: 100%; /* Ajusta el ancho al 100% en pantallas pequeñas */
-        max-width: 305px; /* Límite máximo de ancho para mantener el diseño */
-        margin: 0 auto; /* Centra horizontalmente en pantallas pequeñas */
-    }
-}
-
 Consulta Específica /* CAMBIO DE FONDO */
 /* Estilo para el modo claro */
 body {
