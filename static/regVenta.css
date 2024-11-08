@@ -1,3 +1,7 @@
+html{
+    overflow-x: hidden;
+}
+
 /* Reseteo CSS básico */
 * {
     margin: 0;
@@ -154,10 +158,13 @@ tbody tr {
 
 /* Estilos en ambos elementos de la tabla encabezado y cuerpo */
 td, th {
-    padding: 5px;
-    text-align: left;
+    padding: 1%;
+    /* text-align: left; */
 }
 
+th{
+    /* font-size: 5%; */
+}
 /* Contenedor de  visualizacion del ticket */
 .pre-visualizacion {
     width: 305px;
@@ -184,8 +191,8 @@ td, th {
     position: absolute;
     top: 25px;
     right: 20px;
-    width: 140px;
-    height: 55px;
+    width: 40%;
+    height: 13%;
     background: #FFEB99;
     border-radius: 4px;
     box-shadow: 0px 0px 1px #171a1f, 0px 0px 2px #171a1f;
@@ -241,9 +248,14 @@ input[type=number] {
     font-weight: 700;
 }
 
+html, body {
+    overflow-x: hidden;
+}
+
+
 /* Cuadro input para ingresar la cantidad de dinero */
 .efectivo input {
-    width: 257px;
+    width: 70%;
     height: 36px;
     padding-left: 20px;
     padding-right: 20px;
@@ -350,7 +362,7 @@ input[type=number] {
 
 /* Contenedor de previsualización */
 .pre-visualizacion {
-    width: 40%; /* Ocupa el 30% del contenedor principal */
+    /* width: 10%; Ocupa el 30% del contenedor principal */
     height: auto;
     box-sizing: border-box;
     padding: 20px;
@@ -371,7 +383,7 @@ input[type=number] {
 }
 
 .pre-visualizacion {
-    width: 300px; /* Ancho fijo para la pre-visualización */
+    width: 350px !important; /* Ancho fijo para la pre-visualización */
 }
 
 
@@ -663,7 +675,6 @@ table {
     }
 }
 
-/* CAMBIO DE FONDO */
 /* Estilo para el modo claro */
 body {
     background-color: white;
@@ -697,15 +708,227 @@ body.dark-mode .toggle-dark-mode {
     margin-bottom: 0px;
 }
 
-/* Amarillo Pastel: #FFFFCC
-Amarillo Normal: #FFD700
-Mostaza: #D4AF37
-Amarillo Claro: #FFFF99
-Amarillo Dorado: #FFDF00
-Amarillo Mostaza: #FFDB58
-Amarillo Ocre: #CC7722
-Amarillo Ámbar: #FFBF00
-Amarillo Dorado Oscuro: #B8860B
-Amarillo Maíz: #FBEC5D */
+.fila th{
+    /* width: 30%; */
+    text-align: center;
+}
+td input{
+    width: 20%;
+    /* text-align: left; */
+}
+td input:nth-child(3){
+    width: 10%;
+    background: #000;
+}
 
-/* Contenedor de pre-visualización */
+/* Modo claro (default) */
+body {
+    background-color: #ffffff;
+    color: #000000;
+}
+
+.navbar {
+    background-color: #f8f9fa;
+}
+
+.table {
+    background-color: #ffffff;
+    color: #000000;
+}
+
+.btn {
+    background-color: #007bff;
+    color: #ffffff;
+}
+
+/* Modo oscuro */
+body[data-mode="dark"] {
+    background-color: #121212; /* Fondo oscuro */
+    color: #ffffff; /* Texto claro */
+}
+
+.navbar[data-mode="dark"] {
+    background-color: #1e1e1e; /* Fondo de navbar oscuro */
+}
+
+.table[data-mode="dark"] {
+    background-color: #1e1e1e; /* Fondo de tabla oscuro */
+    color: #ffffff; /* Texto claro en tabla */
+}
+
+.table th[data-mode="dark"],
+.table td[data-mode="dark"] {
+    border-color: #333333; /* Borde de las celdas en modo oscuro */
+}
+
+.btn[data-mode="dark"] {
+    background-color: #0056b3; /* Fondo de botón oscuro */
+    color: #ffffff; /* Texto claro en botón */
+}
+
+/* Asegurarse de que los cuadros y otros elementos se adapten al modo oscuro */
+.card[data-mode="dark"] {
+    background-color: #1e1e1e; /* Fondo oscuro para tarjetas */
+    color: #ffffff; /* Texto claro en tarjetas */
+}
+
+/* Ajustes específicos para formularios */
+input[data-mode="dark"],
+textarea[data-mode="dark"],
+select[data-mode="dark"] {
+    background-color: #333333; /* Fondo de inputs oscuros */
+    color: #ffffff; /* Texto claro en inputs */
+    border: 1px solid #444444; /* Borde de inputs */
+}
+
+input[data-mode="dark"]::placeholder,
+textarea[data-mode="dark"]::placeholder {
+    color: #aaaaaa; /* Color de placeholder claro en inputs oscuros */
+}
+
+/* Modo oscuro */
+body.dark-mode {
+    background-color: #121212;
+    color: #e0e0e0;
+}
+
+/* Títulos y textos principales en modo oscuro */
+body.dark-mode h1, body.dark-mode h5 {
+    color: #f5f5f5;
+}
+
+/* Contenedor principal (tabla) en modo oscuro */
+body.dark-mode .principal-container,
+body.dark-mode .contenedor-tabla,
+body.dark-mode .pre-visualizacion {
+    background-color: #1e1e1e;
+    color: #e0e0e0;
+    box-shadow: 0px 0px 5px rgba(255, 255, 255, 0.1);
+}
+
+/* Botones en modo oscuro */
+body.dark-mode .barra_busqueda button,
+body.dark-mode .textbox button,
+body.dark-mode .realizar-venta button,
+body.dark-mode .botones a {
+    background-color: #3a3a3a;
+    color: #FFEB99;
+}
+
+body.dark-mode .barra_busqueda button:hover,
+body.dark-mode .textbox button:hover,
+body.dark-mode .realizar-venta button:hover,
+body.dark-mode .botones a:hover {
+    background-color: #FFEB99;
+    color: #3a3a3a;
+}
+
+Barra de búsqueda y campos de entrada en modo oscuro
+body.dark-mode .textbox input {
+    background-color: #2a2a2a;
+    color: #e0e0e0;
+    border-color: #444;
+}
+
+body.dark-mode .textbox input:hover,
+body.dark-mode .textbox input:focus {
+    background-color: #333;
+    border-color: #FFEB99;
+    color: #FFEB99;
+}
+
+/* Tabla en modo oscuro */
+body.dark-mode table {
+    background-color: #1f1f1f;
+    color: #e0e0e0;
+    border-color: #444;
+}
+
+body.dark-mode thead {
+    background-color: #333;
+}
+
+body.dark-mode tbody tr {
+    background-color: #2a2a2a;
+    border-bottom: 1px solid #444;
+}
+
+/* Menú en modo oscuro */
+body.dark-mode .menu ul li a {
+    background-color: #333;
+    color: #FFF07F;
+}
+
+body.dark-mode .menu ul li a:hover {
+    background-color: #FFEB99;
+    color: #333;
+}
+
+/* Ajustes para el cuadro del número de venta */
+body.dark-mode .venta-numero {
+    background-color: #333333; /* Fondo oscuro para mejor contraste */
+    color: #FFEB99; /* Texto amarillo claro */
+    padding: 5px 10px;
+    border-radius: 5px;
+    box-shadow: 0px 0px 5px rgba(255, 255, 255, 0.1); /* Sombra ligera */
+    font-weight: bold;
+}
+
+/* Botón de "Agregar Producto" en modo oscuro */
+body.dark-mode .agregar-producto-btn {
+    background-color: #444444; /* Fondo más oscuro */
+    color: #FFEB99; /* Texto claro */
+    padding: 10px 15px;
+    border-radius: 5px;
+    border: 1px solid #FFEB99;
+    font-weight: bold;
+}
+
+body.dark-mode .agregar-producto-btn:hover {
+    background-color: #FFEB99; /* Cambio de color al pasar el cursor */
+    color: #333333; /* Texto oscuro en hover */
+}
+
+/* Tabla encabezado y borde en modo oscuro */
+body.dark-mode .tabla-encabezado {
+    background-color: #444444;
+    color: #FFEB99;
+    border: 1px solid #FFEB99;
+}
+body.dark-mode .sec-title h5:nth-child(2) {
+    background: #444444; /* Fondo más oscuro */
+    color: #FFEB99; /* Texto amarillo claro */
+    width: 90px;
+    height: 40px;
+    text-align: center;
+    font-family: Inter;
+    font-size: 14px;
+    font-weight: 600;
+    border-radius: 4px;
+}
+body.dark-mode .pre-visualizacion {
+    width: 305px;
+    height: 390px;
+    color: #F8F9FA; /* Texto claro para asegurar visibilidad */
+    border-radius: 4px;
+    box-shadow: 0px 0px 1px #000000, 0px 0px 2px #000000; /* Sombra más oscura */
+    position: relative;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+body.dark-mode .parrafo {
+    position: absolute;
+    top: 25px;
+    right: 20px;
+    width: 40%;
+    height: 13%;
+    background: #5c5742;
+    border-radius: 4px;
+    box-shadow: 0px 0px 1px #171a1f, 0px 0px 2px #171a1f;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

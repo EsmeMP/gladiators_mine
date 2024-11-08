@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/static/ventas_css/regVenta.css">
-    <link rel="stylesheet" href="/static/assets/font/flaticon.css">
-    <link rel="stylesheet" href="/static/style.css">
+    <!-- <link rel="stylesheet" href="/static/ventas_css/regVenta.css"> -->
+    <!-- <link rel="stylesheet" href="/static/assets/font/flaticon.css"> -->
+    <!-- <link rel="stylesheet" href="/static/style.css"> -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="../static/assets/font/flaticon.css">
     <link rel="stylesheet" href="../static/regVenta.css">
@@ -303,11 +303,12 @@ function actualizarTablaVentas() {
             <td>${venta.price.toFixed(2)}</td>
             <td class="line-total">${venta.total.toFixed(2)}</td>
             <td>
-                <button onclick="eliminarProducto(${index})">Eliminar</button>
+                <button class"eliminar" onclick="eliminarProducto(${index})">Eliminar</button>
             </td>
         `;
     });
 }
+
 
 function actualizarCantidad(index, cantidad) {
     ventas[index].quantity = parseInt(cantidad);
@@ -356,10 +357,21 @@ document.getElementById('ventaForm').addEventListener('submit', function() {
     document.getElementById('venta_actual').value = JSON.stringify(ventaActual);
 });
 </script>
-<script>
+    <script>
+        //Modo oscuro
+        function updateDarkMode() {
+            if (localStorage.getItem('darkMode') === 'enabled') {
+                document.body.classList.add('dark-mode');
+            } else {
+                document.body.classList.remove('dark-mode');
+            }
+        }
         document.getElementById('toggleDarkMode').addEventListener('click', function() {
             document.body.classList.toggle('dark-mode');
+            localStorage.setItem('darkMode', document.body.classList.contains('dark-mode') ? 'enabled' : 'disabled');
         });
-</script>
+        // Para que carge en todo el sistema el modo oscuro
+        window.onload = updateDarkMode;
+    </script>
 </body>
 </html>

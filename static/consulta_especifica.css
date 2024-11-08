@@ -6,6 +6,10 @@ body, html {
     box-sizing: border-box;
 }
 
+html{
+    overflow-x: hidden;
+}
+
 .container {
     max-width: 1200px;
     margin: 0 auto;
@@ -398,15 +402,6 @@ nav {
     background-color: #000; /* Fondo negro */
 }
 
-
-
-
-
-
-
-
-
-
 /* Los dos contenedores principales responsivos */
 @media (max-width: 800px) {
     .container {
@@ -429,8 +424,7 @@ nav {
     }
 }
 
-
-/* CAMBIO DE FONDO */
+Consulta Específica /* CAMBIO DE FONDO */
 /* Estilo para el modo claro */
 body {
     background-color: white;
@@ -438,39 +432,52 @@ body {
     transition: background-color 0.3s, color 0.3s;
 }
 
-/* Estilo para el modo oscuro */
 body.dark-mode {
     background-color: #121212;
     color: white;
 }
 
-/* Estilo para el botón de modo oscuro */
 .toggle-dark-mode {
     cursor: pointer;
     font-size: 28px;
     position:absolute;
     top: 100px;
     right: 20px;
-    color: #FFEA99; /* Amarillo como en otros elementos */
+    color: #FFEA99;}
+
+body.dark-mode .toggle-dark-mode {
+    color: #FFEA99;
 }
 
-/* Estilo para el ícono en modo oscuro */
-body.dark-mode .toggle-dark-mode {
-    color: #FFEA99; /* Cambia el color del ícono en modo oscuro si lo deseas */
+body.dark-mode .text {
+    font-size: 1.5em;
+    color: rgb(250, 250, 245);
+    margin: 0;
+    text-align: left;
+}
+
+body.dark-mode .informacion,body.dark-mode .informacion2,body.dark-mode .informacion3,body.dark-mode .informacion4,
+body.dark-mode .informacion5,body.dark-mode .informacion6,body.dark-mode .informacion7,body.dark-mode .informacion8,
+body.dark-mode .informacion9,body.dark-mode .informacion10,body.dark-mode .informacion11,body.dark-mode .informacion12 {
+    background: linear-gradient(to right, yellow 5%, #1d1d1d 5%);
+    border-radius: 12px;
+    border: 1px solid #7A7A7A;
+    padding: 20px;
+    box-sizing: border-box;
+    max-width: 100%;
+    width: 400px;
+    box-shadow: 0 4px 8px rgba(255, 255, 255, 0.20);
+}
+
+body.dark-mode .button-1,
+body.dark-mode .button-2 {
+    color: #414141;
+    background:  yellow;
+    border: none;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
 }
 
 .toggle-dark-mode i{
     padding-right:20px;
     margin-bottom: 0px;
 }
-/* Amarillo Pastel: #FFFFCC
-Amarillo Normal: #FFD700
-Mostaza: #D4AF37
-Amarillo Claro: #FFFF99
-Amarillo Dorado: #FFDF00
-Amarillo Mostaza: #FFDB58
-Amarillo Ocre: #CC7722
-Amarillo Ámbar: #FFBF00
-Amarillo Dorado Oscuro: #B8860B
-Amarillo Maíz: #FBEC5D */
-

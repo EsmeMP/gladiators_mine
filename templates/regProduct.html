@@ -4,28 +4,21 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registrar Producto Gladiator's</title>
+    <!-- CSS Principal y Estilos Personalizados -->
     <link rel="stylesheet" href="../static/registrar.CSS">
     <link rel="stylesheet" href="../static/style.css">
     <link rel="stylesheet" href="../static/assets/font/flaticon.css">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="../static/consulta_general.css">
+    <link rel="stylesheet" href="../static/navbar.css">
+    <!-- Bootstrap y FontAwesome -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
-  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <style>
-        .preview-img {
-            max-width: 100%;
-            max-height: 300px;
-            margin-top: 10px;
-        }
-    </style>
-<link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-<link rel="stylesheet" href="../static/navbar.css">
-
-
+    <!-- SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+ 
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </head>
 <body>
     <header>
@@ -47,57 +40,57 @@
         </section>
         <nav>
             <section class="logo-gladiators">
-                <a href="{{ url_for('index') }}"><img src="{{ url_for('static', filename='assets/img/Logotipo_GladiatorsTransparente.png') }}" alt="Logotipo Gladiator's"></a>
+                <a href="{{ url_for('index') }}">
+                    <img src="{{ url_for('static', filename='assets/img/Logotipo_GladiatorsTransparente.png') }}" alt="Logotipo Gladiator's">
+                </a>
                 <h5>Gladiator's</h5>
             </section>
             <nav class="navbar navbar-expand-lg">
                 <div class="container">
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarNav">
-                    <ul class="navbar-nav">
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ url_for('secciones') }}">Inicio</a>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="ventasDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Ventas
-                        </a>
-                        <div class="dropdown-menu" aria-labelledby="ventasDropdown">
-                            <a class="dropdown-item" href="{{ url_for('registrar_venta') }}">Registrar</a>
-                            <a class="dropdown-item" href="{{ url_for('reporte_diario') }}">Reporte Diario</a>
-                            <a class="dropdown-item" href="{{ url_for('reporte_semanal') }}">Reporte Semanal</a>
-                        </div>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="productosDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Productos
-                        </a>
-                        <div class="dropdown-menu" aria-labelledby="productosDropdown">
-                            <a class="dropdown-item" href="{{ url_for('productos') }}">Registrar</a>
-                            <a class="dropdown-item" href="{{ url_for('consultar_productos') }}">Consultar</a>
-                        </div>
-                    </li>
-                    {%  if rol is true %}
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="usuariosDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Usuarios
-                        </a>
-                        <div class="dropdown-menu" aria-labelledby="usuariosDropdown">
-                            <a class="dropdown-item" href="{{ url_for('registrar_usuario') }}">Registrar</a>
-                            <a class="dropdown-item" href="{{ url_for('consultar_usuarios') }}">Consultar</a>
-                        </div>
-                    </li>
-                    {%  endif %}
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ url_for('index') }}">Soporte</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ url_for('index') }}">Cerrar Sesión</a>
-                    </li>
-                    </ul>
-                </div>
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarNav">
+                        <ul class="navbar-nav">
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ url_for('secciones') }}">Inicio</a>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="ventasDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Ventas
+                                </a>
+                                <div class="dropdown-menu" aria-labelledby="ventasDropdown">
+                                    <a class="dropdown-item" href="{{ url_for('registrar_venta') }}">Registrar</a>
+                                </div>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="productosDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Productos
+                                </a>
+                                <div class="dropdown-menu" aria-labelledby="productosDropdown">
+                                    <a class="dropdown-item" href="{{ url_for('productos') }}">Registrar</a>
+                                    <a class="dropdown-item" href="{{ url_for('consultar_productos') }}">Consultar</a>
+                                </div>
+                            </li>
+                            {% if rol is true %}
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="usuariosDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Usuarios
+                                </a>
+                                <div class="dropdown-menu" aria-labelledby="usuariosDropdown">
+                                    <a class="dropdown-item" href="{{ url_for('registrar_usuario') }}">Registrar</a>
+                                    <a class="dropdown-item" href="{{ url_for('consultar_usuarios') }}">Consultar</a>
+                                </div>
+                            </li>
+                            {% endif %}
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ url_for('index') }}">Soporte</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ url_for('index') }}">Cerrar Sesión</a>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
             </nav>
         </nav>
@@ -114,56 +107,59 @@
                     <input type="file" id="imagen" name="imagen" required>
                     <img id="preview" class="preview-img" src="#" alt="Vista previa de la imagen" style="display: none;">
                 </div>
-                <div class="label">
-                    <label for="nombre">Nombre:</label>
-                    <input type="text" id="nombre" name="nombre" required>
-                    <label for="codigo_barras">Código de Barras:</label>
-                    <input type="text" id="codigo_barras" name="codigo_barras" required>
-                    <label for="precio">Precio:</label>
-                    <input type="text" id="precio" name="precio" required>
-                    <label for="stock">Stock:</label>
-                    <input type="text" id="stock" name="stock" required>
+                <div>
+                    <section class="label">
+                        <label for="nombre">Nombre:</label>
+                        <input type="text" id="nombre" name="nombre" required>
+                        <label for="codigo_barras">Código de Barras:</label>
+                        <input type="text" id="codigo_barras" name="codigo_barras" required>
+                        <label for="precio">Precio:</label>
+                        <input type="text" id="precio" name="precio" required>
+                        <label for="stock">Stock:</label>
+                        <input type="text" id="stock" name="stock" required>
+                    </section>
                 </div>
-                <div class="label">
-                    <label for="descripcion">Descripción:</label>
-                    <input type="text" id="descripcion" name="descripcion" required>
-                    <label for="marca">Marca:</label>
-                    <input type="text" id="marca" name="marca" required>
-                    <br><br>
-                    <label for="categoria">Categoría:</label>
-                    <select name="categoria" id="categoria">
-                        <option value="Gorras">Gorras</option>
-                        <option value="Sudaderas">Sudaderas</option>
-                        <option value="Cinturones">Cinturones</option>
-                    </select>
+                <div>
+                    <section class="label">
+                        <label for="descripcion">Descripción:</label>
+                        <input type="text" id="descripcion" name="descripcion" required>
+                        <label for="marca">Marca:</label>
+                        <input type="text" id="marca" name="marca" required>
+                        <br><br>
+                        <label for="categoria">Categoría:</label>
+                        <select name="categoria" id="categoria">
+                            <option value="Gorras">Gorras</option>
+                            <option value="Sudaderas">Sudaderas</option>
+                            <option value="Cinturones">Cinturones</option>
+                        </select>
+                    </section>
+                    <button type="button" class="boton-reg" onclick="Swal.fire({
+                        title: '¿Desea registrar este Producto?',
+                        text: '...',
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#FFF07F',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: '¡Sí, registrar Producto!',
+                        customClass: {
+                            confirmButton: 'swal2-confirm-custom'
+                        }
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            Swal.fire({
+                                title: '¡Registrado con éxito!',
+                                text: 'Producto registrado con éxito',
+                                icon: 'success'
+                            }).then(() => {
+                                document.getElementById('myform').submit();
+                            });
+                        }
+                    })">Registrar</button>
                 </div>
-
-                <button type="button" type="submit" class="boton-reg" onclick="Swal.fire({
-                    title: '¿Desea registrar este Producto?',
-                    text: '...',
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#FFF07F',
-                    cancelButtonColor: '#d33',
-                    confirmButtonText: '¡Sí, registrar Producto!',
-                    customClass: {
-                        confirmButton: 'swal2-confirm-custom'  // Clase personalizada para el botón de confirmación
-                    }
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        Swal.fire({
-                            title: '¡Registrado con éxito!',
-                            text: 'Producto registrado con éxito',
-                            icon: 'success'
-                        }).then(() => {
-                            document.getElementById('myform').submit();
-                        });
-                    }
-})">Registrar</button>
-
             </form>
         </div>
     </main>
+    <!-- Scripts para previsualización de imagen y modo oscuro -->
     <script>
         document.getElementById('imagen').onchange = function (event) {
             const [file] = event.target.files;
@@ -175,9 +171,20 @@
         };
     </script>
     <script>
+        //Modo oscuro
+        function updateDarkMode() {
+            if (localStorage.getItem('darkMode') === 'enabled') {
+                document.body.classList.add('dark-mode');
+            } else {
+                document.body.classList.remove('dark-mode');
+            }
+        }
         document.getElementById('toggleDarkMode').addEventListener('click', function() {
             document.body.classList.toggle('dark-mode');
+            localStorage.setItem('darkMode', document.body.classList.contains('dark-mode') ? 'enabled' : 'disabled');
         });
-        </script>
+        // Para que carge en todo el sistema el modo oscuro
+        window.onload = updateDarkMode;
+    </script>
 </body>
 </html>

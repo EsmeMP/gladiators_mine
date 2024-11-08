@@ -1,3 +1,6 @@
+html{
+    overflow-x: hidden;
+}
 /* Estilos generales para la tabla */
 table {
     border: 2px solid #EFB034FF;
@@ -76,323 +79,59 @@ table {
     color: #fff;
 }
 
-/* Estilos en el encabezado de la tabla */
+/* Encabezado y Barra de Navegación */
+nav {
+    width: 100%;
+    background-color: #000;
+    padding: 10px 20px;
+    box-sizing: border-box;
+}
+
+/* Contenedor de Formulario de Búsqueda */
+.barra_busqueda form {
+    display: flex;
+    max-width: 500px;
+    margin: 0 auto;
+    align-items: center;
+}
+
+.barra_busqueda form input[type="text"] {
+    margin-right: 10px; /* Añade espacio entre el campo de búsqueda y el botón */
+}
+/* Tabla y Elementos de Tabla */
+table {
+    margin: 0 auto;
+    width: 90%;
+    max-width: 800px;
+    border-collapse: collapse;
+}
+
 thead {
     background-color: #FFEB99FF;
     border: 2px solid #EFB034FF;
 }
 
-/* Estilos en el cuerpo de la tabla */
 tbody tr {
     border-bottom: 1px solid #EFB034FF;
 }
 
-/* Estilos en ambos elementos de la tabla */
 td, th {
-    padding: 5px;
-    text-align: left;
-}
-
-h1 {
-    padding-top: 10px;
-    margin-top: 40px;
-    padding-left: 120px;
-    margin-bottom: 40px;
-}
-
-/* Estilos para el elemento p */
-.p {
-    position: relative; /* Se cambió a relative, ya que static no tiene en cuenta top y left */
-    top: 5px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 90%;
-    max-width: 487px;
-    height: 54px;
-    /* background: #FFF399FF; */
-    /* border-radius: 8px; */
-    /* border-width: 1px; */
-    /* border-color: #BCC1CAFF; */
-    /* border-style: solid; */
-    box-sizing: border-box; /* Incluye padding y border en el ancho total */
-}
-
-
-/* Estilos para el botón */
-.boton-2 {
-    background-color: #FFF399FF;
-    border: none;
-    color: rgb(28, 24, 24);
-    padding: 10px 20px;
+    /* padding: 10px; */
     text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 16px;
-    margin: 4px 2px;
-    cursor: pointer;
-    border-radius: 5px;
-    transition: background-color 0.3s ease;
 }
 
-.boton-2:hover, .boton-2:active {
-    background-color: #FFF399FF;
-}
-
-/* Media Queries */
-
-/* Para dispositivos de pantalla pequeña (celulares) */
-@media (max-width: 600px) {
-    table {
-        width: 100%;
-        margin: 0;
-    }
-
-    .barra_busqueda form {
-        padding: 20px;
-        flex-direction: column;
-    }
-
-    .textbox input, .textbox button {
-        width: 100%;
-        margin-bottom: 10px;
-    }
-
-    h1 {
-        padding-left: 10px;
-    }
-
-    .p {
-        left: 0;
-        width: 100%;
-        transform: none;
-    }
-
-    .botones button {
-        width: 100%;
-        padding: 10px;
-        font-size: 14px;
-    }
-}
-
-/* Para dispositivos de pantalla media (tabletas y pantallas pequeñas de laptops) */
-@media (min-width: 601px) and (max-width: 1024px) {
-    .barra_busqueda form {
-        padding: 40px;
-    }
-
-    .textbox input {
-        width: 90%;
-    }
-
-    .textbox button {
-        width: auto;
-    }
-
-    h1 {
-        padding-left: 30px;
-    }
-
-    .p {
-        left: 50%;
-        width: 90%;
-        transform: translateX(-50%);
-    }
-}
-
-nav {
-    background-color: rgb(0, 0, 0);
-    padding: 10px 20px;
-    margin-bottom: 20px;
-     width: 100%; /* Asegura que el nav ocupe el 100% del ancho de la pantalla */
-    box-sizing: border-box;
-}
-
-.logo-gladiators {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 10px;
-}
-
-.logo-gladiators img {
-    max-height: 50px;
-    margin-right: 10px;
-}
-
-.logo-gladiators h5 {
-    color: #FFF07FFF;
-    font-size: 24px;
-    margin: 0;
-}
-
-.secciones {
-    display: flex;
-    gap: 10px;
-    justify-content: center;
-    align-items: center;
-}
-
-.secciones a {
-    color: #FFF07FFF;
-    text-decoration: none;
-    font-weight: bold;
-    font-size: 14px;
-    padding: 10px 15px;
-    border-radius: 5px;
-    transition: background-color 0.3s;
-}
-
-.secciones a:hover {
-    background-color: #FFF07FFF;
-    color: #342E00FF;
-}
-
-@media (min-width: 1025px) {
-    .secciones {
-        justify-content: flex-end;
-    }
-    .secciones a {
-        font-size: 16px;
-        padding: 10px 20px;
-    }
-}
-
-@media (min-width: 769px) and (max-width: 1024px) {
-    .secciones {
-        justify-content: center;
-    }
-    .secciones a {
-        font-size: 15px;
-        padding: 8px 12px;
-    }
-}
-
-@media (max-width: 768px) {
-    .secciones {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 5px;
-        padding: 10px 0;
-    }
-
-    .secciones a {
-        font-size: 14px;
-        padding: 8px 10px;
-        width: 100%;
-        text-align: left;
-    }
-}
-
-/* Estilos para la imagen del producto en la tabla */
+/* Imagen del Producto */
 .contenedor-img {
-    text-align: center; /* Centra la imagen dentro de la celda */
-    padding: 10px; /* Añade un poco de espacio alrededor de la imagen */
+    text-align: center;
 }
 
 .product-image {
-    max-width: 100px; /* Ajusta el tamaño máximo de la imagen */
-    height: auto; /* Mantiene la proporción de la imagen */
-    object-fit: cover; /* Cubre el área de la imagen, recortando si es necesario */
-    border-radius: 15px; /* Añade bordes redondeados a la imagen */
+    max-width: 100px;
+    height: auto;
+    border-radius: 10px;
 }
 
-
-
-.menu {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    z-index: 1000;
-}
-
-.menu li {
-    position: relative;
-    display: inline-block;
-    z-index: 1000;
-}
-
-.menu li:hover ul {
-    display: block;
-    z-index: 1000;
-}
-
-.menu ul {
-    display: none;
-    position: absolute;
-    top: 160%; /* Ajusta la posición vertical del submenú */
-    left: 0;
-    z-index: 1000;
-    padding: 0;
-    margin: 0;
-    list-style: none;
-}
-
-.menu ul li {
-    margin-bottom: 0; /* Espacio vertical entre elementos del submenú */
-}
-
-.menu ul li a {
-    display: block;
-    background-color: #342E00FF;
-    color: #FFF07FFF;
-    text-decoration: none;
-    padding: 10px; /* Espaciado interno para los enlaces */
-}
-
-/* Estilo para pantallas grandes (computadoras y laptops) */
-@media (min-width: 1024px) {
-
-    .menu li {
-        display: inline-block;
-    }
-
-    .menu ul {
-        top: 160%; /* Ajusta la distancia vertical del submenú */
-    }
-}
-
-/* Estilo para pantallas medianas (tablets y laptops pequeñas) */
-@media (max-width: 1024px) and (min-width: 768px) {
-    .menu li {
-        display: inline-block; /* O puedes cambiar a block si quieres un menú vertical */
-    }
-
-    .menu ul {
-        top: 120%; /* Ajusta la distancia vertical del submenú */
-    }
-}
-
-/* Estilo para pantallas pequeñas (celulares) */
-@media (max-width: 768px) {
-    .menu {
-        text-align: center; /* Centra el menú */
-    }
-
-    .menu li {
-        display: block; /* Cambia a bloque para una visualización vertical en móviles */
-    }
-
-    .menu ul {
-        position: static; /* Elimina la posición absoluta para móviles */
-        top: auto; /* Restablece la posición vertical */
-        left: auto; /* Restablece la posición horizontal */
-        width: 100%; /* Ocupa el ancho completo */
-    }
-
-    .menu ul li {
-        margin-bottom: 0; /* Espacio vertical entre elementos del submenú */
-    }
-
-    .menu ul li a {
-        padding: 15px; /* Aumenta el padding para mejorar la usabilidad en pantallas táctiles */
-    }
-
-    .menu li:hover ul {
-        display: block; /* Asegúrate de que el submenú se muestre en móviles */
-    }
-}
-
-/* CAMBIO DE FONDO */
+Consulta General                                                                                                                                                                                                   /* CAMBIO DE FONDO */
 /* Estilo para el modo claro */
 body {
     background-color: white;
@@ -419,6 +158,14 @@ body.dark-mode {
 /* Estilo para el ícono en modo oscuro */
 body.dark-mode .toggle-dark-mode {
     color: #FFEA99; /* Cambia el color del ícono en modo oscuro si lo deseas */
+}
+
+table.toggle-dark-mode{
+   
+    border-collapse: collapse;
+    width: 85%;
+   
+    margin: 0 auto; /* Centra la tabla horizontalmente */
 }
 
 .toggle-dark-mode i{
@@ -454,4 +201,72 @@ body.dark-mode .toggle-dark-mode {
 }
 .gif-container:hover .gif-animated {
     display: block;
+}
+
+/* Estilos generales para la tabla */
+table {
+    border: 2px solid #EFB034FF; /* Color de borde normal */
+    border-collapse: collapse;
+    width: 85%;
+    background-color: #f2f2f2; /* Fondo normal */
+    margin: 0 auto; /* Centra la tabla horizontalmente */
+}
+
+/* Estilos para el modo oscuro */
+body.dark-mode table {
+    background-color: #2a2a2a; /* Fondo de la tabla en modo oscuro */
+    border: 2px solid #444; /* Bordes de la tabla en modo oscuro */
+}
+
+body.dark-mode thead {
+    background-color:  #EFB034FF; /* Fondo del encabezado en modo oscuro */
+}
+
+body.dark-mode th, body.dark-mode td {
+    color: #FFF; /* Color del texto en celdas en modo oscuro */
+    border: 1px solid #666; /* Bordes de las celdas en modo oscuro */
+}
+
+/* Otros estilos */
+body.dark-mode .textbox input {
+    background-color: #333; /* Fondo del input en modo oscuro */
+    color: #FFF; /* Color del texto del input en modo oscuro */
+    border: 2px solid #EFB034FF; /* Borde del input */
+}
+
+body.dark-mode .textbox button {
+    background-color: #EFB034FF; /* Fondo del botón en modo oscuro */
+    color: white; /* Color del texto del botón en modo oscuro */
+}
+
+/* Estilo para el botón de modo oscuro */
+.toggle-dark-mode {
+    color: #FFEA99; /* Cambia el color del ícono en modo oscuro */
+}
+
+/* Responsividad para pantallas pequeñas */
+@media (max-width: 600px) {
+    table {
+        width: 100%;
+    }
+
+    .barra_busqueda form {
+        flex-direction: column;
+        padding: 20px;
+    }
+
+    h1 {
+        padding-left: 10px;
+    }
+}
+
+/* Responsividad general */
+.container {
+    width: 90%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+.p {
+    text-align: center;
 }

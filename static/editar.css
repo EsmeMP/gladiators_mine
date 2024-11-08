@@ -1,3 +1,7 @@
+html{
+    overflow-x: hidden;
+}
+
 .label{
     display: inline-table;
     padding-left: 180px;
@@ -135,7 +139,8 @@ h1{
         margin: 0 auto; /* Centra horizontalmente en pantallas pequeñas */
     }
 }
-/* CAMBIO DE FONDO */
+
+editar /* CAMBIO DE FONDO */
 /* Estilo para el modo claro */
 body {
     background-color: white;
@@ -168,15 +173,3 @@ body.dark-mode .toggle-dark-mode {
     padding-right:20px;
     margin-bottom: 0px;
 }
-
-/* Amarillo Pastel: #FFFFCC
-Amarillo Normal: #FFD700
-Mostaza: #D4AF37
-Amarillo Claro: #FFFF99
-Amarillo Dorado: #FFDF00
-Amarillo Mostaza: #FFDB58
-Amarillo Ocre: #CC7722
-Amarillo Ámbar: #FFBF00
-Amarillo Dorado Oscuro: #B8860B
-Amarillo Maíz: #FBEC5D */
-

@@ -1,3 +1,7 @@
+html{
+    overflow-x: hidden;
+}
+
 * Estilos generales */
 body, html {
     margin: 0;
@@ -325,7 +329,7 @@ nav {
     }
 }
 
-/* CAMBIO DE FONDO */
+/* CAMBIO DE FONDO
 /* Estilo para el modo claro */
 body {
     background-color: white;
@@ -333,28 +337,85 @@ body {
     transition: background-color 0.3s, color 0.3s;
 }
 
-/* Estilo para el modo oscuro */
 body.dark-mode {
     background-color: #121212;
     color: white;
 }
 
-/* Estilo para el botón de modo oscuro */
 .toggle-dark-mode {
     cursor: pointer;
     font-size: 28px;
     position:absolute;
     top: 100px;
     right: 20px;
-    color: #FFEA99; /* Amarillo como en otros elementos */
-}
+    color: #FFEA99;
+} */
 
-/* Estilo para el ícono en modo oscuro */
+
 body.dark-mode .toggle-dark-mode {
-    color: #FFEA99; /* Cambia el color del ícono en modo oscuro si lo deseas */
+    color: #FFEA99;
 }
 
 .toggle-dark-mode i{
     padding-right:20px;
     margin-bottom: 0px;
+}
+
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+th, td {
+    padding: 12px;
+    text-align: left;
+    border: 1px solid #ddd;
+}
+
+th {
+    background-color: #342E00FF;
+    color: #FFF07FFF;
+    font-weight: bold;
+}
+
+tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+tr:hover {
+    background-color: #e6e6e6;
+}
+
+body.dark-mode table {
+    border: 1px solid #444;
+}
+
+body.dark-mode th {
+    background-color: #555;
+    color: #FFF;
+}
+
+body.dark-mode tr:nth-child(even) {
+    background-color: #333;
+}
+
+body.dark-mode tr:hover {
+    background-color: #444;
+}
+
+body.dark-mode .foto {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border: 2px dashed #ddd;
+    border-radius: 8px;
+    padding: 20px;
+    background-color: #f9f9f9;
+    text-align: center;
+    grid-column: span 1;
+    width: 250px; height: 200px;
+    margin-left: 100px;
 }

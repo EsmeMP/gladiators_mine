@@ -37,7 +37,9 @@ from flask import send_file, session, redirect, url_for, render_template, reques
 from flask import Flask, send_file, session, redirect, url_for, render_template, request, jsonify
 from werkzeug.utils import secure_filename
 from werkzeug.security import generate_password_hash
-
+from functools import wraps
+from flask import session, redirect, url_for, flash
+from datetime import datetime
 
 app = Flask(__name__)
 app.secret_key = 'super_secret_key'
@@ -49,6 +51,15 @@ serializer = URLSafeTimedSerializer(app.secret_key)
 
 UPLOAD_FOLDER = os.path.join('static', 'assets', 'img')
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+
+def login_required(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if 'username' not in session:
+            flash("Por favor, inicia sesión para acceder a esta página.")
+            return redirect(url_for('login'))  # Cambia 'login' por el nombre de tu ruta de login
+        return f(*args, **kwargs)
+    return decorated_function
 
 def actualizar_contraseñas():
     connection = None
@@ -100,21 +111,32 @@ def verificar_credenciales(username, password):
         cursor.execute(query, (username,))
         resultado = cursor.fetchone()
 
+        # Depuración: Verificar si se obtuvo algún resultado
         if resultado:
+            print(f"Resultado de la consulta SQL para el usuario '{username}': {resultado}")
             stored_password = resultado[3]  # Asumiendo que el password es el cuarto campo en el resultado
+            print(f"Password almacenado en la base de datos: {stored_password}")
+
+            # Verificar si el hash coincide con la contraseña ingresada
             if check_password_hash(stored_password, password):
+                print(f"Contraseña verificada correctamente para el usuario '{username}'")
                 return resultado  # Devuelve toda la tupla
+            else:
+                print(f"Error: La contraseña ingresada no coincide para el usuario '{username}'")
+        else:
+            print(f"No se encontró un usuario con el username '{username}'")
+
         return None
 
-
     except (Exception, psycopg2.Error) as error:
-        print("Error al conectar a la base de datos", error)
+        print(f"Error al conectar a la base de datos o ejecutar la consulta: {error}")
         return None
 
     finally:
         if connection:
             cursor.close()
             connection.close()
+
 
 @app.route('/')
 def index():
@@ -133,6 +155,8 @@ def login():
             session['nombre_completo'] = resultado[1]
             session['username'] = resultado[2]
             session['rol'] = resultado[4]
+
+            print(f"Sesión después de autenticación: {session}")
 
             print(f"Rol del usuario autenticado: {session['rol']}")
             flash(f"Rol del usuario autenticado: {session['rol']}")
@@ -269,6 +293,7 @@ def registrar_producto_post():
 
 
 @app.route('/consultar_productos')
+@login_required
 def consultar_productos():
     if 'username' in session and 'rol' in session:
         username = session['username']
@@ -445,22 +470,40 @@ def buscar_producto():
 
 
 # ---------------------------------------------------------VENTAS---------------------------------------------------------------
-
-
-
 @app.route('/registrar_venta', methods=['GET', 'POST'])
+@login_required
 def registrar_venta():
-    conn = conectar()
+    # Verificar que el usuario esté autenticado
+    if 'username' not in session or 'rol' not in session:
+        flash("Error: Usuario no autenticado. Debes iniciar sesión para acceder a esta página.", "danger")
+        print("Usuario no autenticado, redirigiendo a login.")
+        return redirect(url_for('login'))
+
+    rol = session['rol']
+    print(f"Rol del usuario: {rol}")  # Mensaje de depuración
+
+    # Permitir acceso solo a usuarios con rol 1 (administrador) o rol 2 (cajero)
+    if rol not in [1, 2]:
+        flash("No tienes permisos para acceder a esta sección", 'danger')
+        print("Rol no permitido, redirigiendo a login.")
+        return redirect(url_for('login'))  # Redirige a la página de login si el rol no es permitido
+
+    fk_usuario = session.get('usuario_id')
+    nombre_completo = session.get('nombre_completo', 'Usuario desconocido')  # Ajuste
+
+    print(f"ID de usuario en sesión: {fk_usuario}, Nombre completo: {nombre_completo}")  # Debug de sesión
+
+    conn = db.conectar()
     cursor = conn.cursor()
 
     numero_venta = None
     total = 0.0
 
-    nombre_completo = session.get('nombre_completo') 
-
     if request.method == 'POST':
         try:
             venta_actual = request.form.get('venta_actual')
+            print("Venta actual recibida:", venta_actual)  # Debugging
+
             if venta_actual:
                 venta_actual = json.loads(venta_actual)
                 print("Productos en la venta actual:", venta_actual)  # Debug
@@ -469,17 +512,9 @@ def registrar_venta():
                     flash("No hay productos en la venta actual.")
                     return redirect(url_for('registrar_venta'))
 
-                # Obtener el ID del usuario y el nombre completo del usuario desde la sesión
-                fk_usuario = session.get('usuario_id')
-                nombre_completo = session.get('nombre_completo')
-
-                # Verificar que el usuario esté autenticado
-                if fk_usuario is None:
-                    flash("Error: Usuario no autenticado.")
-                    return redirect(url_for('login'))
-
+                # Insertar la venta en la tabla 'venta'
                 cursor.execute(
-                    "INSERT INTO venta (fecha_venta, hora_venta, fk_usuario) VALUES (CURRENT_DATE, CURRENT_TIME, %s) RETURNING id_venta",
+                    "INSERT INTO venta (fecha_venta, hora_venta, fk_usuario) VALUES (CURRENT_DATE, CURRENT_TIME, %s) RETURNING id_venta;",
                     (fk_usuario,)
                 )
                 id_venta = cursor.fetchone()[0]
@@ -489,7 +524,7 @@ def registrar_venta():
                     # Obtener id_producto a partir del codigo_barras
                     cursor.execute("SELECT id_producto FROM producto WHERE codigo_barras = %s", (item['code'],))
                     id_producto = cursor.fetchone()
-                    
+
                     if id_producto:
                         id_producto = id_producto[0]
                     else:
@@ -505,11 +540,11 @@ def registrar_venta():
                     print(f"Insertado en detalle_venta: cantidad={item['quantity']}, fk_producto={id_producto}, fk_venta={id_venta}")
 
                     # Calcular total
-                    total += item['quantity'] * item['price']  # Usa el precio de la venta actual
+                    total += item['quantity'] * item['price']
 
                 conn.commit()
                 flash("Venta registrada exitosamente.", "success")
-                session['venta_actual'] = []
+                session['venta_actual'] = []  # Limpia la venta actual
                 return redirect(url_for('venta_confirmada', id_venta=id_venta))
 
             else:
@@ -519,21 +554,22 @@ def registrar_venta():
         except Exception as e:
             conn.rollback()
             flash(f"Error al registrar la venta: {e}", "danger")
-            print(f"Error al registrar la venta: {e}")
+            print(f"Error al registrar la venta: {e}")  # Verifica la salida en la consola
             return redirect(url_for('registrar_venta'))
 
         finally:
             cursor.close()
-            desconectar(conn)
+            db.desconectar(conn)
 
     else:  # Para método GET
         cursor.execute("SELECT COALESCE(MAX(id_venta) + 1, 1) FROM venta")
         numero_venta = cursor.fetchone()[0]
 
     cursor.close()
-    desconectar(conn)
+    db.desconectar(conn)
 
     return render_template('regVenta.html', numero_venta=numero_venta, total=total, usuario=nombre_completo)
+
 
 
 
@@ -799,6 +835,7 @@ def descargar_reporte():
     
     # Descarga el archivo PDF
     return send_file(pdf_buffer, as_attachment=True, download_name='reporte_diario.pdf', mimetype='application/pdf')
+
 
 
 
@@ -1357,3 +1394,7 @@ def logout():
     response = make_response(redirect(url_for('index')))
     response.set_cookie('remember_token', '', expires=0)
     return response
+
+
+if __name__ == "__main__":
+    app.run(debug=True)

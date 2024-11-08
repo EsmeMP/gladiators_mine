@@ -1,3 +1,7 @@
+html{
+    overflow-x: hidden;
+}
+
 /* Reseteo CSS básico */
 * {
     margin: 0;
@@ -239,6 +243,50 @@ h1 {
     background-color: #000; /* Fondo negro */
 }
 
+.navbar-nav .nav-item .nav-link {
+    color: #FFEA99 !important; /* Texto amarillo */
+}
+
+/* Hover: texto amarillo y fondo negro */
+.navbar-nav .nav-item .nav-link:hover {
+    color: #f9f9f7 !important; /* Texto amarillo en hover */
+    background-color: #000 !important; /* Fondo negro en hover */
+}
+
+/* Texto amarillo para la marca y otros textos dentro de la navbar */
+.navbar-brand, .navbar-toggler-icon, .navbar .h5, .logo-gladiators h5 {
+    color: #FFEA99!important; /* Texto amarillo */
+}
+
+/* Dropdown Menu */
+.dropdown-menu {
+    background-color: #0b0b0b !important; /* Fondo negro */
+    border: none;
+}
+
+/* Texto amarillo en los elementos del dropdown */
+.dropdown-item {
+    color: #FFEA99 !important; /* Texto amarillo */
+}
+
+/* Hover en el dropdown */
+.dropdown-item:hover {
+    color: #f7f7f6 !important; /* Texto amarillo en hover */
+    background-color: #000000 !important; /* Fondo negro en hover */
+}
+
+.navbar-toggler {
+    border-color: yellow; /* Cambia el color del borde del botón */
+}
+
+.navbar-toggler-icon {
+    background-image: url('../static/assets/font/menu.svg');
+}
+
+.navbar-toggler:focus, .navbar-toggler:hover {
+    background-color: #000; /* Fondo negro */
+}
+
 /* CAMBIO DE FONDO */
 /* Estilo para el modo claro */
 body {
@@ -249,40 +297,102 @@ body {
 
 /* Estilo para el modo oscuro */
 body.dark-mode {
-    background-color: #121212;
-    color: white;
+    background-color: #121212; /* Fondo oscuro */
+    color: white; /* Texto claro */
 }
 
-/* Estilo para el botón de modo oscuro */
-.toggle-dark-mode {
-    cursor: pointer;
-    font-size: 28px;
-    position:absolute;
-    top: 100px;
-    right: 20px;
-    color: #FFEA99; /* Amarillo como en otros elementos */
+/* Estilo para el header y otros elementos */
+body.dark-mode header {
+    background-color: #000; /* Fondo del header */
 }
 
-/* Estilo para el ícono en modo oscuro */
-body.dark-mode .toggle-dark-mode {
-    color: #FFEA99; /* Cambia el color del ícono en modo oscuro si lo deseas */
+body.dark-mode .incons-container {
+    background-color: #1e1e1e; /* Fondo para el contenedor de iconos */
+    color: #fff; /* Texto claro */
 }
 
-.toggle-dark-mode i{
-    padding-right:20px;
-    margin-bottom: 0px;
+body.dark-mode .incons a,
+body.dark-mode .correo-a a {
+    color: #f9c405; /* Color de los enlaces */
 }
-/* Los dos contenedores principales responsivos */
+
+body.dark-mode nav {
+    background-color: #000000; /* Fondo de la barra de navegación */
+}
+
+body.dark-mode .navbar-nav .nav-item .nav-link {
+    color: #FFEA99; /* Texto amarillo */
+}
+
+body.dark-mode .button-ventas,
+body.dark-mode .button-usuario,
+body.dark-mode .button-producto {
+    background-color: #151515; /* Fondo oscuro para botones */
+    color: white; /* Texto claro */
+    border: 2px solid #676767; /* Borde más claro */
+}
+
+body.dark-mode .button-ventas a,
+body.dark-mode .button-usuario a,
+body.dark-mode .button-producto a {
+    color: #ffffff !important; /* Texto blanco para los enlaces en botones */
+}
+
+body.dark-mode .button-ventas:hover,
+body.dark-mode .button-usuario:hover,
+body.dark-mode .button-producto:hover {
+    background-color: #ffd700; /* Color al pasar el ratón */
+    color: #f8f6f6; /* Texto oscuro en hover */
+}
+
+/* Estilo para el separador en modo oscuro */
+body.dark-mode .lin {
+    border-color: #ffffff; /* Color del separador */
+}
+
+/* Estilo para el dropdown en modo oscuro */
+body.dark-mode .dropdown-menu {
+    background-color: #090909 !important; /* Fondo oscuro */
+}
+
+body.dark-mode .dropdown-item {
+    color: #FFEA99 !important; /* Texto amarillo */
+}
+
+body.dark-mode .dropdown-item:hover {
+    background-color: #000 !important; /* Fondo negro en hover */
+    color: #f7f7f6 !important; /* Texto claro en hover */
+}
+
+table {
+    background-color: #333; /* Fondo oscuro de la tabla */
+    color: #f5f5f5; /* Texto claro */
+}
+
+table th, table td {
+    background-color: #444; /* Fondo para las celdas */
+    color: #f5f5f5; /* Texto claro */
+}
+input[type="text"] {
+    background-color: #333;
+    color: #f5f5f5;
+    border: 1px solid #f5f5f5; /* Borde claro */
+}
+button {
+    background-color: #ffcc00;
+    color: #000;
+    border: none;
+    padding: 5px 10px;
+    font-weight: bold;
+}
+
+button:hover {
+    background-color: #e6b800;
+}
+table th {
+    background-color: #555; /* Color más oscuro para los encabezados */
+    color: #f5f5f5; /* Texto claro */
+}
 
 
-/* Amarillo Pastel: #FFFFCC
-Amarillo Normal: #FFD700
-Mostaza: #D4AF37
-Amarillo Claro: #FFFF99
-Amarillo Dorado: #FFDF00
-Amarillo Mostaza: #FFDB58
-Amarillo Ocre: #CC7722
-Amarillo Ámbar: #FFBF00
-Amarillo Dorado Oscuro: #B8860B
-Amarillo Maíz: #FBEC5D */
-
+/* Estilo para el modo oscuro */
