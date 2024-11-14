@@ -7,8 +7,6 @@
     <!-- <link rel="stylesheet" href="../static/style.css"> -->
     <link rel="stylesheet" type="text/css" href="../static/assets/font/flaticon.css">
     <link rel="stylesheet" href="../static/seccion.css">
-    <!-- <link rel="stylesheet" href="../static/consulta_general.css"> -->
-    <!-- <link rel="stylesheet" type="text/css" href="../static/consulta_general.css"> -->
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
@@ -16,41 +14,9 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <!-- <link rel="stylesheet" href="../static/navbar.css"> -->
 
-<!-- Scripts de Bootstrap -->
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link rel="stylesheet" href="/static/navbar.css">
     <link rel="stylesheet" href="/static/style.css">
-<style>
-    .logo-gladiators {
-    display: flex;
-    align-items: center;
-    margin-left: 2%;
-    position: relative;
-    top: 10px; 
-}
-
-.logo-gladiators img {
-    max-width: 50px;
-}
-
-.logo-gladiators h5 {
-    margin-right: 5%; /* Ajusta este valor para el espacio entre la imagen y el texto */
-}
-
-.navbar {
-    height: 0px !important; /* Forzar altura */
-    padding: 0 !important; /* Forzar padding */
-}
-
-    .navbar-expand-lg .navbar-collapse {
-        margin-left: 30%;
-    }
-
-</style>
-
-
 </head>
 <body>
     <header>
@@ -71,17 +37,20 @@
             </div>
         </section>
 
-        <nav class="navbar navbar-expand-lg navbar-light bg-light">
-            <section class="logo-gladiators">
-                <a href="{{ url_for('index') }}">
-                    <img src="{{ url_for('static', filename='assets/img/Logotipo_GladiatorsTransparente.png') }}" alt="Logotipo Gladiator's" class="navbar-brand-img">
-                </a>
-                <h5 class="navbar-brand">Gladiator's</h5>
-            </section>
+            <nav class="navbar navbar-expand-lg navbar-light bg-light">
+                <section class="logo-gladiators d-flex align-items-center">
+                    <a href="{{ url_for('index') }}">
+                        <img src="{{ url_for('static', filename='assets/img/Logotipo_GladiatorsTransparente.png') }}" alt="Logotipo Gladiator's" class="navbar-brand-img">
+                    </a>
+                    <h5 class="navbar-brand d-flex align-items-center">
+                        Gladiator's
+                        <i class="fas fa-lightbulb ml-2" id="toggleDarkMode"></i>
+                    </h5>
+                </section>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            
+
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ml-auto">
                     <li class="nav-item">
@@ -124,14 +93,11 @@
                 </ul>
             </div>
         </nav>
-        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+
+        <!-- Scripts de Bootstrap (solo una versión) -->
+        <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@1.16.1/dist/umd/popper.min.js"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-        
-        <!-- Botón de Modo Oscuro -->
-        <div id="toggleDarkMode" class="toggle-dark-mode">
-            <i class="fas fa-lightbulb"></i>
-        </div>
     </header>
     <main>
         <h1>Bienvenido, {{ username }}</h1>

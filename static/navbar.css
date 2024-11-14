@@ -151,6 +151,14 @@ nav {
     color: #FFD700 !important; /* Amarillo dorado en el enlace activo */
 }
 
+/* .toggle-dark-mode {
+    cursor: pointer;
+    font-size: 25px;
+    position:relative;
+    color: #FFEA99;
+    bottom: 25px; 
+} */
+
     
 /* Responsive Styles */
 @media (max-width: 768px) {
@@ -162,3 +170,14 @@ nav {
         margin: 5px 0;
     }
 }
+
+/* Cambia el color del texto 'Gladiator's' a amarillo */
+.logo-gladiators h5 {
+    color: yellow; /* Puedes usar cualquier tono de amarillo, como #FFF07F */
+}
+
+/* Cambia el color del ícono de la bombilla a amarillo */
+.logo-gladiators i {
+    color: yellow; /* Igualmente puedes usar un tono personalizado */
+}
+/* //navbar */

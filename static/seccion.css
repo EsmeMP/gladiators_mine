@@ -12,100 +12,25 @@ html{
 /* General */
 body {
     font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    background-color: white;
+    color: black;
+    transition: background-color 0.3s, color 0.3s;
 }
-
 header {
     background-color: #000;
     color: #fff;
     padding: 0px;
 }
 
-h5 {
-    left: -1200px;
-    position: relative;
-    /* margin-right: 200px; */
-}
 
-.incons-container {
-    background-color: var(--color-gray-header);
-    color: var(--color-primary);
-    font-size: 85%;
-    padding: 0 0px;
-}
-
-.incons-container {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px;
-}
-
-.incons a {
-    color: #f9c405;
-    margin-right: 10px;
-}
-
-.inf-p, .correo-a {
-    margin: 0;
-    padding: 0;
-}
-
-.correo-a a {
-    color: #f9c405;
-}
-
-.incons {
-    background-color: #f0f0f000; 
-    padding: 10px;
-    border-radius: 5px; 
-}
-
-.incons {
-    margin-left: 20px !important; /* Ajusta el margen derecho si es necesario */
-}
-
-
-
-nav {
-    background-color: #111;
-    padding: 10px;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.logo-gladiators {
-    display: flex;
-    align-items: center;
-}
-
-.logo-gladiators img {
-    max-width: 50px;
-    margin-left: 15%;
-}
-
-.logo-gladiators h5 {
-margin-right: 0px;
-}
-
-
-
-.secciones a {
-    color: #fff;
-    margin-left: 15px;
-    text-decoration: none;
+h1 {
+    font-size: 40px;
 }
 
 main {
     text-align: center;
     margin-top: 20px;
     padding: 30px;
-}
-
-h1 {
-    font-size: 40px;
 }
 
 .lin {
@@ -115,6 +40,8 @@ h1 {
     width: 60%;
     margin: 20px auto;
 }
+
+
 
 .button-container {
     display: flex;
@@ -165,7 +92,31 @@ h1 {
     transform: scale(1.07);
 }
 
-/* Parte responsiva */
+/* Estilos para el modo oscuro */
+body.dark-mode {
+    background-color: #121212;
+    color: white;
+}
+
+/* Estilo para el botón de modo oscuro */
+.toggle-dark-mode {
+    cursor: pointer;
+    font-size: 28px;
+    position: absolute;
+    top: 100px;
+    right: 20px;
+    color: #FFEA99; /* Amarillo */
+}
+
+.toggle-dark-mode i {
+    padding-right: 20px;
+    margin-bottom: 0px;
+}
+
+/* Estilo para el ícono en modo oscuro */
+body.dark-mode .toggle-dark-mode {
+    color: #FFEA99;
+}
 
 /* Tablets */
 @media (min-width: 600px) {
@@ -187,6 +138,7 @@ h1 {
         width: 500px;
     }
 }
+/* //css seccion */
 /* Asegurar que toda la barra de navegación tenga fondo negro */
 
 /* Fondo negro para la barra de navegación */
